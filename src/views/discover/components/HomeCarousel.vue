@@ -1,31 +1,81 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" ref="wrapper"
+    @mouseenter="stop()"
+    @mouseleave="start()"
+  >
     <div class="content">
-      <div class="content-img">
-        <div class="img-wrapper">
-          page-{{index}}
+      <div class="img-wrapper">
+        <div class="img-item" v-for="(item, i) of banner" :key="i">
+          <img :class="[ i === active ? 'active' : 'none' ]" :src="item.imageUrl" alt="">
+        </div>
+        <div class="content-prev" @click="handleControl('prev')">&nbsp;</div>
+        <div class="content-next" @click="handleControl('next')">&nbsp;</div>
+        <div class="content-paganation">
+          <span
+            v-for="i of banner.length" :key="i"
+            :class="[ 'pag-dot', i - 1 === active ? 'pag-dot-active' : 'none' ]" 
+            @click="handleControl(i-1)"
+          ></span>
         </div>
       </div>
-      <div class="content-download"></div>
+      <div class="content-download">
+        
+      </div>
       <!-- controler -->
-      <div class="content-prev">&lt;</div>
-      <div class="content-next">&gt;</div>
-      <div class="content-paganation"></div>
     </div>
   </div>
 </template>
 
 <script>
+import { getBanner } from '@/api/get.js';
+
 export default {
   name: 'home-carousel',
 
-  components: {},
-
-  props: {},
-
   data() {
     return {
-      index: 1,
+      banner: [],
+      active: 0,
+      timer: '',
+    }
+  },
+
+  mounted() {
+    getBanner().then(res => {
+      this.banner = this.banner.concat(res.data.banners);
+    }).catch(err => {
+      console.log(err);
+    }).finally(() => {
+      this.start();
+    });
+  },
+
+  beforeDestroy() {
+    this.stop();
+  },
+
+  methods: {
+    handleControl(tag) {
+      if (typeof tag === 'number') {
+        console.log(`jump to ${tag}.`);
+        this.active = tag;
+      }else if (tag === 'prev') {
+        console.log('prev');
+        this.active = this.active === 0 ? this.banner.length - 1 : this.active - 1;
+      } else if (tag === 'next'){
+        console.log('next');
+        this.active = this.active === this.banner.length - 1 ? 0 : this.active + 1;
+      }
+    },
+    start() {
+      this.timer = setInterval(() => {
+        this.handleControl('next');
+      }, 4000);
+      console.log(`start: ${this.timer}`);
+    },
+    stop() {
+      clearInterval(this.timer);
+      console.log(`clear interval: ${this.timer}`);
     }
   },
 
@@ -37,7 +87,7 @@ export default {
 .wrapper {
   width: 100%;
   height: 100%;
-  background-color: #ccc;
+  background-color: rgb(40, 38, 39);
   .content {
     position: relative;
     width: 982px;
@@ -46,30 +96,75 @@ export default {
     left: -491px;
     background-color: rgb(212, 49, 54);
     text-align: center;
-    // test
-    // line-height: 300px;
-    // font-size: 50px;
     color: #fff;
-    &-prev, &-next {
-      position: absolute;
-      width: 37px;
-      height: 63px;
-      line-height: 63px;
-      text-align: center;
-      font-size: 50px;
-      color: #fff;
-      &:hover {
-        cursor: pointer;
-        background-color: rgba(0, 0, 0, .1);
+    .img-wrapper {
+      position: relative;
+      float: left;
+      width: 732px;
+      height: 336px;
+      .img-item {
+        position: absolute;
+        width: 732px;
+        height: 336px;
+        img {
+          opacity: 0;
+          width: 100%;
+          height: 336px;
+          transition: all 1s;
+        }
+        .active {
+          opacity: 1;
+        }
+      }
+      .content-prev, .content-next {
+        position: absolute;
+        width: 37px;
+        height: 63px;
+        line-height: 63px;
+        text-align: center;
+        font-size: 50px;
+        color: #fff;
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(0, 0, 0, .1);
+        }
+      }
+      .content-prev {
+        left: -40px;
+        top: 130px;
+        background: url('../../../../public/img/icons/banner.png') no-repeat 0 -360px;
+      }
+      .content-next {
+        left: 985px;
+        top: 130px;
+        background: url('../../../../public/img/icons/banner.png') no-repeat 0 -508px;
+      }
+      .content-paganation {
+        position: absolute;
+        left: 300px;
+        bottom: 10px;
+        .pag-dot {
+          display: inline-block;
+          width: 8px;
+          height: 8px;
+          margin: 5px 8px;
+          border-radius: 50%;
+          background-color: #ccc;
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(190, 11, 11);
+          }
+        }
+        .pag-dot-active {
+          background-color: rgb(190, 11, 11);
+        }
       }
     }
-    &-prev {
-      left: -40px;
-      top: 140px;
-    }
-    &-next {
-      left: 985px;
-      top: 140px;
+    .content-download {
+      margin-left: 732px;
+      width: 250px;
+      height: 336px;
+      background: url('../../../../public/img/icons/download.png') no-repeat 0 0;
     }
   }
 }

@@ -2,12 +2,12 @@
   <div class="container">
     <div class="header">
       <div class="header-left">
-        <img class="left-pic" :src="pic" alt="">
+        <img class="left-pic" :src="coverImgUrl" alt="">
         <a href="" class="left-link">
         </a>
       </div>
       <div class="header-right">
-        <div class="right-title">{{title}}</div>
+        <div class="right-title">{{name}}</div>
         <div class="right-options">
           <span class="option-play"></span>
           <span class="option-addall"></span>
@@ -15,9 +15,9 @@
       </div>
     </div>
     <div class="list">
-      <div class="item" v-for="i of 10" :key="i">
-        <span class="item-order">{{i}}</span>
-        <span class="item-name">我和我的祖国</span>
+      <div class="item" v-for="(item, i) of list" :key="i">
+        <span class="item-order">{{i+1}}</span>
+        <span class="item-name">{{item.name}}</span>
       </div>
     </div>
     <div class="footer">
@@ -27,24 +27,36 @@
 </template>
 
 <script>
+import { getBillboard } from  '@/api/get.js';
+
 export default {
   name: 'bill-category-item',
 
   components: {},
 
   props: {
-    pic: {
-      type: String,
-    },
-    title: {
-      type: String,
+    idx: {
+      type: Number,
     },
   },
 
   data() {
     return {
-      
+      list: [],
+      name: '',
+      coverImgUrl: '',
     }
+  },
+
+  mounted() {
+    getBillboard(this.idx).then(res => {
+      const playlist = res.data.playlist;
+      this.name = playlist.name;
+      this.coverImgUrl = playlist.coverImgUrl;
+      this.list = playlist.tracks.slice(0, 10);
+    }).catch(err => {
+      console.log(err);
+    });
   },
 
 }

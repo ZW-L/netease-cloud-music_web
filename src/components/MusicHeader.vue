@@ -47,6 +47,10 @@ export default {
 
 <style lang="scss" scoped>
 
+.header {
+  width: 100%;
+  height: 104px;
+}
 .main-header {
   display: flex;
   height: 69px;

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <home-carousel class="carousel"></home-carousel>
+    <home-carousel class="carousel" :banner="banner"></home-carousel>
     <div class="content">
       <div class="content-left">
         <hot-category></hot-category>
@@ -32,6 +32,7 @@ import HotCategory from './components/HotCategory.vue';
 import NewCategory from './components/NewCategory.vue';
 import BillCategory from './components/BillCategory.vue';
 import AsideCard from './components/AsideCard.vue';
+
 
 export default {
   name: 'discover-view',
@@ -73,32 +74,39 @@ export default {
     };
   },
 
+  mounted() {
+    
+  },
+
 }
 </script>
 
 <style lang="scss" scoped>
 
 .container {
+  position: relative;
   .carousel {
     width: 100%;
     height: 336px;
   }
   .content {
-    position: relative;
+    overflow: hidden;
     width: 982px;
-    margin-left: 50%;
-    left: -491px;
+    margin: 0 auto;
     .content-left, .content-right {
       float: left;
       box-sizing: border-box;
+      background-color: #fff;
     }
     .content-left {
       width: 732px;
       padding: 20px 20px 40px 20px;
       border: 1px solid rgb(211, 211, 211);
+      border-bottom: none;
     }
     .content-right {
       width: 250px;
+      padding-bottom: 40px;
       border: 1px solid rgb(211, 211, 211);
       border-left: none;
       .sign {

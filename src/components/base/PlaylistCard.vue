@@ -1,16 +1,16 @@
 <template>
   <div class="content">
     <div class="wrapper">
-      <div class="img"></div>
+      <img :src="info.picUrl" :alt="info.copywrite" class="img">
       <a href="" class="img-link"></a>
       <div class="info">
         <span class="info-headset"></span>
-        <span class="info-count">208万</span>
+        <span class="info-count">{{playCount}}</span>
         <span class="info-play"></span>
       </div>
     </div>
     <div class="title">
-      <p>秋日限定阳光：一起散步吧，在它溜走之前</p>
+      <p>{{info.name}}</p>
     </div>
   </div>
 </template>
@@ -19,13 +19,18 @@
 export default {
   name: 'play-list-card',
 
-  components: {},
+  props: {
+    info: {
+      type: Object,
+      default: () => {},
+    },
+  },
 
-  props: {},
-
-  data() {
-    return {
-    }
+  computed: {
+    playCount() {
+      const count = this.info.playCount;
+      return  count > 100000 ? `${Math.floor(count/10000)}万` : count;
+    },
   },
 
 }

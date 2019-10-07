@@ -1,14 +1,14 @@
 <template>
   <div id="app">
-    <div id="header">
-      <music-header></music-header>
-    </div>
+    <music-header></music-header>
     <router-view/>
+    <music-footer></music-footer>
   </div>
 </template>
 
 <script>
 import MusicHeader from '@/components/MusicHeader.vue';
+import MusicFooter from '@/components/MusicFooter.vue';
 
 export default {
 
@@ -16,6 +16,7 @@ export default {
   
   components: {
     MusicHeader,
+    MusicFooter,
   },
   
 };
@@ -24,9 +25,6 @@ export default {
 <style lang="scss" scoped>
 
 #app {
-  #header {
-    width: 100%;
-    height: 104px;
-  }
+  background-color: rgb(245, 245, 245);
 }
 </style>
