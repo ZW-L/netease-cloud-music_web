@@ -1,12 +1,10 @@
 <template>
-  <div>
-    <router-view></router-view>
-  </div>
+  <div>album</div>
 </template>
 
 <script>
 export default {
-  name: 'discover-view',
+  name: '',
 
   components: {},
 

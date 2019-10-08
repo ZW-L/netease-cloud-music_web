@@ -2,10 +2,7 @@
   <div class="container">
     <category-header :title="hot.title"></category-header>
     <div class="content">
-      <bill-category-item class="column"
-      v-for="i of bill" :key="i"
-      :idx="i"
-      ></bill-category-item>
+      <bill-category-item class="column" v-for="i of bill" :key="i" :idx="i"></bill-category-item>
     </div>
   </div>
 </template>
@@ -24,8 +21,6 @@ export default {
     BillCategoryItem,
   },
 
-  props: {},
-
   data() {
     return {
       hot: {
@@ -40,6 +35,8 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+
 .container {
   position: relative;
   width: 100%;
@@ -49,7 +46,7 @@ export default {
       box-sizing: border-box;
       display: inline-block;
       width: 230px;
-      border: 1px solid rgb(211, 211, 211);
+      border: 1px solid $bdcDefault;
     }
   }
 }

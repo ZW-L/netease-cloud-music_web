@@ -1,26 +1,32 @@
 <template>
   <div class="header">
-    <div class="main-header">
-      <h1 class="title"></h1>
-      <ul class="nav">
-        <li class="nav-item" v-for="item of nav" :key="item">{{item}}</li>
-        <li class="nav-item">
-          <span class="nav-hot"></span>
-        </li>
-      </ul>
-      <div class="search">
-        <input class="search-input" type="text" placeholder="音乐/视频/用户/电台">
-      </div>
-      <div class="creator-center">创作者中心</div>
-      <div class="sign">
-        <span class="sign-status">登录</span>
-        <span class="arrow-down">⬇</span>
+    <div class="wrapper-main">
+      <div class="main-header">
+        <h1 class="title"></h1>
+        <ul class="nav">
+          <li class="nav-item" v-for="item of nav" :key="item">{{item}}</li>
+          <li class="nav-item">
+            <span class="nav-hot"></span>
+          </li>
+        </ul>
+        <div class="search">
+          <input class="search-input" type="text" placeholder="音乐/视频/用户/电台">
+        </div>
+        <div class="creator-center">创作者中心</div>
+        <div class="sign">
+          <span class="sign-status">登录</span>
+        </div>
       </div>
     </div>
-    <div class="sub-header">
-      <ul class="sub-nav">
-        <li class="sub-nav-item" v-for="item of subNav" :key="item">{{item}}</li>
-      </ul>
+    <div class="wrapper-sub">
+      <div class="sub-header">
+        <ul class="sub-nav">
+          <li v-for="(item, i) of subNav" :key="i"
+            :class="['sub-nav-item', { 'sub-nav-item-active': subNavActive === i }]" 
+            @click="handleSubNavClick(i)"
+          >{{item.title}}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -29,41 +35,57 @@
 export default {
   name: 'music-header',
 
-  components: {},
-
-  props: {
-    
-  },
-
   data() {
     return {
+      subNavActive: 0,
       nav: ['发现音乐', '我的音乐', '朋友', '商城', '音乐人', '下载客户端', ],
-      subNav: ['推荐', '排行榜', '歌单', '主播电台', '歌手', '新碟上架', ],
+      subNav: [
+        { title: '推荐', path: '/discover/recommend' },
+        { title: '排行榜', path: '/discover/toplist' },
+        { title: '歌单', path: '/discover/playlist' },
+        { title: '主播电台', path: '/discover/djradio' },
+        { title: '歌手', path: '/discover/artist' },
+        { title: '新碟上架', path: '/discover/album' },
+      ],
     }
   },
 
+  methods: {
+    handleSubNavClick(i) {
+      this.subNavActive = i;
+      this.$router.push(this.subNav[i].path);
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
+
 .header {
   width: 100%;
   height: 104px;
+  .wrapper-main {
+    background-color: $bgHeader;
+    border-bottom: 1px solid $bdcDark;
+  }
+  .wrapper-sub {
+    background-color: $bgSubHeader;
+  }
 }
 .main-header {
   display: flex;
+  width: 1100px;
   height: 69px;
-  color: rgb(172, 172, 172);
-  background-color: rgb(36, 36, 36);
-  border-bottom: 1px solid #000;
+  margin: 0 auto;
+  color: $homeDefault;
   .title {
     width: 176px;
     height: 69px;
     background: url('../../public/img/icons/topbar.png') no-repeat;
-    &:hover {
-      cursor: pointer;
-    }
+    @include hoverText();
   }
   .nav {
     display: flex;
@@ -73,9 +95,9 @@ export default {
       display: inline-block;
       padding: 0 19px;
       height: 69px;
-      font-size: 14px;
+      font-size: $fontMinL;
       &:first-child {
-        color: #fff;
+        color: $textLight;
         background-color: #000;
       }
       &:not(:last-child):hover {
@@ -105,21 +127,21 @@ export default {
     border-radius: 32px;
     overflow: hidden;
     background: url('../../public/img/icons/topbar.png') no-repeat 0 -99px;
-    background-color: #fff;
+    background-color: $bgDefault;
     .search-input {
       width: 100%;
       height: 16px;
       margin-top: 8px;
       margin-left: 30px;
       line-height: 16px;
-      font-size: 12px;
+      font-size: $fontMin;
       color: #333;
       &::placeholder {
-        color: rgb(169, 169, 169);
+        color: $inputInfo;
       }
       &:focus {
         &::placeholder {
-          color: #fff;
+          color: $textLight;
         }
       }
     }
@@ -131,36 +153,27 @@ export default {
     height: 32px;
     line-height: 32px;
     text-align: center;
-    font-size: 12px;
-    border: 1px solid #4F4F4F;
+    font-size: $fontMin;
+    border: 1px solid $homeLogin;
     border-radius: 20px;
-    &:hover {
-      cursor: pointer;
-      color: #fff;
-      border: 1px solid #fff;
-    }
+    @include hoverLighter($textLight, $bdcLight);
   }
   .sign {
-    margin: 19px 0 0 20px;
     height: 32px;
+    margin: 19px 0 0 20px;
     line-height: 32px;
     .sign-status {
-      color: rgb(120, 120, 120);
-      &:hover {
-        cursor: pointer;
-        color: rgb(69, 69, 69);
-        text-decoration: underline rgb(69, 69, 69);
-      }
-    }
-    .arrow-down {
-      margin-left: 10px;
-      color: rgb(69, 69, 69);
+      padding-right: 20px;
+      color: $homeLogin;
+      @include hoverLighter($infoDark, none);
+      background: url('../../public/img/icons/topbar.png') no-repeat right -55px;
     }
   }
 }
 .sub-header {
+  width: 1100px;
   height: 35px;
-  background-color: rgb(194, 12, 12);
+  margin: 0 auto;
   .sub-nav {
     display: flex;
     padding-left: 176px;
@@ -171,18 +184,17 @@ export default {
       margin: 5px 17px 0px;
       padding: 3px 12px;
       line-height: 20px;
-      font-size: 12px;
-      color: #fff;
+      font-size: $fontMin;
+      color: $textLight;
       text-align: center;
       border-radius: 20px;
-      &:first-child {
-        cursor: pointer;
-        background-color: rgb(155, 9, 9);
-      }
-      &:hover {
-        cursor: pointer;
-        background-color: rgb(155, 9, 9);
-      }
+      @include hoverBg($bgSubHeaderItem);
+      /* &:first-child {
+        background-color: $bgSubHeaderItem;
+      } */
+    }
+    .sub-nav-item-active {
+      background-color: $bgSubHeaderItem;
     }
   }
 }

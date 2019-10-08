@@ -32,8 +32,6 @@ import { getBillboard } from  '@/api/get.js';
 export default {
   name: 'bill-category-item',
 
-  components: {},
-
   props: {
     idx: {
       type: Number,
@@ -64,13 +62,15 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+
 .container {
   .header {
     position: relative;
     height: 100px;
     padding-top: 20px;
     padding-left: 20px;
-    background-color: rgb(244, 244, 244);
+    background-color: $bgTableLight;
     .header-left {
       position: relative;
       float: left;
@@ -94,7 +94,7 @@ export default {
       width: 116px;
       .right-title {
         color: #333;
-        font-size: 14px;
+        font-size: $fontMinL;
         font-weight: bold;
       }
       .right-options {
@@ -115,7 +115,7 @@ export default {
     }
   }
   .list {
-    color: #000;
+    color: $textDefault;
     .item {
       height: 32px;
       padding-left: 20px;
@@ -126,23 +126,23 @@ export default {
       }
       .item-order {
         width: 35px;
-        font-size: 16px;
+        font-size: $fontDefault;
         text-align: center;
       }
       .item-name {
         width: 170px;
-        font-size: 12px;
+        font-size: $fontMin;
       }
       &:nth-child(odd) {
-        background-color: rgb(232, 232, 232);
+        background-color: $bgTableDark;
       }
       &:nth-child(even) {
-        background-color: rgb(244, 244, 244);
+        background-color: $bgTableLight;
       }
       @for $i from 1 through 3 {
         &:nth-child(#{$i}) {
           .item-order {
-            color: rgb(193, 13, 12);
+            color: $bdcTitle;
           }
         }
       }
@@ -159,8 +159,8 @@ export default {
     height: 32px;
     padding-right: 32px;
     line-height: 32px;
-    font-size: 12px;
-    background-color: rgb(232, 232, 232);
+    font-size: $fontMin;
+    background-color: $bgTableDark;
     .show-all {
       float: right;
       &:hover {

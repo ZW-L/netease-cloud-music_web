@@ -25,8 +25,6 @@ export default {
     CategoryHeader,
   },
 
-  props: {},
-
   data() {
     return {
       hot: {

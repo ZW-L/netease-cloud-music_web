@@ -39,53 +39,48 @@ export default {
     },
   },
 
-}
+};
 </script>
 
 <style lang="scss" scoped>
+
+@import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
 
 .header {
   display: flex;
   height: 33px;
   padding: 0 10px 0 34px;
   line-height: 33px;
-  font-size: 20px;
+  font-size: $fontMiddle;
   background: url('../../../public/img/icons/index.png') no-repeat -225px -156px;
-  border-bottom: 2px solid rgb(193, 13, 12);
+  border-bottom: 2px solid $bdcTitle;
   .title {
-    &:hover {
-      cursor: pointer;
-    }
+    @include hoverText(pointer, none);
   }
   .list {
     display: flex;
     margin-left: 20px;
-    font-size: 12px;
+    font-size: $fontMin;
     .item:nth-child(even) {
       margin: 0 10px;
       font-weight: bold;
-      color: rgb(210, 210, 210);
+      color: $titleDivide;
     }
     .item:nth-child(odd) {
-      color: rgb(137, 137, 137);
-      &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-      }
+      color: $titleSub;
+      @include hoverText();
     }
   }
   .more {
     position: absolute;
-    font-size: 12px;
+    font-size: $fontMin;
     vertical-align: middle;
-    color: rgb(102, 102, 102);
+    color: $titleMore;
     right: 10px;
     .more-text {
       display: inline-block;
-      &:hover {
-        cursor: pointer;
-        text-decoration: underline;
-      }
+      @include hoverText();
     }
     .more-arrow {
       display: inline-block;

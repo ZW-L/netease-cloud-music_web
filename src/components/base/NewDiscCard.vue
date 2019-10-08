@@ -27,6 +27,8 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+
 .card {
   display: inline-block;
   width: 118px;
@@ -37,7 +39,7 @@ export default {
     margin-bottom: 7px;
     .img {
       width: 100px;
-      box-shadow: 0px 5px 3px rgb(202, 202, 202);
+      box-shadow: $discBoxShadow;
     }
     .link {
       position: absolute;
@@ -51,7 +53,7 @@ export default {
   .name, .title {
     height: 18px;
     line-height: 18px;
-    font-size: 12px;
+    font-size: $fontMin;
   }
 }
 </style>

@@ -1,0 +1,29 @@
+@mixin ellipse() {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@mixin hoverText($cursor: pointer, $decoration: underline) {
+  &:hover {
+    cursor: $cursor;
+    text-decoration: $decoration;
+  }
+}
+@mixin hoverBg($bgColor, $cursor: pointer) {
+  &:hover {
+    cursor: $cursor;
+    background-color: $bgColor;
+  }
+}
+@mixin hoverLighter($color, $borderColor, $cursor: pointer) {
+  &:hover {
+    cursor: $cursor;
+    color: $color;
+    @if $borderColor == none {
+      border: none;
+    } @else {
+      border: 1px solid;
+      border-color: $borderColor;
+    }
+  }
+}

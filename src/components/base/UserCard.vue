@@ -36,10 +36,13 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/mixins.scss';
+@import '@/assets/css/variables.scss';
+
 .card {
   width: 210px;
   height: 50px;
-  font-size: 12px;
+  font-size: $fontMin;
   &:first-child {
     margin-top: 20px;
   }
@@ -68,7 +71,8 @@ export default {
     }
     .info-desc {
       height: 21px;
-      color: #666;
+      color: $textDesc;
+      @include ellipse();
     }
   }
 }

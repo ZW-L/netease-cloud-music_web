@@ -38,6 +38,8 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+
 .content {
   .wrapper {
     position: relative;
@@ -45,7 +47,6 @@ export default {
     height: 140px;
     .img {
       height: 140px;
-      background-color: #ccc;
     }
     .img-link {
       position: absolute;
@@ -61,8 +62,8 @@ export default {
       right: 0;
       bottom: 0;
       height: 27px;
-      font-size: 12px;
-      color: rgb(173, 174, 173);
+      font-size: $fontMin;
+      color: $textInfoLight;
       background: url('../../../public/img/icons/coverall.png') no-repeat 0 -537px;
       .info-headset {
         float: left;
@@ -87,9 +88,9 @@ export default {
   }
   .title {
     margin: 8px 0 3px;
-    font-size: 14px;
+    font-size: $fontMinL;
     line-height: 1.4;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: $ffDefault;
   }
 }
 </style>

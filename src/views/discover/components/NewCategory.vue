@@ -19,7 +19,7 @@
 <script>
 import CategoryHeader from '@/components/base/CategoryHeader.vue';
 import NewDiscCard from '@/components/base/NewDiscCard.vue';
-import { getTopAlbum } from '@/api/get.js';
+import { getNewest } from '@/api/get.js';
 
 export default {
   name: 'new-category',
@@ -41,9 +41,9 @@ export default {
   },
 
   mounted() {
-    getTopAlbum(5).then(res => {
+    getNewest().then(res => {
       // console.log(res.data.albums);
-      this.albums = this.albums.concat(res.data.albums);
+      this.albums = this.albums.concat(res.data.albums).slice(0, 5);
     }).catch(err => {
       console.log(err);
     });
@@ -54,6 +54,9 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
+
 .container {
   position: relative;
   width: 100%;
@@ -63,8 +66,8 @@ export default {
       box-sizing: border-box;
       height: 186px;
       margin: 20px 0 37px 0;
-      border: 1px solid rgb(211, 211, 211);
-      background-color: rgb(245, 245, 245);
+      border: 1px solid $bdcDefault;
+      background-color: $bgContent;
       .list {
         margin: 25px 20px;
         .item {

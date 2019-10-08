@@ -5,18 +5,18 @@
       <span v-show="isSinger" class="more">查看全部&gt;</span>
     </div>
     <div v-if="isSinger" class="list">
-      <router-link tag="div" to="/" class="item" v-for="i of 5" :key="i">
+      <router-link tag="div" to="/" class="item" v-for="i of list" :key="i.avatar">
         <div class="img-wrapper">
-          <img :src="list[0].avatar" alt="">
+          <img :src="i.avatar" alt="">
         </div>
         <div class="info">
-          <p class="info-name">{{list[0].name}}</p>
-          <p class="info-desc">{{list[0].desc}}</p>
+          <p class="info-name">{{i.name}}</p>
+          <p class="info-desc">{{i.desc}}</p>
         </div>
       </router-link>
     </div>
     <div v-else class="list">
-      <user-card :user="list[0]" v-for="i of 5" :key="i"></user-card>
+      <user-card :user="i" v-for="i of list" :key="i.avatar"></user-card>
     </div>
   </div>
 </template>
@@ -46,29 +46,28 @@ export default {
     },
   },
 
-  data() {
-    return {
-    }
-  },
-
 }
 </script>
 
 <style lang="scss" scoped>
+
+@import '@/assets/css/mixins.scss';
+@import '@/assets/css/variables.scss';
 
 .container {
   position: relative;
   margin: 0 20px;
   .header {
     height: 23px;
-    font-size: 12px;
-    border-bottom: 1px solid rgb(204, 204, 204);
+    font-size: $fontMin;
+    border-bottom: 1px solid $bdcDefault;
     .category {
       font-weight: bold;
-      color: #333;
+      color: $titleMain;
     }
     .more {
       float: right;
+      color: $titleMore;
     }
   }
   .list {
@@ -88,22 +87,22 @@ export default {
         width: 130px;
         height: 60px;
         padding-left: 14px;
-        border: 1px solid rgb(204, 204, 204);
+        border: 1px solid $bdcDefault;
         border-left: none;
-        background-color: rgb(250, 250, 250);
+        background-color: $bgUserCard;
         .info-name {
           margin-top: 8px;
           font-weight: bold;
         }
         .info-desc {
           margin-top: 8px;
-          font-size: 12px;
+          font-size: $fontMin;
+          @include ellipse();
         }
       }
       &:hover {
-        cursor: pointer;
         .info {
-          background-color: rgb(244, 244, 244);
+          background-color: $bgTableLight;
         }
       }
     }

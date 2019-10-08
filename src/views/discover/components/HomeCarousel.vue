@@ -21,7 +21,6 @@
       <div class="content-download">
         
       </div>
-      <!-- controler -->
     </div>
   </div>
 </template>
@@ -84,9 +83,13 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
+
 .wrapper {
   width: 100%;
   height: 100%;
+  // 需要自适应
   background-color: rgb(40, 38, 39);
   .content {
     position: relative;
@@ -94,9 +97,8 @@ export default {
     height: 100%;
     margin-left: 50%;
     left: -491px;
-    background-color: rgb(212, 49, 54);
     text-align: center;
-    color: #fff;
+    color: $textLight;
     .img-wrapper {
       position: relative;
       float: left;
@@ -122,12 +124,8 @@ export default {
         height: 63px;
         line-height: 63px;
         text-align: center;
-        font-size: 50px;
-        color: #fff;
-        &:hover {
-          cursor: pointer;
-          background-color: rgba(0, 0, 0, .1);
-        }
+        color: $textLight;
+        @include hoverBg(rgba(0, 0, 0, .1));
       }
       .content-prev {
         left: -40px;
@@ -149,14 +147,11 @@ export default {
           height: 8px;
           margin: 5px 8px;
           border-radius: 50%;
-          background-color: #ccc;
-          &:hover {
-            cursor: pointer;
-            background-color: rgb(190, 11, 11);
-          }
+          background-color: $bgPagination;
+          @include hoverBg($bgPaginationActive);
         }
         .pag-dot-active {
-          background-color: rgb(190, 11, 11);
+          background-color: $bgPaginationActive;
         }
       }
     }

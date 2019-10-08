@@ -38,10 +38,6 @@
 export default {
   name: 'music-footer',
 
-  components: {},
-
-  props: {},
-
   data() {
     return {
       links: ['服务条款', '隐私政策', '儿童隐私政策', '版权投诉指引', '意见反馈'],
@@ -111,9 +107,6 @@ export default {
     },
   },
 
-  mounted() {
-  },
-
   methods: {
     getBg(i) {
       return this.bg[i];
@@ -125,39 +118,36 @@ export default {
 
 <style lang="scss" scoped>
 
+@import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
+
 .footer {
   width: 100%;
   height: 148px;
-  background-color: rgb(242, 242, 242);
-  border-top: 1px solid rgb(211, 211, 211);
+  background-color: $bgFooter;
+  border-top: 1px solid $bdcDefault;
   .wrapper {
     position: relative;
     width: 980px;
     margin: 0 auto;
-    font-size: 12px;
+    font-size: $fontMin;
     .info {
       float: left;
       width: 520px;
       padding-top: 15px;
       line-height: 24px;
       .info-link {
-        color: rgb(139, 139, 139);
+        color: $textLinkDefault;
         .link-item {
           a {
-            color: rgb(139, 139, 139);
+            color: $textLinkDefault;
           }
           &:nth-child(odd) {
-            a:hover {
-                cursor: pointer;
-                text-decoration: underline;
-              }
-            }
+            @include hoverText();
+          }
           &:nth-child(even) {
             margin: 0 8px;
-            a:hover {
-              cursor: default;
-              text-decoration: none;
-            }
+            @include hoverText(default, none);
           }
         }
       }
@@ -167,11 +157,8 @@ export default {
             margin-left: 15px;
           }
           a {
-            color: rgb(102, 102, 102);
-            &:hover {
-              cursor: pointer;
-              text-decoration: underline;
-            }
+            color: $textDesc;
+            @include hoverText();
           }
         }
       }
@@ -180,7 +167,7 @@ export default {
       float: right;
       width: 330px;
       margin-top: 21px;
-      color: rgb(139, 139, 139);
+      color: $textLinkDefault;
       .icon-list {
         position: relative;
         height: 70px;

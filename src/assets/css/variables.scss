@@ -1,0 +1,58 @@
+/* font-size */
+$fontMin: 12px;
+$fontMinL: 14px;
+$fontDefault: 16px;
+$fontMiddle: 20px;
+
+/* font-family */
+$ffDefault: Arial, Helvetica, sans-serif;
+
+/* color */
+// font-color
+$homeActive: rgb(228, 228, 228);
+$homeDefault: rgb(194, 194, 194);
+$homeLogin: rgb(110, 110, 110);
+$info: rgb(111, 111, 111);
+$infoDark: rgb(90, 90, 90);
+$inputInfo: rgb(155, 155, 155);
+
+$titleMain: rgb(51, 51, 51);
+$titleSub: rgb(128, 128, 128);
+$titleMore: rgb(102, 102, 102);
+$titleDivide: rgb(204, 204, 204);
+
+$textDefault: rgb(0, 0, 0);
+$textLight: rgb(255, 255, 255);
+$textInfo: rgb(120, 120, 120);
+$textInfoLight: rgb(204, 204, 204);
+$textLinkDefault: rgb(153, 153, 153);
+$textDesc: rgb(102, 102, 102);
+$textLinkDark: rgb(51, 51, 51);
+
+// background-color
+$bgHeader: rgb(36, 36, 36);
+$bgSubHeader: rgb(194, 12, 12);
+$bgSubHeaderItem: rgb(155, 9, 9);
+$bgDefault: rgb(255, 255, 255);
+$bgContent: rgb(245, 245, 245);
+$bgFooter: rgb(242, 242, 242);
+$bgTableDark: rgb(232, 232, 232);
+$bgTableLight: rgb(244, 244, 244);
+$bgUserCard: rgb(250, 250, 250);
+$bgPagination: rgb(170, 170, 170);
+$bgPaginationActive: rgb(201, 12, 12);
+
+
+// border-color
+$bdcLight: rgb(255, 255, 255);
+$bdcDefault: rgb(211, 211, 211);
+$bdcTitle: rgb(193, 13, 12);
+$bdcDark: rgb(0, 0, 0);
+
+
+// text-shadow
+$loginBtnShadow: #8a060b;
+
+
+// box-shadow
+$discBoxShadow: 0px 5px 3px rgb(202, 202, 202);

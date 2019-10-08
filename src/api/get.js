@@ -15,8 +15,8 @@ export const getPersonalized = function (limit) {
 };
 
 // 首页新碟上架
-export const getTopAlbum = function (limit) {
-  const url = `${baseUrl}/top/album?limit=${limit}`;
+export const getNewest = function () {
+  const url = `${baseUrl}/album/newest`;
   return axios.get(url);
 };
 

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <music-header></music-header>
-    <router-view/>
+    <router-view></router-view>
     <music-footer></music-footer>
   </div>
 </template>
