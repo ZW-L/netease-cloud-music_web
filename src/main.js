@@ -5,6 +5,7 @@ import store from './store/index';
 import './registerServiceWorker';
 
 import './assets/css/reset.css';
+import '../public/img/iconfont/iconfont.css';
 
 Vue.config.productionTip = false;
 

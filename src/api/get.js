@@ -26,4 +26,11 @@ export const getBillboard = function (idx) {
   return axios.get(url);
 };
 
-export default {};
+/* 排行榜 */
+// 排行榜左侧详情
+export const getToplistDetail = function () {
+  const url = `${baseUrl}/toplist/detail`;
+  return axios.get(url);
+};
+
+// 排行榜

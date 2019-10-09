@@ -53,6 +53,13 @@ const state = {
       desc: '独立DJ，CRI环球旅游广播特邀DJ',
     },
   ],
+  toplist: {
+    detail: {
+      featureRank: [],
+      globalRank: [],
+    },
+    info: {},
+  },
 };
 
 export default state;
