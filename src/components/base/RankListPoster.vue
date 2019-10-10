@@ -1,14 +1,14 @@
 <template>
   <div class="poster">
     <div class="wrapper">
-      <img src="http://p1.music.126.net/DrRIg6CrgDfVLEph9SNh7w==/18696095720518497.jpg?param=150y150" alt="">
+      <img :src="info.coverImgUrl" alt="">
     </div>
     <div class="desc">
-      <div class="title">云音乐飙升榜</div>
+      <div class="title">{{info.name}}</div>
       <div class="info">
         <i class="info-icon"></i>
-        <span class="info-update">最近更新：10月09日</span>
-        <span class="info-frequency">（每天更新）</span>
+        <span class="info-update">最近更新：{{info.time}}</span>
+        <span class="info-frequency">（{{info.updateFrequency}}）</span>
       </div>
       <div class="btn">
         <div class="btn-play">
@@ -18,11 +18,11 @@
         <div class="btn-add"></div>
         <div class="btn-collect">
           <i class="btn-collect-icon iconfont icon-shoucangjia"></i>
-          <em class="em-text">(2376163)</em>
+          <em class="em-text">({{info.subscribedCount}})</em>
         </div>
         <div class="btn-share">
           <i class="btn-comment-icon iconfont icon-fenxiang"></i>
-          <em class="em-text">(6912)</em>
+          <em class="em-text">(0000)</em>
         </div>
         <div class="btn-download">
           <i class="btn-comment-icon iconfont icon-xiazai"></i>
@@ -30,7 +30,7 @@
         </div>
         <div class="btn-comment">
           <i class="btn-comment-icon iconfont icon-pinglun"></i>
-          <em class="em-text">(156005)</em>
+          <em class="em-text">(000000)</em>
         </div>
       </div>
     </div>
@@ -38,9 +38,22 @@
 </template>
 
 <script>
+import { getMonthAndDay } from '~api/util.js';
+
 export default {
   name: 'rank-list-poster',
-  props: {},
+  props: {
+    info: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
+  computed: {
+    time() {
+      return getMonthAndDay(this.info.trackUpdateTime);
+    }
+  },
 }
 </script>
 

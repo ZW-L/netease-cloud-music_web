@@ -1,5 +1,5 @@
 <template>
-  <div class="card" tag="li">
+  <div class="card">
     <div class="img">
       <img :src="detail.coverImgUrl" :alt="detail.name">
     </div>
@@ -11,6 +11,8 @@
 </template>
 
 <script>
+import { getBillboard } from '~api/get.js';
+
 export default {
   name: 'rank-list-card',
 
@@ -20,7 +22,6 @@ export default {
       default: () => {},
     },
   },
-
 }
 </script>
 

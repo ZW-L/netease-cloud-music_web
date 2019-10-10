@@ -3,12 +3,14 @@
     <div class="cate">
       <div class="wrapper">
         <h1 class="cate-title">云音乐特色榜</h1>
-        <ul class="cate-list">
+        <div class="cate-list">
           <rank-list-card 
             v-for="(item, i) of featureRank" :key="i"
             :detail="item"
+            :class="{ 'cate-item-active': item.id === id }"
+            @click.native="changeList(item.id)"
           ></rank-list-card>
-        </ul>
+        </div>
       </div>
       <div class="wrapper">
         <h1 class="cate-title">全球媒体榜</h1>
@@ -16,42 +18,25 @@
           <rank-list-card 
             v-for="(item, i) of globalRank" :key="i"
             :detail="item"
+            :class="{ 'cate-item-active': item.id === id }"
+            @click.native="changeList(item.id)"
           ></rank-list-card>
         </ul>
       </div>
     </div>
     <div class="list">
       <div class="list-poster">
-        <rank-list-poster></rank-list-poster>
+        <rank-list-poster :info="listInfo"></rank-list-poster>
       </div>
       <div class="list-main">
         <div class="list-title">
           <span class="title-main">歌曲列表</span>
           <span class="title-sub">100首歌</span>
           <span class="title-play">播放：
-            <em class="title-play-count">2418100736</em>次
+            <em class="title-play-count" v-if="listInfo.playCount">{{listInfo.playCount}}</em>次
           </span>
         </div>
-        <div class="list-content">
-          <table>
-            <thead>
-              <tr>
-                <th class="indent"></th>
-                <th class="title">标题</th>
-                <th class="duration">时长</th>
-                <th class="singers">歌手</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="i of 100" :key="i">
-                <td class="order">{{i}}</td>
-                <td class="title">悄悄的他</td>
-                <td class="duration">03:28</td>
-                <td class="singers">花粥</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <rank-list-table :songList="songList"></rank-list-table>
       </div>
     </div>
   </div>
@@ -60,7 +45,8 @@
 <script>
 import RankListCard from '@/components/base/RankListCard.vue';
 import RankListPoster from '@/components/base/RankListPoster.vue';
-import { getToplistDetail } from '~api/get.js';
+import RankListTable from '@/components/base/RankListTable.vue';
+import { getToplistDetail, getBillboard } from '~api/get.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -69,32 +55,56 @@ export default {
   components: {
     RankListCard,
     RankListPoster,
+    RankListTable,
   },
 
   props: {},
 
   data() {
     return {
+      songList: [],
+      id: 19723756,
     }
   },
 
   computed: {
-    ...mapGetters(['featureRank', 'globalRank']),
+    ...mapGetters(['featureRank', 'globalRank', 'toIdx']),
+    listInfo() {
+      return this.featureRank.find(v => v.id === this.id) || this.globalRank.find(v => v.id === this.id);
+    },
   },
 
   mounted() {
     this._handleGetData();
+    // console.log(this.featureRank);
   },
 
   methods: {
     _handleGetData() {
       getToplistDetail().then(res => {
         // console.log(res.data.list);
-        const data = res.data.list,
-              featureRank = data.slice(0, 4),
-              globalRank = data.slice(4);
+        const data = res.data.list;
+        const featureRank = data.slice(0, 4);
+        const globalRank = data.slice(4);
         this.$store.commit('UPDATE_FEATURE_RANK', featureRank);
         this.$store.commit('UPDATE_GLOBAL_RANK', globalRank);
+      }).catch(err => {
+        console.log(err);
+      });
+      getBillboard(3).then(res => {
+        // console.log(res.data.playlist.tracks);
+        this.songList = this.songList.concat(res.data.playlist.tracks);
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    
+    changeList(i) {
+      this.id = i;
+      const idx = this.toIdx[`id_${i}`];
+      getBillboard(idx).then(res => {
+        // console.log(res.data.playlist.tracks);
+        this.songList = res.data.playlist.tracks;
       }).catch(err => {
         console.log(err);
       });
@@ -126,6 +136,9 @@ export default {
         font-weight: bold;
       }
     }
+    .cate-item-active {
+      background-color: $bgTableDark;
+    }
   }
   .list {
     width: 740px;
@@ -133,12 +146,12 @@ export default {
     background-color: $bgDefault;
     .list-main {
       margin-top: 40px;
+      margin-bottom: 40px;
       padding: 0 40px;
       .list-title {
         height: 35px;
         line-height: 35px;
         font-size: $fontMin;
-        // background-color: #ccc;
         border-bottom: 2px solid $bdcTitle;
         .title-main {
           float: left;
@@ -152,47 +165,6 @@ export default {
           float: right;
           .title-play-count {
             color: $bgSubHeader;
-          }
-        }
-      }
-      .list-content {
-        table, th, td {
-          box-sizing: border-box;
-        }
-        table {
-          border: 1px solid $bdcDefault;
-          border-top: none;
-          font-size: $fontMin;
-        }
-        thead {
-          th {
-            height: 35px;
-            border-bottom: 1px solid $bdcDefault;
-            &.indent {
-              width: 78px;
-            }
-            &.title {
-              width: 328px;
-            }
-            &.duration {
-              width: 90px;
-            }
-            &.singers {
-              width: 170px;
-            }
-            &:not(:first-child) {
-              padding-left: 5px;
-              border-left: 1px solid $bdcDefault;
-            }
-          }
-        }
-        tbody {
-          tr:nth-child(odd) {
-            background-color: $bgTableLight;
-          }
-          td {
-            padding-left: 5px;
-            height: 30px;
           }
         }
       }
