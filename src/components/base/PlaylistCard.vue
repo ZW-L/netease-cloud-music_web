@@ -12,6 +12,7 @@
     <div class="title">
       <p>{{info.name}}</p>
     </div>
+    <slot></slot>
   </div>
 </template>
 
@@ -22,7 +23,12 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {},
+      default: () => {
+        return {
+          playCount: 8000,
+          name: '珍藏在光影中的...',
+        };
+      },
     },
   },
 
@@ -39,6 +45,7 @@ export default {
 <style lang="scss" scoped>
 
 @import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
 
 .content {
   .wrapper {
@@ -91,6 +98,10 @@ export default {
     font-size: $fontMinL;
     line-height: 1.4;
     font-family: $ffDefault;
+    @include hoverText();
+  }
+  a {
+    @include hoverText();
   }
 }
 </style>
