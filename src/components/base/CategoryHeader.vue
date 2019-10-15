@@ -12,6 +12,8 @@
 </template>
 
 <script>
+import { addSeparator } from '~api/util.js';
+
 export default {
   name: 'category-header',
 
@@ -28,14 +30,9 @@ export default {
     }
   },
 
-  data() {
-    return {
-    }
-  },
-
   computed: {
     devideList() {
-      return this.list.join('_').split(/\b/).map(v => v === '_' ? '|' : v);
+      return addSeparator(this.list);
     },
   },
 

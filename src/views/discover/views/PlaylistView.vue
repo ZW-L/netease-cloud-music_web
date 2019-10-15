@@ -36,26 +36,14 @@
           </p>
         </playlist-card>
       </div>
-      <div class="pagination">
-        <span :class="['pagi-prev', { 'pagi-prev-disabled': currentPage === 1 }]" @click="changePage('prev')">
-          <i class="iconfont icon-houtui"></i>
-          上一页
-        </span>
-        <span v-for="(page, i) of pageChanges" :key="i"
-           :class="['page-item', { 'page-active': page === currentPage, 'paga-ellipsis': page === '...' }]"
-           @click="changePage(page)"
-        >{{page}}</span>
-        <span :class="['pagi-next', { 'pagi-next-disabled': currentPage === pages }]" @click="changePage('next')">
-          下一页
-          <i class="iconfont icon-qianjin"></i>
-        </span>
-      </div>
+      <base-pagination></base-pagination>
     </div>
   </div>
 </template>
 
 <script>
 import PlaylistCard from '@/components/base/PlaylistCard.vue';
+import BasePagination from '@/components/base/pagination.vue';
 import { addSeparator, pageChanges } from '~api/util.js';
 
 export default {
@@ -63,6 +51,7 @@ export default {
 
   components: {
     PlaylistCard,
+    BasePagination,
   },
 
   props: {},
@@ -100,25 +89,16 @@ export default {
         },
       ],
       display: 'none',
-      pages: 38,
-      currentPage: 334,
     };
   },
 
   computed: {
-    pageChanges() {
-      return pageChanges(this.currentPage, this.pages);
-    },
     categories() {
       return this.styles.map(v => {
         const list = addSeparator(v.list);
         return { tag: v.tag, list: list };
       });
     },
-  },
-
-  mounted() {
-    console.log(this.pageChanges);
   },
 
   methods: {
@@ -130,22 +110,6 @@ export default {
       } else {
         category.style.display = 'none';
         this.display = 'none';
-      }
-    },
-    changePage(i) {
-      if (i === '...') {
-        return;
-      }
-      if (i === 'prev') {
-        if (this.currentPage === 1) 
-          return;
-        this.currentPage = this.currentPage - 1;        
-      } else if (i === 'next') {
-        if (this.currentPage === this.pages) 
-          return;
-        this.currentPage = this.currentPage + 1;        
-      } else {
-        this.currentPage = i;
       }
     },
   },
@@ -330,71 +294,6 @@ export default {
         margin-top: 30px;
         &:nth-child(5n + 1) {
           margin-left: 0;
-        }
-      }
-    }
-    .pagination {
-      height: 26px;
-      margin: 50px 0;
-      font-size: $fontMin;
-      text-align: center;
-      .pagi-prev, .pagi-next {
-        display: inline-block;
-        height: 24px;
-        padding: 0 10px;
-        line-height: 24px;
-        background-color: $bgTableDark;
-        border: 1px solid $bdcDefault;
-        border-radius: 3px;
-        .iconfont {
-          font-weight: bold;
-          font-size: $fontMin;
-        }
-        &:hover {
-          cursor: pointer;
-          background-color: $bgTableLight;
-          .iconfont {
-            color: $homeDefault;
-          }
-        }
-      }
-      .pagi-prev-disabled,  .pagi-next-disabled{
-        color: $titleDivide;
-        &:hover {
-          cursor: not-allowed;
-          background-color: $bgTableDark;
-        }
-      }
-      .pagi-next {
-        margin-left: 10px;
-      }
-      .page-item {
-        display: inline-block;
-        height: 22px;
-        padding: 0 8px;
-        margin-left: 10px;
-        border: 1px solid $bdcDefault;
-        border-radius: 3px;
-        line-height: 22px;
-        &:hover {
-          cursor: pointer;
-          border: 1px solid $bdcDark;
-        }
-      }
-      .paga-ellipsis {
-        padding: 0;
-        border: 1px solid $bdcLight;
-        &:hover {
-          cursor: default;
-          border: 1px solid $bdcLight;
-        }
-      }
-      .page-active {
-        color: $textLight;
-        background-color: $bgPaginationActive;
-        &:hover {
-          cursor: default;
-          border: 1px solid $bdcDefault;
         }
       }
     }

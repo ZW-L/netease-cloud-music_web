@@ -11,37 +11,27 @@
         <span class="info-frequency">（{{info.updateFrequency}}）</span>
       </div>
       <div class="btn">
-        <div class="btn-play">
-          <i class="btn-play-icon"></i>
-          <em>播放</em>
-        </div>
-        <div class="btn-add"></div>
-        <div class="btn-collect">
-          <i class="btn-collect-icon iconfont icon-shoucangjia"></i>
-          <em class="em-text">({{info.subscribedCount}})</em>
-        </div>
-        <div class="btn-share">
-          <i class="btn-comment-icon iconfont icon-fenxiang"></i>
-          <em class="em-text">(0000)</em>
-        </div>
-        <div class="btn-download">
-          <i class="btn-comment-icon iconfont icon-xiazai"></i>
-          <em class="em-text">下载</em>
-        </div>
-        <div class="btn-comment">
-          <i class="btn-comment-icon iconfont icon-pinglun"></i>
-          <em class="em-text">(000000)</em>
-        </div>
+        <btn-bar>
+          <span slot="collect">({{info.subscribedCount}})</span>
+          <span slot="share">(21421321)</span>
+          <span slot="comment">(5142122)</span>
+        </btn-bar>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import BtnBar from '@/components/base/BtnBar.vue';
 import { getMonthAndDay } from '~api/util.js';
 
 export default {
   name: 'rank-list-poster',
+
+  components: {
+    BtnBar,
+  },
+
   props: {
     info: {
       type: Object,
@@ -108,46 +98,6 @@ export default {
     }
     .btn {
       margin-top: 30px;
-      display: flex;
-      font-size: $fontMin;
-      .btn-play {
-        width: 61px;
-        height: 31px;
-        padding: 6px 0 0 5px;
-        background: url('../../../public/img/icons/button2.png') no-repeat 0 -387px;
-        line-height: 18px;
-        color: $textLight;
-        .btn-play-icon {
-          float: left;
-          width: 20px;
-          height: 18px;
-          margin-right: 5px;
-          background: url('../../../public/img/icons/button2.png') no-repeat 0 -1622px;
-        }
-      }
-      .btn-add {
-        width: 31px;
-        height: 31px;
-        background: url('../../../public/img/icons/button2.png') no-repeat 0 -1588px;
-      }
-      .btn-collect, .btn-share, .btn-download, .btn-comment {
-        box-sizing: border-box;
-        height: 31px;
-        margin-left: 6px;
-        line-height: 30px;
-        background-color: $bgTableLight;
-        border: 1px solid $bdcDefault;
-        border-radius: 5px;
-        @include hoverBg($bgTableDark);
-        .iconfont {
-          margin-left: 5px;
-          font-weight: bold;
-          font-size: $fontMinL;
-        }
-        .em-text {
-          padding: 0 5px;
-        }
-      }
     }
   }
 }

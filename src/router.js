@@ -7,6 +7,7 @@ import PlaylistView from '@discover/views/PlaylistView.vue';
 import RecommendView from '@discover/views/RecommendView.vue';
 import ToplistView from '@discover/views/ToplistView.vue';
 import DiscoverView from '@discover/DiscoverView.vue';
+import SongView from '@/views/song/SongView.vue';
 
 Vue.use(Router);
 
@@ -50,6 +51,11 @@ export default new Router({
           component: ToplistView,
         },
       ],
+    },
+    {
+      path: '/song',
+      name: 'song',
+      component: SongView,
     },
   ],
 });
