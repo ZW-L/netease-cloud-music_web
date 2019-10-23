@@ -3,12 +3,14 @@
     <music-header></music-header>
     <router-view></router-view>
     <music-footer></music-footer>
+    <player-bar></player-bar>
   </div>
 </template>
 
 <script>
 import MusicHeader from '@/components/MusicHeader.vue';
 import MusicFooter from '@/components/MusicFooter.vue';
+import PlayerBar from '@/components/PlayerBar.vue';
 
 export default {
 
@@ -17,6 +19,7 @@ export default {
   components: {
     MusicHeader,
     MusicFooter,
+    PlayerBar,
   },
   
 };

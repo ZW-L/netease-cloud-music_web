@@ -53,7 +53,7 @@ export default new Router({
       ],
     },
     {
-      path: '/song',
+      path: '/song:id',
       name: 'song',
       component: SongView,
     },
