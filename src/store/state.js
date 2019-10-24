@@ -68,6 +68,12 @@ const state = {
     },
     info: {},
   },
+  nowPlay: {
+    name: '',
+    singer: '',
+    id: '',
+    picUrl: '',
+  },
 };
 
 export default state;

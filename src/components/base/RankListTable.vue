@@ -24,7 +24,9 @@
             <img :src="`${item.al.picUrl}?param=50y50`" alt="">
           </span>
           <div class="td-title-more">
-            <span class="td-title-play">&nbsp;</span>
+            <span class="td-title-play"
+              @click="handlePlay(i)"
+            >&nbsp;</span>
             <span class="td-title-name">
               <em class="td-title-name-main">{{item.name}}</em>
               <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
@@ -69,6 +71,16 @@ export default {
     _getDuration(d) {
       return getDuration(d);
     },
+    handlePlay(i) {
+      const item = this.songList[i];
+      console.log(item);
+      const payload = {};
+      payload.id = item.id;
+      payload.name = item.name;
+      payload.singer = item.ar;
+      payload.picUrl = `${item.al.picUrl}?param=34y34`;
+      this.$store.commit('UPDATE_NOW_PLAY', payload);
+    }
   },
 
   mounted() {

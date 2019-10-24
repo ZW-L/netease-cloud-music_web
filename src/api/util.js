@@ -17,6 +17,10 @@ export const addSeparator = function (arr) {
   return arr.join('%%%|%%%').split('%%%');
 };
 
+export const getSingers = function (arr) {
+  return arr.map(v => v.name).join('/');
+};
+
 export const fillArray = function (count, start = 1) {
   return new Array(count).fill(null).map((v, i) => start + i);
 };

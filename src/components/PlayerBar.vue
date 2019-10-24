@@ -7,22 +7,28 @@
     <div class="left-bg"></div>
     <div class="content">
       <div class="main-ctrl">
-        <a href="" class="ctrl-prev"></a>
-        <a href="" class="ctrl-play"></a>
-        <a href="" class="ctrl-next"></a>
+        <span class="ctrl-prev" ref="prev" @click="handleUpdate(10)"></span>
+        <span :class="['ctrl-play', playClass]" ref="play"
+          @click="handlePlay()"
+        ></span>
+        <span class="ctrl-next" ref="next" @click="handleBuffered()"></span>
       </div>
       <div class="song-info">
         <div class="info-pic">
-          <img src="http://p2.music.126.net/xLSpSuXb1wJPC2CC0V_O_g==/38482906984297.jpg?param=34y34" alt="">
+          <img :src="nowPlay.picUrl">
           <a href="" class="info-href"></a>
         </div>
         <div class="info-gp">
           <div class="info-title">
-            <a class="info-title-name">蜉蝣</a>
-            <a class="info-title-singer">陈绮贞</a>
+            <a class="info-title-name">{{nowPlay.name}}</a>
+            <a class="info-title-singer">{{singers}}</a>
             <a class="info-title-icon">&nbsp;</a>
           </div>
-          <song-duration></song-duration>
+          <progress-bar
+            :duration="duration"
+            :currentTime="currentTime"
+            @update="handleUpdate"
+          ></progress-bar>
         </div>
       </div>
       <div class="more-ctrl">
@@ -37,26 +43,108 @@
         <a href="" class="op-share"></a>
       </div>
     </div>
+    <div class="audio-wrapper">
+      <audio ref="audio" controls
+        @canplay="handleCanplay()"
+        @timeupdate="handleTimeupdate()"
+      >
+        <source src="" type="">
+      </audio>
+    </div>
   </div>
 </template>
 
 <script>
-import SongDuration from './base/SongDuration';
+import ProgressBar from './base/ProgressBar';
+import { mapGetters } from 'vuex';
+import { getSingers } from '@/api/util.js';
+import { getSongUrl } from '@/api/get.js';
 
 export default {
   name: 'player-bar',
 
   components: {
-    SongDuration,
+    ProgressBar,
   },
 
   props: {},
 
   data() {
     return {
+      // isPaused: true,
+      duration: 0,
+      currentTime: 0,
+      playClass: 'paused',
     }
   },
 
+  computed: {
+    ...mapGetters(['nowPlay']),
+    songId() {
+      return this.nowPlay.id;
+    },
+    singers() {
+      return getSingers(this.nowPlay.singer);
+    },
+  },
+
+  mounted() {
+
+  },
+
+  methods: {
+    // 能够开始播放时
+    handleCanplay() {
+      this.duration = this.$refs.audio.duration;
+      // console.log(this.duration);
+    },
+    // 播放时间改变时
+    handleTimeupdate() {
+      this.currentTime = this.$refs.audio.currentTime;
+    },
+    // 子组件改变播放时间
+    handleUpdate(t) {
+      console.log(t);
+      this.$refs.audio.currentTime = t;
+    },
+    // 获取缓存事件（暂未使用）
+    handleBuffered() {
+      /* const buf = this.$refs.audio.buffered;
+      const length = buf.length;
+      const start = buf.start(0);
+      const end = buf.end(length - 1);
+      console.log(length, start, end); */
+      console.log(this.nowPlay);
+    },
+    // 开始/暂停按钮
+    handlePlay() {
+      if (this.$refs.audio.paused) {
+        this.$refs.audio.play();
+        this.playClass = 'playing';
+      } else {
+        this.$refs.audio.pause();
+        this.playClass = 'paused';
+      }
+    },
+    // 切换当前歌曲
+    _changeSong(id) {
+      getSongUrl(id).then(res => {
+        // console.log(res.data);
+        const audio = this.$refs.audio;
+        audio.pause();
+        audio.src = res.data.data[0].url;
+        audio.play();
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+  },
+  watch: {
+    songId(newId) {
+      // console.log(newId);
+      this._changeSong(newId);
+    }
+  },
 }
 </script>
 
@@ -132,9 +220,17 @@ export default {
       width: 36px;
       height: 36px;
       margin-right: 8px;
+    }
+    .paused {
       background: url('../../public/img/icons/playbar.png') no-repeat 0 -204px;
       &:hover {
         background: url('../../public/img/icons/playbar.png') no-repeat -40px -204px;
+      }
+    }
+    .playing {
+      background: url('../../public/img/icons/playbar.png') no-repeat 0 -165px;
+      &:hover {
+        background: url('../../public/img/icons/playbar.png') no-repeat -40px -165px;
       }
     }
     .ctrl-next {
@@ -255,5 +351,10 @@ export default {
       }
     }
   }
+}
+.audio-wrapper {
+  // visibility: hidden;
+  position: absolute;
+  top: -100px;
 }
 </style>

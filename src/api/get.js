@@ -34,3 +34,10 @@ export const getToplistDetail = function () {
 };
 
 // 排行榜
+
+
+// 歌曲 url
+export const getSongUrl = function (id) {
+  const url = `${baseUrl}/song/url?id=${id}`;
+  return axios.get(url);
+};
