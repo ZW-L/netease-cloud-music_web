@@ -7,7 +7,7 @@
       <i class="iconfont icon-houtui"></i>
       <em>上一页</em>
     </a>
-    <a href="#" v-for="(page, i) of pageChanges" :key="i"
+    <a href="#" v-for="(page, i) of showPages" :key="i"
       :class="['page-item', { 'page-active': page === currentPage, 'paga-ellipsis': page === '...' }]"
       @click="changePage(page)"
     >{{page}}</a>
@@ -27,11 +27,15 @@ import { pageChanges } from '~api/util.js';
 export default {
   name: 'base-pagination',
 
-  props: {},
+  props: {
+    pages: {
+      type: Number,
+      default: 38,
+    },
+  },
 
   data() {
     return {
-      pages: 38,
       currentPage: 1,
     }
   },
@@ -43,7 +47,7 @@ export default {
     nextClasses() {
       return this.currentPage === this.pages ? ['pagi-next', 'pagi-next-disabled'] : ['pagi-next'];
     },
-    pageChanges() {
+    showPages() {
       return pageChanges(this.currentPage, this.pages);
     },
   },
@@ -54,16 +58,16 @@ export default {
         return;
       }
       if (i === 'prev') {
-        if (this.currentPage === 1) 
-          return;
-        this.currentPage = this.currentPage - 1;        
+        if (this.currentPage === 1) return;
+        this.currentPage = this.currentPage - 1;
       } else if (i === 'next') {
-        if (this.currentPage === this.pages) 
-          return;
-        this.currentPage = this.currentPage + 1;        
+        if (this.currentPage === this.pages) return;
+        this.currentPage = this.currentPage + 1;
       } else {
         this.currentPage = i;
       }
+      // 触发 changePage 事件，向父组件传递 currentPage
+      this.$emit('changePage', this.currentPage);
     },
   },
 

@@ -1,7 +1,7 @@
 <template>
   <div class="content">
     <div class="wrapper">
-      <img :src="info.picUrl" :alt="info.copywrite" class="img">
+      <img :src="picUrl" class="img">
       <a href="" class="img-link"></a>
       <div class="info">
         <span class="info-headset"></span>
@@ -10,13 +10,15 @@
       </div>
     </div>
     <div class="title">
-      <p>{{info.name}}</p>
+      <p class="title-name">{{info.name}}</p>
     </div>
     <slot></slot>
   </div>
 </template>
 
 <script>
+import { picUrlFormat } from '~api/util.js';
+
 export default {
   name: 'play-list-card',
 
@@ -37,20 +39,24 @@ export default {
       const count = this.info.playCount;
       return  count > 100000 ? `${Math.floor(count/10000)}万` : count;
     },
+    picUrl() {
+      // info 传入的图片键名不一定
+      const picUrl = this.info.picUrl || this.info.coverImgUrl;
+      return picUrlFormat(picUrl, 140, 140);
+    }
   },
 
 }
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 
 .content {
+  width: 140px;
   .wrapper {
     position: relative;
-    width: 140px;
     height: 140px;
     .img {
       height: 140px;
@@ -99,6 +105,9 @@ export default {
     line-height: 1.4;
     font-family: $ffDefault;
     @include hoverText();
+    .title-name {
+      @include ellipse();
+    }
   }
   a {
     @include hoverText();

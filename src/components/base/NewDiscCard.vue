@@ -6,12 +6,18 @@
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
     </div>
-    <p class="card-name">{{album.name}}</p>
-    <p class="card-title">{{album.artist.name}}</p>
+    <p class="card-title" ref="title">{{album.name}}</p>
+    <p class="card-artists">
+      <span v-for="(item, i) of artists" :key="i" class="singer">
+        {{item}}
+      </span>
+    </p>
   </div>
 </template>
 
 <script>
+import { addSeparator } from '@/api/util.js'
+
 export default {
   name: 'new-disc-card',
 
@@ -24,6 +30,31 @@ export default {
       type: String,
       default: 'md',
     },
+    ttSize: {
+      type: String,
+      default: 'xm',
+    },
+  },
+
+  data() {
+    return {
+      fontSize: { 
+        'xm': '12px',
+        'm': '14px',
+        'l': '16px',
+      },
+    };
+  },
+
+  computed: {
+    artists() {
+      const artists = this.album.artists.map(v => v.name);
+      return addSeparator(artists, '/');
+    },
+  },
+
+  mounted() {
+    this.$refs.title.style.fontSize = this.fontSize[this.ttSize];
   },
 }
 </script>
@@ -31,6 +62,7 @@ export default {
 <style lang="scss" scoped>
 
 @import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
 
 /* 
 xm: 
@@ -98,10 +130,24 @@ lg: 130x130
   }
 }
 
-.card-name, .card-title {
+.card-title, .card-artists {
   height: 18px;
   line-height: 18px;
   font-size: $fontMin;
+  @include ellipse();
+}
+
+.card-title {
+  @include hoverText();
+}
+
+.card-artists {
+  color: $textInfo;
+  .singer {
+    &:nth-child(odd) {
+      @include hoverText();
+    }
+  }
 }
 
 </style>

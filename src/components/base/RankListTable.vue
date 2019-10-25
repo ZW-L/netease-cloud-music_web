@@ -28,7 +28,7 @@
               @click="handlePlay(i)"
             >&nbsp;</span>
             <span class="td-title-name">
-              <em class="td-title-name-main">{{item.name}}</em>
+              <em class="td-title-name-main" @click="toSongView()">{{item.name}}</em>
               <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
             </span>
             <span class="td-title-mv">&nbsp;</span>
@@ -80,11 +80,10 @@ export default {
       payload.singer = item.ar;
       payload.picUrl = `${item.al.picUrl}?param=34y34`;
       this.$store.commit('UPDATE_NOW_PLAY', payload);
+    },
+    toSongView() {
+      this.$router.push('/song/123');
     }
-  },
-
-  mounted() {
-    // console.log(this.songList);
   },
 
 };

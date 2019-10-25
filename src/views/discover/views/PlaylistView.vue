@@ -15,28 +15,36 @@
           <i class="category-up-icon"></i>
         </div>
         <div class="category-content">
-          <dl v-for="(cate, ci) of categories" :key="ci">
+          <dl v-for="(cate, ci) of categoryList" :key="ci">
             <dt class="cate-tag">
               <i class="cate-tag-icon"></i>
-              <span>{{cate.tag}}</span>
+              <span>{{cate.name}}</span>
             </dt>
             <dd class="cate-list">
-              <span class="cate-item" v-for="(item, i) of cate.list" :key="i">{{item}}</span>
+              <span v-for="(item, i) of cate.subs" :key="i"
+                class="cate-item"
+                @click="handleChangeCategory(item)"
+              >{{item}}</span>
             </dd>
           </dl>
         </div>
         <div class="dd-divide"></div>
       </div>
       <div class="content">
-        <playlist-card class="item" 
-          v-for="i of 35" :key="i"
+        <playlist-card class="item"
+          v-for="(item, i) of playlists" :key="i"
+          :info="item"
         >
-          <p>by 
-            <a href="">空气很颓废</a>
+          <p class="slot-creator">
+            <em class="creator-by">by</em>
+            <a href="" class="creator-name">{{item.creator.nickname}}</a>
           </p>
         </playlist-card>
       </div>
-      <base-pagination></base-pagination>
+      <base-pagination 
+        :pages="pages"
+        @changePage="handleChangePage"
+      ></base-pagination>
     </div>
   </div>
 </template>
@@ -45,6 +53,7 @@
 import PlaylistCard from '@/components/base/PlaylistCard.vue';
 import BasePagination from '@/components/base/pagination.vue';
 import { addSeparator, pageChanges } from '~api/util.js';
+import { getCategoryList, getCategoryBy } from '~api/get.js';
 
 export default {
   name: 'playlist-view',
@@ -58,47 +67,22 @@ export default {
 
   data() {
     return {
-      styles: [
-        {
-          tag: '语种',
-          tagEl: 'lang',
-          list: ['华语', '欧美', '日语', '韩语', '粤语',],
-        },
-        {
-          tag: '风格',
-          tagEl: 'style',
-          list: ['流行', '摇滚', '民谣', '电子', '舞曲', '说唱', '轻音乐', '爵士', '乡村', 'R&B/Soul',
-                 '古典', '民族', '英伦', '金属', '朋克', '蓝调', '雷鬼', '世界音乐', '拉丁', 'New Age',
-                 '古风', '后摇', 'Bossa Nova',],
-        },
-        {
-          tag: '场景',
-          tagEl: 'scene',
-          list: ['清晨', '夜晚', '学习', '工作', '午休', '下午茶', '地铁', '驾车', '运动', '旅行', '散步', '酒吧',],
-        },
-        {
-          tag: '情感',
-          tagEl: 'emotion',
-          list: ['怀旧', '清新', '浪漫', '伤感', '治愈', '放松', '孤独', '感动', '兴奋', '快乐', '安静', '思念',],
-        },
-        {
-          tag: '主题',
-          tagEl: 'theme',
-          list: ['影视原声', 'ACG', '儿童', '校园', '游戏', '70后', '80后', '90后', '网络歌曲', 'KTV', '经典',
-                 '翻唱', '吉他', '钢琴', '器乐', '榜单', '00后',],
-        },
-      ],
+      categoryList: [], // 歌单分类信息
+      playlists: [], // 获取的歌单列表
       display: 'none',
+      pages: 38, // 歌单页数
+      cate: '全部', // 当前的分类
+      sub: '', // 当前的子分类
+      length: 35, // 每页的歌单总数/偏移
     };
   },
 
   computed: {
-    categories() {
-      return this.styles.map(v => {
-        const list = addSeparator(v.list);
-        return { tag: v.tag, list: list };
-      });
-    },
+
+  },
+
+  mounted() {
+    this.handleGetData();
   },
 
   methods: {
@@ -111,6 +95,57 @@ export default {
         category.style.display = 'none';
         this.display = 'none';
       }
+    },
+    handleGetData() {
+      // 获取歌单分类信息
+      getCategoryList().then(res => {
+        // console.log(res.data);
+        // this.categoryList = res.data;
+        this.categoryList = this._toClassify(res.data);
+      }).catch(err => {
+        console.log(err);
+      });
+      // 获取默认分类(全部风格)
+      getCategoryBy(this.cate).then(res => {
+        // console.log(res.data.playlists);
+        this.playlists = res.data.playlists;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    // 切换页码时
+    handleChangePage(page) {
+      this.playlists = [];
+      const offset = (page - 1) * this.length;
+      getCategoryBy(this.cate, offset, this.length).then(res => {
+        // console.log(res.data.playlists);
+        this.playlists = res.data.playlists;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    // 切换分类时
+    handleChangeCategory(cate) {
+      this.playlists = [];
+      this.cate = cate;
+      // console.log(this.cate, this.playlists);
+      this.toggleShowCategory();
+      getCategoryBy(this.cate).then(res => {
+        // console.log(res.data.playlists);
+        this.playlists = res.data.playlists;
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    // 将得到的分类信息格式化
+    _toClassify(cate) {
+      const sub = cate.sub;
+      const ret = Object.values(cate.categories).map((v, i) => {
+        let subs = sub.filter(sv => sv.category === i).map(smv => smv.name);
+        subs = addSeparator(subs);
+        return { name: v, subs, };
+      });
+      return ret;
     },
   },
 };
@@ -294,6 +329,17 @@ export default {
         margin-top: 30px;
         &:nth-child(5n + 1) {
           margin-left: 0;
+        }
+        .slot-creator {
+          font-size: $fontMin;
+          @include ellipse();
+          .creator-by {
+            margin-right: 5px;
+            color: $titleDivide;
+          }
+          .creator-name {
+            color: $titleMore;            
+          }
         }
       }
     }

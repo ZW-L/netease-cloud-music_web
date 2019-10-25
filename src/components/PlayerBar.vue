@@ -71,10 +71,9 @@ export default {
 
   data() {
     return {
-      // isPaused: true,
+      isPaused: true,
       duration: 0,
       currentTime: 0,
-      playClass: 'paused',
     }
   },
 
@@ -86,10 +85,13 @@ export default {
     singers() {
       return getSingers(this.nowPlay.singer);
     },
+    playClass() {
+      return this.isPaused ? 'paused' : 'playing';
+    },
   },
 
   mounted() {
-
+    
   },
 
   methods: {
@@ -120,24 +122,33 @@ export default {
     handlePlay() {
       if (this.$refs.audio.paused) {
         this.$refs.audio.play();
-        this.playClass = 'playing';
+        this.isPaused = false;
       } else {
         this.$refs.audio.pause();
-        this.playClass = 'paused';
+        this.isPaused = true;
       }
     },
     // 切换当前歌曲
     _changeSong(id) {
       getSongUrl(id).then(res => {
         // console.log(res.data);
-        const audio = this.$refs.audio;
-        audio.pause();
-        audio.src = res.data.data[0].url;
-        audio.play();
+        this._handleChangeSrc(res.data.data[0].url, true);
       }).catch(err => {
         console.log(err);
       });
     },
+    // 切换 src 时需要进行的处理
+    _handleChangeSrc(src, toPlay) {
+      const audio = this.$refs.audio;
+      audio.pause();
+      audio.src = src;
+      this.isPaused = true;
+      if (toPlay) {
+        audio.play();
+        this.isPaused = false;
+      }
+    },
+
   },
   watch: {
     songId(newId) {

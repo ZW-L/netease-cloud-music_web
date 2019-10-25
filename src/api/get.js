@@ -20,6 +20,26 @@ export const getNewest = function () {
   return axios.get(url);
 };
 
+
+/* /discover/playlist */
+// 获取歌单分类信息
+export const getCategoryList = function () {
+  const url = `${baseUrl}/playlist/catlist`;
+  return axios.get(url);
+};
+
+// 获取歌单分类
+export const getCategoryBy = function (tag = '全部', offset = 0, limit = 35) {
+  const url = `${baseUrl}/top/playlist?tag=${tag}&offset=${offset}&limit=${limit}`;
+  return axios.get(url);
+};
+
+// 新碟上架页，全部新碟
+export const getNewestAll = function (offset = 0, limit = 35) {
+  const url = `${baseUrl}/top/album?offset=${offset}&limit=${limit}`;
+  return axios.get(url);
+};
+
 // 排行榜
 export const getBillboard = function (idx) {
   const url = `${baseUrl}/top/list?idx=${idx}`;

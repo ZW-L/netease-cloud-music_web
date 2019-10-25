@@ -5,6 +5,10 @@ export const getMonthAndDay = function (time) {
   return `${match[1]}æœˆ${match[2]}æ—¥`;
 };
 
+export const picUrlFormat = function (url, x, y) {
+  return `${url}?param=${x}x${y}`;
+};
+
 export const getDuration = function (duration) {
   const minutes = Math.floor(duration / (60 * 1000));
   const seconds = Math.floor((duration - 60 * 1000 * minutes) / 1000);
@@ -13,8 +17,8 @@ export const getDuration = function (duration) {
   return res;
 };
 
-export const addSeparator = function (arr) {
-  return arr.join('%%%|%%%').split('%%%');
+export const addSeparator = function (arr, sep = '|') {
+  return arr.join(`%%%${sep}%%%`).split('%%%');
 };
 
 export const getSingers = function (arr) {
