@@ -32,24 +32,39 @@
             <btn-bar></btn-bar>
           </div>
           <div class="info-lyric">
-            <p v-for="(item, i) of lyrics" :key="i">{{item}}</p>
+            <div class="lyric-main" ref="lyric">
+              <p v-for="(item, i) of lyrics" :key="i">{{item}}</p>
+            </div>
+            <p class="lyric-control" @click="handleShowLyric()">
+              <em v-if="!showAllLyric" class="ctrl-text">展开</em>
+              <em v-else class="ctrl-text">收起</em>
+              <i :class="['ctrl-icon', showAllLyric ? 'ctrl-up-icon' : 'ctrl-down-icon']"></i>
+            </p>
           </div>
         </div>
       </div>
       <div class="comment"></div>
     </div>
-    <div class="aside"></div>
+    <div class="aside">
+      <aside-assembly 
+        :relativePlaylist="relativePlaylist"
+        :similarSong="similarSong"
+        :download="download"
+      ></aside-assembly>
+    </div>
   </div>
 </template>
 
 <script>
 import BtnBar from '@/components/base/BtnBar.vue';
+import AsideAssembly from '@/components/AsideAssembly';
 
 export default {
   name: 'song-view',
 
   components: {
     BtnBar,
+    AsideAssembly,
   },
 
   props: {},
@@ -72,7 +87,10 @@ export default {
 永远给我碧浪清波心中的歌
 啦…….
 永远给我碧浪清波心中的歌`,
-      other: '',
+      showAllLyric: false,
+      relativePlaylist: [1],
+      similarSong: [1],
+      download: true,
     }
   },
 
@@ -80,10 +98,25 @@ export default {
     lyrics() {
       return this.lyric.split('\n');
     },
+    lyricControlIcon() {
+      return showAllLyric ? 'ctrl-down-icon' : 'ctrl-up-icon';
+    },
   },
 
   mounted() {
     console.log(this.lyrics);
+  },
+
+  methods: {
+    handleShowLyric() {
+      const lyric = this.$refs.lyric;
+      if (this.showAllLyric) {
+        lyric.style.height = '299px';
+      } else {
+        lyric.style.height = 'auto';
+      }
+      this.showAllLyric = !this.showAllLyric;
+    },
   },
 
 }
@@ -94,6 +127,7 @@ export default {
 @import '~css/variables.scss';
 
 .song {
+  overflow: hidden;
   box-sizing: border-box;
   width: 982px;
   margin: 0 auto;
@@ -101,9 +135,10 @@ export default {
   border-left: 1px solid $bdcDefault;
   border-right: 1px solid $bdcDefault;
   .content {
+    float: left;
     box-sizing: border-box;
     width: 710px;
-    height: 1000px;
+    // height: 1000px;
     padding: 40px 30px;
     border-right: 1px solid $bdcDefault;
     .main {
@@ -173,12 +208,38 @@ export default {
         .info-lyric {
           margin-top: 35px;
           line-height: 23px;
+          .lyric-main {
+            overflow: hidden;
+            height: 299px;
+          }
+          .lyric-control {
+            &:hover {
+              cursor: pointer;
+            }
+            .ctrl-text {
+              // font-weight: bold;
+              color: $textLinkBlueLight;
+            }
+            .ctrl-icon {
+              display: inline-block;
+              width: 11px;
+              height: 8px;
+              margin-left: 5px;
+            }
+            .ctrl-down-icon {
+              background: url('../../../public/img/icons/icon.png') no-repeat -65px -520px;
+            }
+            .ctrl-up-icon {
+              background: url('../../../public/img/icons/icon.png') no-repeat -45px -520px;
+            }
+          }
         }
       }
     }
     .comment {}
   }
   .aside {
+    float: left;
     width: 270px;
   }
 }

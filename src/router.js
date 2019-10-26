@@ -1,13 +1,17 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-import AlbumView from '@discover/views/AlbumView.vue';
-import ArtistView from '@discover/views/ArtistView.vue';
-import DjradioView from '@discover/views/DjradioView.vue';
-import PlaylistView from '@discover/views/PlaylistView.vue';
-import RecommendView from '@discover/views/RecommendView.vue';
-import ToplistView from '@discover/views/ToplistView.vue';
-import DiscoverView from '@discover/DiscoverView.vue';
-import SongView from '@/views/song/SongView.vue';
+// 发现页组件
+import Discover from '@discover/DiscoverView.vue';
+import DiscoverAlbum from '@discover/views/AlbumView.vue';
+import DiscoverArtist from '@discover/views/ArtistView.vue';
+import DiscoverDjradio from '@discover/views/DjradioView.vue';
+import DiscoverPlaylist from '@discover/views/PlaylistView.vue';
+import DiscoverRecommend from '@discover/views/RecommendView.vue';
+import DiscoverToplist from '@discover/views/ToplistView.vue';
+// 歌单详情页组件
+import Playlist from '@/views/playlist/PlaylistDetail.vue';
+// 歌曲详情页组件
+import Song from '@/views/song/SongView.vue';
 
 Vue.use(Router);
 
@@ -18,44 +22,49 @@ export default new Router({
     {
       path: '/',
       name: 'discover',
-      component: DiscoverView,
+      component: Discover,
       children: [
         {
           path: '/discover/album',
-          name: 'album',
-          component: AlbumView,
+          name: 'discover-album',
+          component: DiscoverAlbum,
         },
         {
           path: '/discover/artist',
-          name: 'artist',
-          component: ArtistView,
+          name: 'discover-artist',
+          component: DiscoverArtist,
         },
         {
           path: '/discover/djradio',
-          name: 'diradio',
-          component: DjradioView,
+          name: 'discover-diradio',
+          component: DiscoverDjradio,
         },
         {
           path: '/discover/playlist',
-          name: 'playlist',
-          component: PlaylistView,
+          name: 'discover-playlist',
+          component: DiscoverPlaylist,
         },
         {
           path: '/discover/recommend',
-          name: 'recommend',
-          component: RecommendView,
+          name: 'discover-recommend',
+          component: DiscoverRecommend,
         },
         {
           path: '/discover/toplist',
-          name: 'toplist',
-          component: ToplistView,
+          name: 'discover-toplist',
+          component: DiscoverToplist,
         },
       ],
     },
     {
+      path: '/playlist/:id',
+      name: 'playlist',
+      component: Playlist,
+    },
+    {
       path: '/song/:id',
       name: 'song',
-      component: SongView,
+      component: Song,
     },
   ],
 });
