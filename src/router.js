@@ -9,9 +9,11 @@ import DiscoverPlaylist from '@discover/views/PlaylistView.vue';
 import DiscoverRecommend from '@discover/views/RecommendView.vue';
 import DiscoverToplist from '@discover/views/ToplistView.vue';
 // 歌单详情页组件
-import Playlist from '@/views/playlist/PlaylistDetail.vue';
+import PlaylistDetail from '@/views/playlist/PlaylistDetail.vue';
+// 专辑详情页组件
+import AlbumDetail from '@/views/album/AlbumDetail.vue';
 // 歌曲详情页组件
-import Song from '@/views/song/SongView.vue';
+import SongDetail from '@/views/song/SongDetail.vue';
 
 Vue.use(Router);
 
@@ -57,14 +59,19 @@ export default new Router({
       ],
     },
     {
-      path: '/playlist/:id',
-      name: 'playlist',
-      component: Playlist,
+      path: '/album', // /album?id=12345
+      name: 'album',
+      component: AlbumDetail,
     },
     {
-      path: '/song/:id',
+      path: '/playlist', // /playlist?id=12345
+      name: 'playlist',
+      component: PlaylistDetail,
+    },
+    {
+      path: '/song', // /song?id=12345
       name: 'song',
-      component: Song,
+      component: SongDetail,
     },
   ],
 });

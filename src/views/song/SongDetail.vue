@@ -4,8 +4,8 @@
       <div class="main">
         <div class="main-album">
           <img class="main-album-img"
-            src="http://p2.music.126.net/HeGrAKPiZhKkONiFDxZvmw==/109951164384346866.jpg?param=130y130" 
-            alt=""
+            v-show="detail.al"
+            :src="detail.al.picUrl+'?param=130y130'" 
           >
           <div class="main-album-cover"></div>
         </div>
@@ -14,22 +14,22 @@
             <div class="header-icon"></div>
             <div class="header-title">
               <h2 class="title-main">
-                我和我的祖国
+                {{detail.name}}
                 <span class="title-main-mv"></span>
               </h2>
-              <h3 class="title-sub">电影《我和我的祖国》主题曲</h3>
+              <h3 v-if="detail.alia.length" class="title-sub">{{detail.alia[0]}}</h3>
             </div>
           </div>
           <div class="info-desc">
             <p>
-              歌手：<a href="">王菲</a>
+              歌手：<a href="">{{singers}}</a>
             </p>
             <p>
-              所属专辑：<a href="">我和我的祖国</a>
+              所属专辑：<a href="">{{detail.al.name}}</a>
             </p>
           </div>
           <div class="info-btn">
-            <btn-bar></btn-bar>
+            <btn-bar :detail="detail"></btn-bar>
           </div>
           <div class="info-lyric">
             <div class="lyric-main" ref="lyric">
@@ -46,68 +46,84 @@
       <div class="comment"></div>
     </div>
     <div class="aside">
-      <aside-assembly 
+      <aside-group 
         :relativePlaylist="relativePlaylist"
         :similarSong="similarSong"
         :download="download"
-      ></aside-assembly>
+      ></aside-group>
     </div>
   </div>
 </template>
 
 <script>
 import BtnBar from '@/components/base/BtnBar.vue';
-import AsideAssembly from '@/components/AsideAssembly';
+import AsideGroup from '@/components/group/AsideGroup';
+import { getSongUrl, getSongDetail, getLyric, getSimPlaylist, getSimSong } from '~api/get.js';
+import { getSingers } from '~api/util.js';
 
 export default {
-  name: 'song-view',
+  name: 'song-detail',
 
   components: {
     BtnBar,
-    AsideAssembly,
+    AsideGroup,
   },
-
-  props: {},
 
   data() {
     return {
-      lyric: `作曲 : 秦咏诚
-作词 : 张藜
-我和我的祖国一刻也不能分割
-无论我走到哪里都流出一首赞歌
-我歌唱每一座高山我歌唱每一条河
-袅袅炊烟小小村落路上一道辙
-啦……
-你用你那母亲的脉搏和我诉说
-我的祖国和我像海和浪花一朵
-浪是海的赤子海是那浪的依托
-每当大海在微笑我就是笑的旋涡
-我分担着海的忧愁分享海的欢乐
-啦…..
-永远给我碧浪清波心中的歌
-啦…….
-永远给我碧浪清波心中的歌`,
-      showAllLyric: false,
-      relativePlaylist: [1],
-      similarSong: [1],
-      download: true,
-    }
+      detail: {}, // 歌曲详情
+      lyric: '', // 歌词
+      showAllLyric: false, // 控制显示全部歌词
+      relativePlaylist: [], // 边栏参数，相似歌单
+      similarSong: [], // 边栏参数，相似歌曲
+      download: true, // 边栏参数
+    };
   },
 
   computed: {
     lyrics() {
-      return this.lyric.split('\n');
+      return this.lyric.split('\n').map(v => v.replace(/[\[\]\d\:\.]+/, ''));
     },
     lyricControlIcon() {
       return showAllLyric ? 'ctrl-down-icon' : 'ctrl-up-icon';
     },
+    songId() {
+      return this.$route.query.id;
+    },
+    singers() {
+      return getSingers(this.detail.ar);
+    },
   },
 
   mounted() {
-    console.log(this.lyrics);
+    this.initialDetail();
   },
 
   methods: {
+    // 初始化页面信息
+    initialDetail() {
+      // 获取歌曲信息
+      getSongDetail(this.songId).then(res => {
+        // console.log(res.data.songs);
+        this.detail = res.data.songs[0];
+      });
+      // 获取歌词
+      getLyric(this.songId).then(res => {
+        // console.log(res.data.lrc.lyric);
+        this.lyric = res.data.lrc.lyric;
+      });
+      // 获取相似歌单
+      getSimPlaylist(this.songId).then(res => {
+        // console.log(res.data.playlists);
+        this.relativePlaylist = res.data.playlists;
+      });
+      // 获取相似音乐
+      getSimSong(this.songId).then(res => {
+        console.log(res.data.songs);
+        this.similarSong = res.data.songs;
+      });
+    },
+    // 显示/隐藏歌词
     handleShowLyric() {
       const lyric = this.$refs.lyric;
       if (this.showAllLyric) {
@@ -135,10 +151,9 @@ export default {
   border-left: 1px solid $bdcDefault;
   border-right: 1px solid $bdcDefault;
   .content {
-    float: left;
     box-sizing: border-box;
+    float: left;
     width: 710px;
-    // height: 1000px;
     padding: 40px 30px;
     border-right: 1px solid $bdcDefault;
     .main {
@@ -210,7 +225,7 @@ export default {
           line-height: 23px;
           .lyric-main {
             overflow: hidden;
-            height: 299px;
+            height: 295px;
           }
           .lyric-control {
             &:hover {

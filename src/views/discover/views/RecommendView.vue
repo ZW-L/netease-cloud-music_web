@@ -8,11 +8,11 @@
         <bill-category></bill-category>
       </div>
       <div class="content-right">
-        <aside-assembly
+        <aside-group
           :loginInfo="loginInfo"
           :inSingers="inSingers"
           :hotPlayers="hotPlayers"
-        ></aside-assembly>
+        ></aside-group>
       </div>
     </div>
   </div>
@@ -23,8 +23,7 @@ import HomeCarousel from '@discover/components/HomeCarousel.vue';
 import HotCategory from '@discover/components/HotCategory.vue';
 import NewCategory from '@discover/components/NewCategory.vue';
 import BillCategory from '@discover/components/BillCategory.vue';
-// import AsideCard from '@discover/components/AsideCard.vue';
-import AsideAssembly from '@/components/AsideAssembly.vue'; 
+import AsideGroup from '@/components/group/AsideGroup.vue'; 
 import { mapGetters } from 'vuex';
 
 export default {
@@ -35,8 +34,7 @@ export default {
     HotCategory,
     NewCategory,
     BillCategory,
-    // AsideCard,
-    AsideAssembly,
+    AsideGroup,
   },
 
   data() {

@@ -4,81 +4,131 @@
       <div class="main">
         <div class="main-img">
           <div class="img-wrapper">
-            <img src="http://p3.music.126.net/VFd5cboNTbnYsWZ5DBn9bg==/18953381440004340.jpg?param=200y200">
+            <img v-show="detail.coverImgUrl" :src="detail.coverImgUrl+'?param=200y200'">
           </div>
         </div>
         <div class="main-info">
           <div class="info-header">
             <div class="header-icon"></div>
-            <h2 class="header-title">我和我的祖国</h2>
+            <h2 class="header-title">{{detail.name}}</h2>
           </div>
           <p class="info-create">
             <span class="create-item ctor-pic">
-              <img src="http://p1.music.126.net/YUDAnswzzBas9Rdb9iYutQ==/109951163240891777.jpg?param=40y40">
+              <img v-show="detail.creator" :src="detail.creator.avatarUrl+'?param=40y40'">
             </span>
-            <a href="" class="create-item ctor-name">流年忧光影</a>
-            <span class="create-item create-time">2017-11-07 创建</span>
+            <a v-show="detail.creator" href="" class="create-item ctor-name">{{detail.creator.nickname}}</a>
+            <span class="create-item create-time">
+              <em>{{createTime}}</em>
+               创建
+            </span>
           </p>
           <div class="info-btn">
             <btn-bar></btn-bar>
           </div>
           <div class="info-tag">
             <span class="tag-name">标签：</span>
-            <span class="tag-item">粤语</span>
-            <span class="tag-item">怀旧</span>
-            <span class="tag-item">华语</span>
+            <span class="tag-item" v-for="(tag, i) of detail.tags" :key="i">{{tag}}</span>
           </div>
           <div class="info-desc">
-            介绍： 在时光中沉淀的首首经典老歌，承载了一段段印刻在内心最深处的回忆。重温经典，回味那些逝去的时光...
+            介绍：{{detail.desc}}
           </div>
         </div>
       </div>
-      <playlist-table :songList="songList"></playlist-table>
+      <song-list-table 
+        :songList="songList" 
+        :showAlbum="true"
+        :trackCount="detail.trackCount"
+        :playCount="detail.playCount"
+      ></song-list-table>
       <div class="comment"></div>
     </div>
     <div class="aside">
-      <aside-assembly
+      <aside-group
         :playlistLikes="playlistLikes"
         :relativeRecommend="relativeRecommend"
         :download="download"
-      ></aside-assembly>
+      ></aside-group>
     </div>
   </div>
 </template>
 
 <script>
 import BtnBar from '@/components/base/BtnBar.vue';
-import PlaylistTable from '@/components/base/PlaylistTable.vue';
-import AsideAssembly from '@/components/AsideAssembly';
-import { getBillboard } from '~api/get.js';
+import SongListTable from '@/components/base/SongListTable.vue';
+import AsideGroup from '@/components/group/AsideGroup';
+import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '~api/get.js';
+import { dateFormat } from '~api/util.js';
 
 export default {
   name: 'playlist-detail',
 
   components: {
     BtnBar,
-    PlaylistTable,
-    AsideAssembly,
+    SongListTable,
+    AsideGroup,
   },
 
   props: {},
 
   data() {
     return {
-      songList: [],
-      playlistLikes: [1],
-      relativeRecommend: [1],
-      download: true,
+      detail: {}, // 歌单详情
+      songList: [], // 歌单的所有歌曲
+      playlistLikes: [1], // 边栏参数，喜欢歌单的人
+      relativeRecommend: [1], // 边栏参数，相关歌单推荐
+      download: true, // 边栏参数，app 选项
     };
   },
 
+  computed: {
+    playlistId() {
+      return this.$route.query.id;
+    },
+    /* creatorName() {
+      return this.detail.creator ? this.detail.creator.nickname : '';
+    }, */
+    /* creatorPic() {
+      return this.detail.creator ? `${this.detail.creator.avatarUrl}?param=40y40` : 'default.jpg';
+    }, */
+    createTime() {
+      return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01';
+    },
+  },
+
   mounted() {
-    getBillboard(3).then(res => {
-      // console.log(res.data.playlist.tracks);
-      this.songList = this.songList.concat(res.data.playlist.tracks);
-    }).catch(err => {
-      console.log(err);
-    });
+    this.initialData();
+  },
+
+  methods: {
+    // 初始化数据
+    initialData() {
+      // 获取歌单信息
+      getPlaylistDetail(this.playlistId).then(res => {
+        // console.log(res.data);
+        const data = res.data.playlist;
+        const obj = {};
+        obj.coverImgUrl = data.coverImgUrl;
+        obj.name = data.name;
+        obj.creator = data.creator;
+        obj.createTime = data.createTime;
+        obj.desc = data.description;
+        obj.tags = data.tags;
+        obj.trackCount = data.trackCount;
+        obj.playCount = data.playCount;
+        this.detail = obj;
+        this.songList = data.tracks;
+      });
+      // 获取喜欢歌单的人
+      getCollectPlaylistUsers(this.playlistId, 8).then(res => {
+        // console.log(res.data.subscribers);
+        this.playlistLikes = res.data.subscribers;
+      });
+      // 获取相关歌单推荐
+      getRelativePlaylist(this.playlistId).then(res => {
+        // console.log(res.data);
+        this.relativeRecommend = res.data.playlists;
+      });
+    },
   },
 
 }
@@ -100,19 +150,19 @@ export default {
     box-sizing: border-box;
     float: left;
     width: 710px;
-    // height: 1000px;
     padding: 40px 30px;
     border-right: 1px solid $bdcDefault;
     .main {
+      overflow: hidden;
       width: 640px;
-      height: 210px;
+      // height: 210px;
       margin-bottom: 30px;
       .main-img {
         float: left;
         .img-wrapper {
           padding: 3px;
           img {
-            width: 200px;
+            width: 100%;
           }
           border: 1px solid #ccc;
         }
@@ -124,7 +174,7 @@ export default {
         font-size: $fontMin;
         .info-header {
           overflow: hidden;
-          height: 32px;
+          // height: 32px;
           line-height: 32px;
           .header-icon {
             float: left;
@@ -135,7 +185,8 @@ export default {
           }
           .header-title {
             float: left;
-            margin-left: 10px;
+            width: 320px;
+            margin-left: 5px;
             font-size: $fontMiddle;
           }
         }

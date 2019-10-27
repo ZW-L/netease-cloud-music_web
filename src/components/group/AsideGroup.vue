@@ -42,13 +42,15 @@
     <div v-if="relativePlaylist.length" class="content relative-playlist">
       <h3 class="title">包含这首歌的歌单</h3>
       <div class="list">
-        <div class="item" v-for="i of 3" :key="i">
-          <div class="item-avatar"></div>
+        <div class="item" v-for="(item, i) of relativePlaylist" :key="i">
+          <div class="item-avatar">
+            <img :src="item.coverImgUrl+'?param=50y50'">
+          </div>
           <div class="item-info">
-            <p class="info-name">网络热歌分享〖持续更新...</p>
+            <p class="info-name">{{item.name}}</p>
             <p class="info-creator">
               <em>by</em>
-              <em class="creator-name">情感文字君</em>
+              <em v-show="item.creator" class="creator-name">{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -57,10 +59,12 @@
     <div v-if="similarSong.length" class="content similar-song">
       <h3 class="title">相似歌曲</h3>
       <div class="list">
-        <div class="item" v-for="i of 5" :key="i">
+        <div class="item" v-for="(item, i) of similarSong" :key="i">
           <div class="item-info">
-            <p class="info-name">听听我说的吧 (Live)</p>
-            <p class="info-singers">蔡徐坤/徐圣恩/秦奋/卜凡/郑</p>
+            <p class="info-name">{{item.name}}</p>
+            <p class="info-singers">
+              <span class="singer-item" v-for="(si, i) of similarSongSingers(item)" :key="i">{{si}}</span>
+            </p>
           </div>
           <div class="item-ctrl">
             <span class="ctrl-play"></span>
@@ -82,11 +86,13 @@
         <em class="title-more">全部&gt;</em>
       </h3>
       <div class="list">
-        <div class="item" v-for="i of 5" :key="i">
-          <div class="item-avatar"></div>
+        <div class="item" v-for="(item, i) of ownAlbums" :key="i">
+          <div class="item-avatar">
+            <img :src="item.picUrl+'?param=50y50'">
+          </div>
           <div class="item-info">
-            <p class="info-name">偏爱</p>
-            <p class="info-date">2019-10-19</p>
+            <p class="info-name">{{item.name}}</p>
+            <p class="info-date">{{handleFormatTime(item.publishTime)}}</p>
           </div>
         </div>
       </div>
@@ -95,19 +101,23 @@
     <div v-if="playlistLikes.length" class="content playlist-likes">
       <h3 class="title">喜欢这个歌单的人</h3>
       <div class="list">
-        <div class="item" v-for="i of 8" :key="i"></div>
+        <div class="item" v-for="(item, i) of playlistLikes" :key="i">
+          <img v-show="item.avatarUrl" :src="item.avatarUrl+'?param=40y40'">
+        </div>
       </div>
     </div>
     <div v-if="relativeRecommend.length" class="content relative-recommend">
       <h3 class="title">相关推荐</h3>
       <div class="list">
-        <div class="item" v-for="i of 5" :key="i">
-          <div class="item-avatar"></div>
+        <div class="item" v-for="(item, i) of relativeRecommend" :key="i">
+          <div class="item-avatar">
+            <img v-show="item.coverImgUrl" :src="item.coverImgUrl+'?param=50y50'">
+          </div>
           <div class="item-info">
-            <p class="info-name">网络热歌分享〖持续更新...</p>
+            <p class="info-name">{{item.name}}</p>
             <p class="info-creator">
               <em>by</em>
-              <em class="creator-name">情感文字君</em>
+              <em v-show="item.creator" class="creator-name">{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -127,8 +137,10 @@
 </template>
 
 <script>
+import { getSingers, dateFormat } from '~api/util.js';
+
 export default {
-  name: 'aside-assembly',
+  name: 'aside-group',
 
   props: {
     loginInfo: {
@@ -178,6 +190,15 @@ export default {
     }
   },
 
+  methods: {
+    similarSongSingers(item) {
+      return getSingers(item.artists);
+    },
+    handleFormatTime(time) {
+      return dateFormat(time);
+    }
+  },
+
 }
 </script>
 
@@ -210,7 +231,7 @@ export default {
 .login-info {
   width: 250px;
   height: 126px;
-  background: url('../../public/img/icons/index.png') no-repeat 0 0;
+  background: url('../../../public/img/icons/index.png') no-repeat 0 0;
   .info-desc {
     margin: 0 auto;
     padding: 16px;
@@ -226,7 +247,7 @@ export default {
     text-align: center;
     text-shadow: 0 1px 0 $loginBtnShadow;
     color: $textLight;
-    background: url('../../public/img/icons/index.png') no-repeat 0 -195px;
+    background: url('../../../public/img/icons/index.png') no-repeat 0 -195px;
     &:hover {
       cursor: pointer;
     }
@@ -314,7 +335,7 @@ export default {
           width: 11px;
           height: 13px;
           vertical-align: middle;
-          background: url('../../public/img/icons/icon.png') no-repeat 0 1px;
+          background: url('../../../public/img/icons/icon.png') no-repeat 0 1px;
         }
       }
       .info-desc {
@@ -352,10 +373,10 @@ export default {
         margin: 10px 0 0 10px;
       }
       .ctrl-play {
-        background: url('../../public/img/icons/icon2.png') no-repeat -69px -455px;
+        background: url('../../../public/img/icons/icon2.png') no-repeat -69px -455px;
       }
       .ctrl-add {
-        background: url('../../public/img/icons/icon2.png') no-repeat -87px -454px;
+        background: url('../../../public/img/icons/icon2.png') no-repeat -87px -454px;
       }
     }
   }
@@ -418,7 +439,7 @@ export default {
     .item-info {
       float: left;
       width: 140px;
-      margin-left: 5px;
+      margin-left: 10px;
       .info-name, .info-creator {
         height: 25px;
         line-height: 25px;
@@ -446,24 +467,24 @@ export default {
   }
   .ios {
     width: 42px;
-    background: url('../../public/img/icons/ios_1.png');
+    background: url('../../../public/img/icons/ios_1.png');
     &:hover {
-      background: url('../../public/img/icons/ios_2.png');
+      background: url('../../../public/img/icons/ios_2.png');
     }
   }
   .win {
     width: 80px;
     margin: 0 18px;
-    background: url('../../public/img/icons/win_1.png');
+    background: url('../../../public/img/icons/win_1.png');
     &:hover {
-      background: url('../../public/img/icons/win_2.png');
+      background: url('../../../public/img/icons/win_2.png');
     }
   }
   .android {
     width: 42px;
-    background: url('../../public/img/icons/android_1.png');
+    background: url('../../../public/img/icons/android_1.png');
     &:hover {
-      background: url('../../public/img/icons/android_2.png');
+      background: url('../../../public/img/icons/android_2.png');
     }
   }
   .info {

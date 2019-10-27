@@ -2,15 +2,15 @@
   <div class="content">
     <div class="wrapper">
       <img :src="picUrl" class="img">
-      <a href="" class="img-link"></a>
+      <a href="#" class="img-link"  @click="toPlaylistView()"></a>
       <div class="info">
         <span class="info-headset"></span>
         <span class="info-count">{{playCount}}</span>
         <span class="info-play"></span>
       </div>
     </div>
-    <div class="title">
-      <p class="title-name">{{info.name}}</p>
+    <div class="title"  @click="toPlaylistView()">
+      <p :class="['title-name', titleEllipsis ? 'ellipsis' : '']">{{info.name}}</p>
     </div>
     <slot></slot>
   </div>
@@ -32,6 +32,10 @@ export default {
         };
       },
     },
+    titleEllipsis: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -44,6 +48,16 @@ export default {
       const picUrl = this.info.picUrl || this.info.coverImgUrl;
       return picUrlFormat(picUrl, 140, 140);
     }
+  },
+
+  mounted() {
+
+  },
+
+  methods: {
+    toPlaylistView() {
+      this.$router.push({ path: '/playlist', query: { id: this.info.id }});
+    },
   },
 
 }
@@ -105,7 +119,8 @@ export default {
     line-height: 1.4;
     font-family: $ffDefault;
     @include hoverText();
-    .title-name {
+    .title-name {}
+    .ellipsis {
       @include ellipse();
     }
   }

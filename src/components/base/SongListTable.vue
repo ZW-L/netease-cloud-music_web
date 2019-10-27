@@ -2,9 +2,9 @@
   <div class="play-list-table">
     <div class="list-title">
       <span class="title-main">歌曲列表</span>
-      <span class="title-sub">100首歌</span>
+      <span class="title-sub">{{trackCount}}首歌</span>
       <span class="title-play">播放：
-        <em class="title-play-count">131541104</em>次
+        <em class="title-play-count">{{playCount}}</em>次
       </span>
     </div>
     <table v-show="songList.length">
@@ -14,7 +14,7 @@
           <th class="th-title">标题</th>
           <th class="th-duration">时长</th>
           <th class="th-singers">歌手</th>
-          <th class="th-album">专辑</th>
+          <th v-if="showAlbum" class="th-album">专辑</th>
         </tr>
       </thead>
       <tbody>
@@ -22,13 +22,13 @@
           <td class="td-indent">
             <span class="td-indent-order">{{i+1}}</span>
             <span class="td-title-play"
-              @click="handlePlay(i)"
+              @click="toPlay(item)"
             >&nbsp;</span>
           </td>
           <td class="td-title">
             <div class="td-title-more">
               <span class="td-title-name">
-                <em class="td-title-name-main" @click="toSongView()">{{item.name}}</em>
+                <em class="td-title-name-main" @click="toSongView(item)">{{item.name}}</em>
                 <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
               </span>
               <span class="td-title-mv">&nbsp;</span>
@@ -49,6 +49,9 @@
               <em v-show="index < item.ar.length - 1" class="td-singers-devide"> / </em>
             </span>
           </td>
+          <td v-if="showAlbum" class="td-album">
+            {{item.al.name}}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -59,21 +62,36 @@
 import { getDuration } from '~api/util.js';
 
 export default {
-  name: 'rank-list-table',
+  name: 'song-list-table',
 
   props: {
     songList: {
       type: Array,
       default: () => [],
     },
+    showAlbum: {
+      type: Boolean,
+      default: false,
+    },
+    trackCount: {
+      type: Number,
+      default: 100,
+    },
+    playCount: {
+      type: Number,
+      default: 999,
+    },
+  },
+
+  mounted() {
+    // console.log(this.songList);
   },
 
   methods: {
     _getDuration(d) {
       return getDuration(d);
     },
-    handlePlay(i) {
-      const item = this.songList[i];
+    toPlay(item) {
       console.log(item);
       const payload = {};
       payload.id = item.id;
@@ -82,8 +100,8 @@ export default {
       payload.picUrl = `${item.al.picUrl}?param=34y34`;
       this.$store.commit('UPDATE_NOW_PLAY', payload);
     },
-    toSongView() {
-      this.$router.push('/song/123');
+    toSongView(item) {
+      this.$router.push({ path: '/song', query: { id: item.id }});
     }
   },
 
@@ -119,42 +137,46 @@ table, th, td {
   box-sizing: border-box;
 }
 table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 0;
   border: 1px solid $bdcDefault;
   border-top: none;
   font-size: $fontMin;
-}
-thead {
-  tr.header {
-    height: 35px;
-    border-bottom: 1px solid $bdcDefault;
-    th.th-indent {
-      width: 78px;
+  thead {
+    .header {
+      height: 35px;
+      border-bottom: 1px solid $bdcDefault;
+      .th-indent {
+        width: 80px;
+      }
+      .th-title {
+        // width: 240px;
+      }
+      .th-duration {
+        width: 110px;
+      }
+      .th-singers {
+        width: 14%;
+      }
+      .th-album {
+        width: 20%;
+      }
+      th:not(:first-child) {
+        padding-left: 7px;
+        border-left: 1px solid $bdcDefault;
+      }
     }
-    th.th-title {
-      width: 240px;
+  }
+  tbody {
+    tr:nth-child(odd) {
+      background-color: $bgTableLight;
     }
-    th.th-duration {
-      width: 90px;
-    }
-    th.th-singers {
-      width: 100px;
-    }
-    th.th-album {
-      width: 100px;
-    }
-    th:not(:first-child) {
+    td {
       padding-left: 7px;
-      border-left: 1px solid $bdcDefault;
+      @include ellipse();
     }
-  }
-}
-tbody {
-  tr:nth-child(odd) {
-    background-color: $bgTableLight;
-  }
-  td {
-    padding-left: 7px;
-    height: 30px;
   }
 }
 
@@ -275,6 +297,9 @@ tbody {
     .td-singers-name {
       @include hoverText();
     }
+  }
+  .td-album {
+    @include hoverText();
   }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div :class="['card', `card-${size}`]">
-    <div :class="['wrapper', `wrapper-${size}`]">
+    <div :class="['wrapper', `wrapper-${size}`]" @click="toAlbumView()">
       <img :class="['card-img', `card-img-${size}`]"
         :src="album.picUrl" 
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
     </div>
-    <p class="card-title" ref="title">{{album.name}}</p>
+    <p class="card-title" ref="title" @click="toAlbumView()">{{album.name}}</p>
     <p class="card-artists">
       <span v-for="(item, i) of artists" :key="i" class="singer">
         {{item}}
@@ -55,6 +55,12 @@ export default {
 
   mounted() {
     this.$refs.title.style.fontSize = this.fontSize[this.ttSize];
+  },
+
+  methods: {
+    toAlbumView() {
+      this.$router.push({ path: '/album', query: { id: this.album.id }});
+    },
   },
 }
 </script>

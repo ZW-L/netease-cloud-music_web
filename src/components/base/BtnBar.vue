@@ -1,6 +1,6 @@
 <template>
   <div class="bar">
-    <div class="btn-play">
+    <div class="btn-play" @click="handleToPlay()">
       <i class="btn-play-icon"></i>
       <em>播放</em>
     </div>
@@ -34,8 +34,24 @@
 </template>
 
 <script>
+import { toPlay } from '~api/control.js';
+
 export default {
   name: 'btn-bar',
+
+  props: {
+    detail: {
+      type: Object,
+      default: () => {},
+    },
+  },
+
+  methods: {
+    // 播放
+    handleToPlay() {
+      toPlay(this.$store, this.detail);
+    }
+  },
 }
 </script>
 
