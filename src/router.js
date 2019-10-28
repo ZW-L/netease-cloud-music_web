@@ -23,55 +23,64 @@ export default new Router({
   routes: [
     {
       path: '/',
+      redirect: '/discover/recommend',
+    },
+    {
+      path: '/discover',
       name: 'discover',
+      redirect: '/discover/recommend',
       component: Discover,
       children: [
         {
-          path: '/discover/album',
+          path: 'album', // /discover/album
           name: 'discover-album',
           component: DiscoverAlbum,
         },
         {
-          path: '/discover/artist',
+          path: 'artist',
           name: 'discover-artist',
           component: DiscoverArtist,
         },
         {
-          path: '/discover/djradio',
+          path: 'djradio',
           name: 'discover-diradio',
           component: DiscoverDjradio,
         },
         {
-          path: '/discover/playlist',
+          path: 'playlist',
           name: 'discover-playlist',
           component: DiscoverPlaylist,
         },
         {
-          path: '/discover/recommend',
+          path: 'recommend',
           name: 'discover-recommend',
           component: DiscoverRecommend,
+          alias: '/discover',
         },
         {
-          path: '/discover/toplist',
+          path: 'toplist', // /discover/toplist?idx=:idx
           name: 'discover-toplist',
           component: DiscoverToplist,
         },
       ],
     },
     {
-      path: '/album', // /album?id=12345
+      path: '/album', // /album?id=:id
       name: 'album',
       component: AlbumDetail,
     },
     {
-      path: '/playlist', // /playlist?id=12345
+      path: '/playlist', // /playlist?id=:id
       name: 'playlist',
       component: PlaylistDetail,
     },
     {
-      path: '/song', // /song?id=12345
+      path: '/song', // /song?id=:id
       name: 'song',
       component: SongDetail,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    return savedPosition;
+  },
 });

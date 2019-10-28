@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="right-bg">
-      <a href="" class="right-bg-icon"></a>
+      <a href="#" class="right-bg-icon"></a>
     </div>
     <div class="right-scroll"></div>
     <div class="left-bg"></div>
@@ -16,7 +16,7 @@
       <div class="song-info">
         <div class="info-pic">
           <img :src="nowPlay.picUrl">
-          <a href="" class="info-href"></a>
+          <a href="#" class="info-href"></a>
         </div>
         <div class="info-gp">
           <div class="info-title">
@@ -32,15 +32,15 @@
         </div>
       </div>
       <div class="more-ctrl">
-        <a href="" class="ctrl-voice"></a>
-        <a href="" class="ctrl-mode"></a>
-        <a href="" class="ctrl-shown">
+        <a href="#" class="ctrl-voice"></a>
+        <a href="#" class="ctrl-mode"></a>
+        <a href="#" class="ctrl-shown">
           <em>60</em>
         </a>
       </div>
       <div class="other-options">
-        <a href="" class="op-collect"></a>
-        <a href="" class="op-share"></a>
+        <a href="#" class="op-collect"></a>
+        <a href="#" class="op-share"></a>
       </div>
     </div>
     <div class="audio-wrapper">
@@ -152,7 +152,7 @@ export default {
   },
   watch: {
     songId(newId) {
-      // console.log(newId);
+      // 当歌曲 id 改变时，切换当前播放的歌曲
       this._changeSong(newId);
     }
   },

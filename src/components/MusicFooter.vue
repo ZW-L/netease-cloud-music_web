@@ -4,28 +4,28 @@
       <div class="info">
         <p class="info-link">
           <span class="link-item" v-for="(item, i) of devideLinks" :key="i">
-            <a href="">{{item}}</a>
+            <a href="#">{{item}}</a>
           </span>
         </p>
         <p class="info-copyright">
           <span>网易公司版权所有©1997-2019</span>
           <span>杭州乐读科技有限公司运营：</span>
           <span>
-            <a href="">浙网文[2018]3506-263号</a>
+            <a href="#">浙网文[2018]3506-263号</a>
           </span>
         </p>
         <p class="info-contact">
           <span>违法和不良信息举报电话：0571-89853516</span>
           <span>举报邮箱：</span>
           <span>
-            <a href="">ncm5990@163.com</a>
+            <a href="#">ncm5990@163.com</a>
           </span>
         </p>
       </div>
       <div class="icon">
         <ul class="icon-list">
           <li class="icon-item" v-for="(item, i) of logos" :key="i">
-            <a class="item-logo" href="" :style="getBg(i).logoStyle"></a>
+            <a class="item-logo" href="#" :style="getBg(i).logoStyle"></a>
             <span class="item-title" :style="getBg(i).ttStyle"></span>
           </li>
         </ul>

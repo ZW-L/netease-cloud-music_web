@@ -64,6 +64,7 @@ export default {
   display: flex;
   font-size: $fontMin;
   .btn-play {
+    overflow: hidden;
     width: 61px;
     height: 31px;
     padding: 6px 0 0 5px;

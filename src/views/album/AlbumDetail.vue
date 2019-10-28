@@ -18,7 +18,10 @@
           <p class="info-about info-date">发行时间：{{publishDate}}</p>
           <p class="info-about info-company">发行公司：{{detail.company}}</p>
           <div class="info-btn">
-            <btn-bar></btn-bar>
+            <btn-bar>
+              <span slot="share">({{detail.info.shareCount}})</span>
+              <span slot="comment">({{detail.info.commentCount}})</span>
+            </btn-bar>
           </div>
         </div>
       </div>
@@ -60,28 +63,33 @@ export default {
   data() {
     return {
       songList: [], // 专辑歌曲列表
-      detail: {}, // 专辑详情
+      detail: { // 专辑详情
+        artists: [],
+        publishTime: 0,
+        description: '',
+        name: '',
+        company: '',
+        picUrl: '',
+        info: {
+          shareCount: 0,
+          commentCount: 0,
+        },
+      },
+      albumLikes: [1], // 边栏参数，喜欢这个专辑的人
       ownAlbums: [], // 边栏参数，Ta 的其他热门专辑
-      albumLikes: [1], // 边栏参数，
-      download: true, // 边栏参数，
+      download: true, // 边栏参数，显示 app 下载选项
     };
   },
 
   computed: {
-    albumId() {
-      return this.$route.query.id;
-    },
     singers() {
-      // 获取数据前 artists 属性不可用
-      return this.detail.artists ? getSingers(this.detail.artists) : [];
+      return getSingers(this.detail.artists);
     },
     publishDate() {
-      // 获取数据前 artists 属性不可用
-      return this.detail.publishTime ? dateFormat(this.detail.publishTime) : '1970-01-01';
+      return dateFormat(this.detail.publishTime)
     },
     description() {
-      // 获取数据前 artists 属性不可用
-      return this.detail.description ? this.detail.description.split('\t') : '';
+      return this.detail.description.split('\t');
     }
   },
 
@@ -92,11 +100,19 @@ export default {
   methods: {
     initialData() {
       // 获取专辑信息
-      getAlbumDetail(this.albumId).then(res => {
-        // console.log(res.data);
+      const albumId = this.$route.query.id;
+      getAlbumDetail(albumId).then(res => {
+        // console.log(res.data.album);
+        const album = res.data.album;
         this.songList = res.data.songs;
-        this.detail = res.data.album;
-        // console.log(this.detail);
+        this.detail.artists = album.artists;
+        this.detail.publishTime = album.publishTime;
+        this.detail.description = album.description;
+        this.detail.name = album.name;
+        this.detail.company = album.company;
+        this.detail.picUrl = album.picUrl;
+        this.detail.info.shareCount = album.info.shareCount;
+        this.detail.info.commentCount = album.info.commentCount;
       }).catch(err => {
         console.log(err);
       }).finally(() => {
@@ -107,6 +123,12 @@ export default {
           this.ownAlbums = res.data.hotAlbums;
         });
       });
+    },
+  },
+
+  watch: {
+    '$route' (to, from) {
+      this.initialData();
     },
   },
 

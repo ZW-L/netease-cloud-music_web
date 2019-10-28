@@ -50,10 +50,6 @@ export default {
     }
   },
 
-  mounted() {
-
-  },
-
   methods: {
     toPlaylistView() {
       this.$router.push({ path: '/playlist', query: { id: this.info.id }});

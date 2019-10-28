@@ -4,36 +4,51 @@
       <div class="wrapper">
         <h1 class="cate-title">云音乐特色榜</h1>
         <div class="cate-list">
-          <rank-list-card 
-            v-for="(item, i) of featureRank" :key="i"
-            :detail="item"
-            :class="{ 'cate-item-active': item.id === id }"
-            @click.native="changeList(item.id)"
-          ></rank-list-card>
+          <div v-for="(item, i) of featureRank" :key="i"
+            :class="['card', { 'cate-item-active': item.id === id }]"
+            @click="changeList(item.id)"
+          >
+            <div class="img">
+              <img :src="item.coverImgUrl" :alt="item.name">
+            </div>
+            <div class="desc">
+              <p class="name">{{item.name}}</p>
+              <p class="info">{{item.updateFrequency}}</p>
+            </div>
+          </div>
         </div>
       </div>
       <div class="wrapper">
         <h1 class="cate-title">全球媒体榜</h1>
         <ul class="cate-list">
-          <rank-list-card 
-            v-for="(item, i) of globalRank" :key="i"
-            :detail="item"
-            :class="{ 'cate-item-active': item.id === id }"
-            @click.native="changeList(item.id)"
-          ></rank-list-card>
+          <div v-for="(item, i) of globalRank" :key="i"
+            :class="['card', { 'cate-item-active': item.id === id }]"
+            @click="changeList(item.id)"
+          >
+            <div class="img">
+              <img :src="item.coverImgUrl" :alt="item.name">
+            </div>
+            <div class="desc">
+              <p class="name">{{item.name}}</p>
+              <p class="info">{{item.updateFrequency}}</p>
+            </div>
+          </div>
         </ul>
       </div>
     </div>
-    <div class="list">
+    <div class="list" ref="list">
       <div class="list-poster">
-        <rank-list-poster :info="listInfo"></rank-list-poster>
+        <rank-list-poster 
+          :info="listInfo"
+          :updateFrequency="updateFrequency"
+        ></rank-list-poster>
       </div>
       <div class="list-main">
         <div class="list-title">
           <span class="title-main">歌曲列表</span>
-          <span class="title-sub">100首歌</span>
+          <span class="title-sub">{{trackCount}}首歌</span>
           <span class="title-play">播放：
-            <em class="title-play-count" v-if="listInfo.playCount">{{listInfo.playCount}}</em>次
+            <em class="title-play-count">{{playCount}}</em>次
           </span>
         </div>
         <rank-list-table :songList="songList"></rank-list-table>
@@ -43,25 +58,31 @@
 </template>
 
 <script>
-import RankListCard from '@/components/base/RankListCard.vue';
 import RankListPoster from '@/components/base/RankListPoster.vue';
 import RankListTable from '@/components/base/RankListTable.vue';
 import { getToplistDetail, getBillboard } from '~api/get.js';
 import { mapGetters } from 'vuex';
 
 export default {
-  name: '',
+  name: 'toplist-view',
 
   components: {
-    RankListCard,
     RankListPoster,
     RankListTable,
   },
 
-  props: {},
-
   data() {
     return {
+      listInfo: {
+        name: '',
+        coverImgUrl: '',
+        updateTime: 0,
+        subscribedCount: 0,
+        shareCount: 0,
+        commentCount: 0,
+      },
+      trackCount: 0,
+      playCount: 0,
       songList: [],
       id: 19723756,
     }
@@ -69,46 +90,65 @@ export default {
 
   computed: {
     ...mapGetters(['featureRank', 'globalRank', 'toIdx']),
-    listInfo() {
-      return this.featureRank.find(v => v.id === this.id) || this.globalRank.find(v => v.id === this.id);
+    updateFrequency() {
+      const oid = this.featureRank.find(v => v.id == this.id) || this.globalRank.find(v => v.id == this.id)
+      return oid ? oid.updateFrequency : '每天更新';
+    },
+    idx() {
+      return this.toIdx[`id_${this.id}`];
     },
   },
 
   mounted() {
-    this._handleGetData();
-    // console.log(this.featureRank);
+    this.initialData();
+  },
+
+  beforeRouteEnter (to, from, next) {
+    console.log('to other route...');
+    next();
   },
 
   methods: {
-    _handleGetData() {
-      getToplistDetail().then(res => {
-        // console.log(res.data.list);
-        const data = res.data.list;
-        const featureRank = data.slice(0, 4);
-        const globalRank = data.slice(4);
-        this.$store.commit('UPDATE_FEATURE_RANK', featureRank);
-        this.$store.commit('UPDATE_GLOBAL_RANK', globalRank);
-      }).catch(err => {
-        console.log(err);
-      });
-      getBillboard(3).then(res => {
-        // console.log(res.data.playlist.tracks);
-        this.songList = this.songList.concat(res.data.playlist.tracks);
+    // 初始化页面数据
+    initialData() {
+      // 判断是否从路由跳转而来
+      this.id = this.$route.query.id || this.id;
+      // 获取排行榜的歌曲列表
+      getBillboard(this.idx).then(res => {
+        // console.log(res.data.playlist);
+        this._extractBillboardData(res);
       }).catch(err => {
         console.log(err);
       });
     },
-    
-    changeList(i) {
-      this.id = i;
-      const idx = this.toIdx[`id_${i}`];
-      getBillboard(idx).then(res => {
-        // console.log(res.data.playlist.tracks);
-        this.songList = res.data.playlist.tracks;
-      }).catch(err => {
-        console.log(err);
-      });
+    // 切换排行榜
+    changeList(id) {
+      // 响应为当前路由，传递 id 参数
+      this.$router.push({ path: '/discover/toplist', query: { id }});
     },
+    // 提取排行榜右侧的信息: 图片、歌曲信息等各种数据
+    _extractBillboardData(res) {
+      const detail = res.data.playlist;
+      const info = this.listInfo;
+      info.name = detail.name;
+      info.coverImgUrl = detail.coverImgUrl;
+      info.updateTime = detail.updateTime;
+      info.updateFrequency = detail.updateFrequency || info.updateFrequency;
+      info.subscribedCount = detail.subscribedCount;
+      info.shareCount = detail.shareCount;
+      info.commentCount = detail.commentCount;
+      this.trackCount = detail.trackCount;
+      this.playCount = detail.playCount;
+      this.songList = detail.tracks;
+    }
+  },
+
+  watch: {
+    // 监听路由变化，重新获取数据，复用当前组件
+    '$route' (to, from) {
+      this.id = to.query.id;
+      this.initialData();
+    }
   },
 
 }
@@ -117,6 +157,7 @@ export default {
 <style lang="scss" scoped>
 
 @import '~css/variables.scss';
+@import '~css/mixins.scss';
 
 .top {
   display: flex;
@@ -134,6 +175,32 @@ export default {
         padding: 0 10px 12px;
         font-size: $fontMinL;
         font-weight: bold;
+      }
+      .cate-list {
+        .card {
+          display: flex;
+          padding: 10px 0 10px 20px;
+          @include hoverBg($bgFooter);
+          .img {
+            width: 40px;
+            height: 40px;
+            img {
+              width: 100%;
+            }
+          }
+          .desc {
+            flex: 1;
+            margin-left: 8px;
+            .name, .info  {
+              height: 20px;
+              line-height: 20px;
+              font-size: $fontMin;
+            }
+            .info {
+              color: $textLinkDefault;
+            }
+          }
+        }
       }
     }
     .cate-item-active {

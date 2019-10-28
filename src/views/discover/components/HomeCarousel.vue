@@ -18,9 +18,7 @@
           ></span>
         </div>
       </div>
-      <div class="content-download">
-        
-      </div>
+      <div class="content-download"></div>
     </div>
   </div>
 </template>

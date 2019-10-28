@@ -17,23 +17,24 @@
     <div class="list">
       <div class="item" v-for="(item, i) of list" :key="i">
         <span class="item-order">{{i+1}}</span>
-        <span class="item-name">{{item.name}}</span>
+        <span class="item-name" @click="toSongView(item)">{{item.name}}</span>
       </div>
     </div>
     <div class="footer">
-      <span class="show-all">查看全部&gt;</span>
+      <span class="show-all" @click="toToplistView()">查看全部&gt;</span>
     </div>
   </div>
 </template>
 
 <script>
 import { getBillboard } from  '@/api/get.js';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'bill-category-item',
 
   props: {
-    idx: {
+    id: {
       type: Number,
     },
   },
@@ -46,15 +47,37 @@ export default {
     }
   },
 
+  computed: {
+    ...mapGetters(['toIdx']),
+  },
+
   mounted() {
-    getBillboard(this.idx).then(res => {
-      const playlist = res.data.playlist;
-      this.name = playlist.name;
-      this.coverImgUrl = playlist.coverImgUrl;
-      this.list = playlist.tracks.slice(0, 10);
-    }).catch(err => {
-      console.log(err);
-    });
+    this.initialData();
+  },
+
+  methods: {
+    initialData() {
+      const idx = this.toIdx[`id_${this.id}`];
+      // ???????
+      getBillboard(idx).then(res => {
+        const playlist = res.data.playlist;
+        this.name = playlist.name;
+        this.coverImgUrl = playlist.coverImgUrl;
+        this.list = playlist.tracks.slice(0, 10);
+      }).catch(err => {
+        console.log(err);
+      });
+    },
+    // ????
+    toSongView(item) {
+      // console.log(item.id);
+      this.$router.push({ path: '/song', query: { id: item.id }});
+    },
+    // ?????
+    toToplistView() {
+      // console.log(this.id);
+      this.$router.push({ path: '/discover/toplist', query: { id: this.id }});
+    },
   },
 
 }

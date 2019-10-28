@@ -1,10 +1,16 @@
+/**
+ * @param {number} time
+ * @returns {string} 10月28日
+ */
 export const getMonthAndDay = function (time) {
-  console.log(time);
-  const date = new Date(time);
-  const match = date.toLocaleDateString().match(/\d{4}-(\d{2})-(\d{2})/);
-  return `${match[1]}æœˆ${match[2]}æ—¥`;
+  const match = new Date(time).toLocaleDateString().split(/\W/);
+  return `${match[1]}月${match[2]}日`;
 };
 
+/**
+ * @param {number} time
+ * @returns {string} 2019-10-28
+ */
 export const dateFormat = function (time) {
   const match = new Date(time).toLocaleDateString().split(/\W/);
   const month = match[1].length === 2 ? match[1] : `0${match[1]}`;

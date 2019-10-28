@@ -25,11 +25,13 @@
               歌手：<a href="">{{singers}}</a>
             </p>
             <p>
-              所属专辑：<a href="">{{detail.al.name}}</a>
+              所属专辑：<a href="#" @click="toAlbumView(detail.al.id)">{{detail.al.name}}</a>
             </p>
           </div>
           <div class="info-btn">
-            <btn-bar :detail="detail"></btn-bar>
+            <btn-bar :detail="detail">
+              <span slot="comment">(123)</span>
+            </btn-bar>
           </div>
           <div class="info-lyric">
             <div class="lyric-main" ref="lyric">
@@ -71,7 +73,12 @@ export default {
 
   data() {
     return {
-      detail: {}, // 歌曲详情
+      detail: { // 歌曲详情
+        al: '',
+        alia: '',
+        ar: [],
+        name: '',
+      }, 
       lyric: '', // 歌词
       showAllLyric: false, // 控制显示全部歌词
       relativePlaylist: [], // 边栏参数，相似歌单
@@ -87,9 +94,6 @@ export default {
     lyricControlIcon() {
       return showAllLyric ? 'ctrl-down-icon' : 'ctrl-up-icon';
     },
-    songId() {
-      return this.$route.query.id;
-    },
     singers() {
       return getSingers(this.detail.ar);
     },
@@ -103,23 +107,30 @@ export default {
     // 初始化页面信息
     initialDetail() {
       // 获取歌曲信息
-      getSongDetail(this.songId).then(res => {
-        // console.log(res.data.songs);
-        this.detail = res.data.songs[0];
+      const songId = this.$route.query.id;
+      getSongDetail(songId).then(res => {
+        // console.log(res.data.songs[0]);
+        const data = res.data.songs[0];
+        this.detail.al = data.al;
+        this.detail.alia = data.alia;
+        this.detail.ar = this.detail.ar.concat(data.ar);
+        this.detail.name = data.name;
+        this.detail.id = data.id;
+        this.detail.picUrl = data.al.picUrl;
       });
       // 获取歌词
-      getLyric(this.songId).then(res => {
+      getLyric(songId).then(res => {
         // console.log(res.data.lrc.lyric);
         this.lyric = res.data.lrc.lyric;
       });
       // 获取相似歌单
-      getSimPlaylist(this.songId).then(res => {
+      getSimPlaylist(songId).then(res => {
         // console.log(res.data.playlists);
         this.relativePlaylist = res.data.playlists;
       });
       // 获取相似音乐
-      getSimSong(this.songId).then(res => {
-        console.log(res.data.songs);
+      getSimSong(songId).then(res => {
+        // console.log(res.data.songs);
         this.similarSong = res.data.songs;
       });
     },
@@ -132,6 +143,15 @@ export default {
         lyric.style.height = 'auto';
       }
       this.showAllLyric = !this.showAllLyric;
+    },
+    toAlbumView(albumId) {
+      this.$router.push({ path: '/album', query: { id: albumId }});
+    },
+  },
+
+  watch: {
+    '$route' (to, from) {
+      this.initialDetail();
     },
   },
 

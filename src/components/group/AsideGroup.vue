@@ -11,11 +11,13 @@
         <em class="title-more">查看全部&gt;</em>
       </h3>
       <div class="list">
-        <div class="item" v-for="i of 5" :key="i">
-          <div class="item-pic"></div>
+        <div class="item" v-for="(item, i) of inSingers" :key="i">
+          <div class="item-pic">
+            <img :src="item.avatar">
+          </div>
           <div class="item-info">
-            <p class="info-name">张惠妹aMEI</p>
-            <p class="info-desc">台湾歌手张惠妹</p>
+            <p class="info-name">{{item.name}}</p>
+            <p class="info-desc">{{item.desc}}</p>
           </div>
         </div>
       </div>
@@ -26,14 +28,16 @@
     <div v-if="hotPlayers.length" class="content hot-players">
       <h3 class="title">热门主播</h3>
       <div class="list">
-        <div class="item" v-for="i of 5" :key="i">
-          <div class="item-avatar"></div>
+        <div class="item" v-for="(item, i) of hotPlayers" :key="i">
+          <div class="item-avatar">
+            <img :src="item.avatar">
+          </div>
           <div class="item-info">
             <p class="info-name">
-              陈立
+              {{item.name}}
               <i class="info-name-sup"></i>
             </p>
-            <p class="info-desc">心理学家、美食家陈立教授</p>
+            <p class="info-desc">{{item.desc}}</p>
           </div>
         </div>
       </div>
@@ -47,7 +51,7 @@
             <img :src="item.coverImgUrl+'?param=50y50'">
           </div>
           <div class="item-info">
-            <p class="info-name">{{item.name}}</p>
+            <p class="info-name" @click="toPlaylistView(item)">{{item.name}}</p>
             <p class="info-creator">
               <em>by</em>
               <em v-show="item.creator" class="creator-name">{{item.creator.nickname}}</em>
@@ -61,13 +65,13 @@
       <div class="list">
         <div class="item" v-for="(item, i) of similarSong" :key="i">
           <div class="item-info">
-            <p class="info-name">{{item.name}}</p>
+            <p class="info-name" @click="toSongView(item)">{{item.name}}</p>
             <p class="info-singers">
               <span class="singer-item" v-for="(si, i) of similarSongSingers(item)" :key="i">{{si}}</span>
             </p>
           </div>
           <div class="item-ctrl">
-            <span class="ctrl-play"></span>
+            <span class="ctrl-play" @click="toPlaySong(item)"></span>
             <span class="ctrl-add"></span>
           </div>
         </div>
@@ -91,7 +95,7 @@
             <img :src="item.picUrl+'?param=50y50'">
           </div>
           <div class="item-info">
-            <p class="info-name">{{item.name}}</p>
+            <p class="info-name" @click="toAlbumView(item)">{{item.name}}</p>
             <p class="info-date">{{handleFormatTime(item.publishTime)}}</p>
           </div>
         </div>
@@ -114,10 +118,10 @@
             <img v-show="item.coverImgUrl" :src="item.coverImgUrl+'?param=50y50'">
           </div>
           <div class="item-info">
-            <p class="info-name">{{item.name}}</p>
-            <p class="info-creator">
+            <p class="info-name" @click="toPlaylistView(item)">{{item.name}}</p>
+            <p v-show="item.creator !== undefined" class="info-creator">
               <em>by</em>
-              <em v-show="item.creator" class="creator-name">{{item.creator.nickname}}</em>
+              <em class="creator-name">{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -138,6 +142,7 @@
 
 <script>
 import { getSingers, dateFormat } from '~api/util.js';
+import { toPlayById } from '~api/control.js';
 
 export default {
   name: 'aside-group',
@@ -196,7 +201,25 @@ export default {
     },
     handleFormatTime(time) {
       return dateFormat(time);
-    }
+    },
+    toPlaylistView(item) {
+      this.$router.push({ path: 'playlist', query: { id: item.id }});
+    },
+    toSongView(item) {
+      this.$router.push({ path: 'song', query: { id: item.id }});
+    },
+    toAlbumView(item) {
+      // 有可能路由相同，此时不跳转
+      if (this.$route.query.id == item.id) {
+        console.log('same route');
+        return ;
+      }
+      this.$router.push({ path: 'album', query: { id: item.id }});
+    },
+    toPlaySong(item) {
+      // console.log(item);
+      toPlayById(this.$store, item.id);
+    },
   },
 
 }
@@ -359,6 +382,9 @@ export default {
         line-height: 15px;
         @include ellipse();
       }
+      .info-name {
+        @include hoverText();
+      }
       .info-singers {
         color: $inputInfo;
       }
@@ -371,6 +397,9 @@ export default {
         width: 10px;
         height: 11px;
         margin: 10px 0 0 10px;
+        &:hover {
+          cursor: pointer;
+        }
       }
       .ctrl-play {
         background: url('../../../public/img/icons/icon2.png') no-repeat -69px -455px;
@@ -405,6 +434,7 @@ export default {
       }
       .info-name {
         font-size: $fontMinL;
+        @include hoverText();
       }
     }
   }
@@ -447,10 +477,13 @@ export default {
       }
       .info-name {
         font-size: $fontMinL;
+        @include hoverText();
       }
       .info-creator {
+        color: $titleSub;
         .creator-name {
           margin-left: 5px;
+          @include hoverText();
         }
       }
     }

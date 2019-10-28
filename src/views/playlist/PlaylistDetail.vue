@@ -14,16 +14,20 @@
           </div>
           <p class="info-create">
             <span class="create-item ctor-pic">
-              <img v-show="detail.creator" :src="detail.creator.avatarUrl+'?param=40y40'">
+              <img :src="creatorPic">
             </span>
-            <a v-show="detail.creator" href="" class="create-item ctor-name">{{detail.creator.nickname}}</a>
+            <a href="#" class="create-item ctor-name">{{creatorName}}</a>
             <span class="create-item create-time">
               <em>{{createTime}}</em>
                创建
             </span>
           </p>
           <div class="info-btn">
-            <btn-bar></btn-bar>
+            <btn-bar>
+              <span slot="collect">({{detail.subscribedCount}})</span>
+              <span slot="share">({{detail.shareCount}})</span>
+              <span slot="comment">({{detail.commentCount}})</span>
+            </btn-bar>
           </div>
           <div class="info-tag">
             <span class="tag-name">标签：</span>
@@ -53,9 +57,9 @@
 </template>
 
 <script>
+import AsideGroup from '@/components/group/AsideGroup';
 import BtnBar from '@/components/base/BtnBar.vue';
 import SongListTable from '@/components/base/SongListTable.vue';
-import AsideGroup from '@/components/group/AsideGroup';
 import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '~api/get.js';
 import { dateFormat } from '~api/util.js';
 
@@ -63,19 +67,17 @@ export default {
   name: 'playlist-detail',
 
   components: {
+    AsideGroup,
     BtnBar,
     SongListTable,
-    AsideGroup,
   },
-
-  props: {},
 
   data() {
     return {
       detail: {}, // 歌单详情
       songList: [], // 歌单的所有歌曲
-      playlistLikes: [1], // 边栏参数，喜欢歌单的人
-      relativeRecommend: [1], // 边栏参数，相关歌单推荐
+      playlistLikes: [], // 边栏参数，喜欢歌单的人
+      relativeRecommend: [], // 边栏参数，相关歌单推荐
       download: true, // 边栏参数，app 选项
     };
   },
@@ -84,12 +86,13 @@ export default {
     playlistId() {
       return this.$route.query.id;
     },
-    /* creatorName() {
+    // 怎么优化处理数据？？？
+    creatorPic() {
+      return this.detail.creator ? `${this.detail.creator.avatarUrl}?param=40y40` : '';
+    },
+    creatorName() {
       return this.detail.creator ? this.detail.creator.nickname : '';
-    }, */
-    /* creatorPic() {
-      return this.detail.creator ? `${this.detail.creator.avatarUrl}?param=40y40` : 'default.jpg';
-    }, */
+    },
     createTime() {
       return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01';
     },
@@ -106,16 +109,20 @@ export default {
       getPlaylistDetail(this.playlistId).then(res => {
         // console.log(res.data);
         const data = res.data.playlist;
-        const obj = {};
-        obj.coverImgUrl = data.coverImgUrl;
-        obj.name = data.name;
-        obj.creator = data.creator;
-        obj.createTime = data.createTime;
-        obj.desc = data.description;
-        obj.tags = data.tags;
-        obj.trackCount = data.trackCount;
-        obj.playCount = data.playCount;
-        this.detail = obj;
+        const obj = this.detail;
+        this.detail = Object.assign({}, this.detail, {
+          coverImgUrl: data.coverImgUrl,
+          name: data.name,
+          creator: data.creator,
+          createTime: data.createTime,
+          subscribedCount: data.subscribedCount,
+          shareCount: data.shareCount,
+          commentCount: data.commentCount,
+          tags: data.tags,
+          desc: data.description,
+          trackCount: data.trackCount,
+          playCount: data.playCount,
+        });
         this.songList = data.tracks;
       });
       // 获取喜欢歌单的人
@@ -128,6 +135,12 @@ export default {
         // console.log(res.data);
         this.relativeRecommend = res.data.playlists;
       });
+    },
+  },
+
+  watch: {
+    '$route' (to, from) {
+      this.initialData();
     },
   },
 
@@ -198,6 +211,8 @@ export default {
             float: left;
           }
           .ctor-pic {
+            width: 35px;
+            height: 35px;
             img {
               width: 35px;
             }

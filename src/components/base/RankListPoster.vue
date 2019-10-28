@@ -7,14 +7,14 @@
       <div class="title">{{info.name}}</div>
       <div class="info">
         <i class="info-icon"></i>
-        <span class="info-update">最近更新：{{info.time}}</span>
-        <span class="info-frequency">（{{info.updateFrequency}}）</span>
+        <span class="info-update">最近更新：{{time}}</span>
+        <span class="info-frequency">（{{updateFrequency}}）</span>
       </div>
       <div class="btn">
         <btn-bar>
           <span slot="collect">({{info.subscribedCount}})</span>
-          <span slot="share">(21421321)</span>
-          <span slot="comment">(5142122)</span>
+          <span slot="share">({{info.shareCount}})</span>
+          <span slot="comment">({{info.commentCount}})</span>
         </btn-bar>
       </div>
     </div>
@@ -35,13 +35,16 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {},
+    },
+    updateFrequency: {
+      type: String,
+      default: '每天更新',
     },
   },
 
   computed: {
     time() {
-      return getMonthAndDay(this.info.trackUpdateTime);
+      return getMonthAndDay(this.info.updateTime);
     }
   },
 }

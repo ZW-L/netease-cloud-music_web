@@ -40,7 +40,7 @@
         >
           <p class="slot-creator">
             <em class="creator-by">by</em>
-            <a href="" class="creator-name">{{item.creator.nickname}}</a>
+            <a href="#" class="creator-name">{{item.creator.nickname}}</a>
           </p>
         </playlist-card>
       </div>

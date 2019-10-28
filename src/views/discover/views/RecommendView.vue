@@ -10,8 +10,8 @@
       <div class="content-right">
         <aside-group
           :loginInfo="loginInfo"
-          :inSingers="inSingers"
-          :hotPlayers="hotPlayers"
+          :inSingers="homeSinger"
+          :hotPlayers="homeHoster"
         ></aside-group>
       </div>
     </div>
@@ -25,6 +25,7 @@ import NewCategory from '@discover/components/NewCategory.vue';
 import BillCategory from '@discover/components/BillCategory.vue';
 import AsideGroup from '@/components/group/AsideGroup.vue'; 
 import { mapGetters } from 'vuex';
+import { getToplistDetail } from '~api/get.js';
 
 export default {
   name: 'recommend-view',
@@ -41,8 +42,6 @@ export default {
     return {
       category: ['入驻歌手', '热门主播'],
       loginInfo: true,
-      inSingers: [1],
-      hotPlayers: [1],
     };
   },
 

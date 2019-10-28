@@ -1,8 +1,11 @@
 <template>
   <div class="container">
-    <category-header :title="hot.title"></category-header>
+    <category-header 
+      :title="hot.title"
+
+    ></category-header>
     <div class="content">
-      <bill-category-item class="column" v-for="i of bill" :key="i" :idx="i"></bill-category-item>
+      <bill-category-item class="column" v-for="i of bill" :key="i" :id="i"></bill-category-item>
     </div>
   </div>
 </template>
@@ -26,7 +29,7 @@ export default {
       hot: {
         title: '榜单',
       },
-      bill: [3, 0, 2],
+      bill: [19723756, 3779629, 2884035],
     };
   },
 
