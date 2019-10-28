@@ -1,17 +1,20 @@
 <template>
   <div class="container">
     <category-header 
-      :title="hot.title"
-
+      :title="title"
+      :morePath="morePath"
     ></category-header>
     <div class="content">
-      <bill-category-item class="column" v-for="i of bill" :key="i" :id="i"></bill-category-item>
+      <bill-category-item 
+        v-for="i of bill" :key="i" 
+        :id="i" class="column"
+      ></bill-category-item>
     </div>
   </div>
 </template>
 
 <script>
-import PlaylistCard from '@/components/base/PlaylistCard.vue';
+// import PlaylistCard from '@/components/base/PlaylistCard.vue';
 import CategoryHeader from '@/components/base/CategoryHeader.vue';
 import BillCategoryItem from './BillCategoryItem.vue';
 
@@ -19,16 +22,15 @@ export default {
   name: 'bill-category',
 
   components: {
-    PlaylistCard,
+    // PlaylistCard,
     CategoryHeader,
     BillCategoryItem,
   },
 
   data() {
     return {
-      hot: {
-        title: '榜单',
-      },
+      title: '榜单',
+      morePath: '/discover/toplist',
       bill: [19723756, 3779629, 2884035],
     };
   },

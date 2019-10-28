@@ -2,10 +2,12 @@
   <div class="header">
     <div class="title">{{title}}</div>
     <ul class="list" v-show="list.length">
-      <li class="item" v-for="(item, i) of devideList" :key="i">{{item}}</li>
+      <router-link v-for="(item, i) of devideList" :key="i"
+        class="item" :to="`/discover/playlist?cate=${item}`"
+      >{{item}}</router-link>
     </ul>
     <div class="more">
-      <span class="more-text">更多</span>
+      <router-link :to="morePath" class="more-text">更多</router-link>
       <span class="more-arrow"></span>
     </div>
   </div>
@@ -27,6 +29,10 @@ export default {
     list: {
       type: Array,
       default: () => [],
+    },
+    morePath: {
+      type: String,
+      default: '/',
     }
   },
 

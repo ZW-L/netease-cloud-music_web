@@ -1,6 +1,10 @@
 <template>
   <div class="container">
-    <category-header :title="hot.title" :list="hot.list"></category-header>
+    <category-header 
+      :title="title" 
+      :list="list"
+      :morePath="morePath"
+    ></category-header>
     <div class="content">
       <ul class="playlist">
         <playlist-card class="item" 
@@ -27,10 +31,9 @@ export default {
 
   data() {
     return {
-      hot: {
-        title: '热门推荐',
-        list: ['华语', '流行', '摇滚', '民谣', '电子'],
-      },
+      title: '热门推荐',
+      list: ['华语', '流行', '摇滚', '民谣', '电子'],
+      morePath: '/discover/playlist',
       playlist: [],
     };
   },
@@ -39,8 +42,6 @@ export default {
     getPersonalized(8).then(res => {
       console.log(res.data.result);
       this.playlist = this.playlist.concat(res.data.result);
-    }).catch(err => {
-      console.log(err);
     });
   },
 

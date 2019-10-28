@@ -70,7 +70,7 @@ export default new Router({
       component: AlbumDetail,
     },
     {
-      path: '/playlist', // /playlist?id=:id
+      path: '/playlist', // /playlist?cate=:cate
       name: 'playlist',
       component: PlaylistDetail,
     },

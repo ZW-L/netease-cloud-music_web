@@ -76,13 +76,16 @@ export default {
       playlists: [], // 获取的歌单列表
       display: 'none',
       pages: 38, // 歌单页数
-      cate: '全部', // 当前的分类
+      // cate: '全部', // 当前的分类
       sub: '', // 当前的子分类
       length: 35, // 每页的歌单总数/偏移
     };
   },
 
   computed: {
+    cate() {
+      return this.$route.query.cate || '全部';
+    },
     // 一个 x 和 y 的区间，超过这个区间外的位置会隐藏歌单分类选项
     outerArea() {
       const cate = this.$refs.category;
@@ -98,7 +101,7 @@ export default {
   },
 
   mounted() {
-    this.handleGetData();
+    this.initialData();
     // 添加全局事件监听，这里是事件捕获，如果是冒泡的话点击 "选择分类" 时由于 click 冒泡会触发这个事件
     window.addEventListener('click', this.hideCategory, true);
   },
@@ -109,6 +112,24 @@ export default {
   },
 
   methods: {
+    // 初始化显示
+    initialData() {
+      // 获取歌单分类信息
+      getCategoryList().then(res => {
+        this.categoryList = this._toClassify(res.data);
+      });
+      // 获取默认分类(全部风格)
+      getCategoryBy(this.cate).then(res => {
+        this.playlists = res.data.playlists;
+      });
+    },
+    // 切换页码时
+    handleChangePage(page) {
+      const offset = (page - 1) * this.length;
+      getCategoryBy(this.cate, offset, this.length).then(res => {
+        this.playlists = res.data.playlists;
+      });
+    },
     // 隐藏歌单分类选项
     hideCategory() {
       // 只有当歌单分类选项处于显示的情况下才响应时间
@@ -135,46 +156,15 @@ export default {
         this.display = 'none';
       }
     },
-    handleGetData() {
-      // 获取歌单分类信息
-      getCategoryList().then(res => {
-        // console.log(res.data);
-        // this.categoryList = res.data;
-        this.categoryList = this._toClassify(res.data);
-      }).catch(err => {
-        console.log(err);
-      });
-      // 获取默认分类(全部风格)
-      getCategoryBy(this.cate).then(res => {
-        // console.log(res.data.playlists);
-        this.playlists = res.data.playlists;
-      }).catch(err => {
-        console.log(err);
-      });
-    },
-    // 切换页码时
-    handleChangePage(page) {
-      this.playlists = [];
-      const offset = (page - 1) * this.length;
-      getCategoryBy(this.cate, offset, this.length).then(res => {
-        // console.log(res.data.playlists);
-        this.playlists = res.data.playlists;
-      }).catch(err => {
-        console.log(err);
-      });
-    },
     // 切换分类
     toChangeCategory(cate) {
-      this.playlists = [];
-      this.cate = cate;
-      // console.log(this.cate, this.playlists);
+      // 关闭分类选项
       this.toggleShowCategory();
-      getCategoryBy(this.cate).then(res => {
-        // console.log(res.data.playlists);
-        this.playlists = res.data.playlists;
-      }).catch(err => {
-        console.log(err);
-      });
+      // 重复选择当前路由
+      if (this.cate === cate) {
+        return ;
+      }
+      this.$router.push({ path: '/discover/playlist', query: { cate: cate }});
     },
     // 将得到的分类信息格式化
     _toClassify(cate) {
@@ -187,6 +177,13 @@ export default {
       return ret;
     },
   },
+
+  watch: {
+    '$route' (to, from) {
+      this.initialData();
+    },
+  },
+
 };
 </script>
 

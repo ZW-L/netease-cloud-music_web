@@ -1,17 +1,28 @@
 <template>
   <div class="container">
-    <category-header :title="hot.title" :list="hot.list"></category-header>
+    <category-header 
+      :title="title"
+      :morePath="morePath"
+    ></category-header>
     <div class="content">
       <div class="wrapper">
-        <ul class="list">
-          <new-disc-card class="item" 
-            v-for="(item, i) of albums" :key="i"
-            :album="item"
-          ></new-disc-card>
-        </ul>
+        <transition :name="vname">
+          <ul v-show="showList==='first'" class="list first-list" ref="first">
+            <li class="item" v-for="(item, i) of albums.slice(0, 5)" :key="i">
+              <new-disc-card :album="item"></new-disc-card>
+            </li>
+          </ul>
+        </transition>
+        <transition :name="vname">
+          <ul v-show="showList==='second'" class="list second-list" ref="second">
+            <li class="item" v-for="(item, i) of albums.slice(5, 10)" :key="i">
+              <new-disc-card :album="item"></new-disc-card>
+            </li>
+          </ul>
+        </transition>
       </div>
-      <span class="prev">&nbsp;</span>
-      <span class="next">&nbsp;</span>
+      <span class="prev" @click="handleShowList('prev')">&nbsp;</span>
+      <span class="next" @click="handleShowList('next')">&nbsp;</span>
     </div>
   </div>
 </template>
@@ -29,31 +40,37 @@ export default {
     NewDiscCard,
   },
 
-  props: {},
-
   data() {
     return {
-      hot: {
-        title: '新碟上架',
-      },
+      title: '新碟上架',
+      morePath: '/discover/album',
       albums: [],
+      showList: 'first',
+      vname: '',
     };
   },
 
   mounted() {
-    getNewest().then(res => {
-      // console.log(res.data.albums);
-      this.albums = this.albums.concat(res.data.albums).slice(0, 5);
-    }).catch(err => {
-      console.log(err);
-    });
+    this.initialData();
+  },
+
+  methods: {
+    initialData() {
+      getNewest().then(res => {
+        this.albums = this.albums.concat(res.data.albums).slice(0, 10);
+      });
+    },
+    handleShowList(choose) {
+      // 后续应该添加节流函数
+      this.vname = choose === 'prev' ? 'prev' : 'next';
+      this.showList = this.showList === 'first' ? 'second' : 'first';
+    },
   },
 
 }
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 
@@ -62,15 +79,21 @@ export default {
   width: 100%;
   .content {
     position: relative;
+    margin: 20px 0 37px 0;
+    border: 1px solid $bdcDefault;
+    background-color: $bgContent;
     .wrapper {
+      overflow: hidden;
+      position: relative;
       box-sizing: border-box;
       height: 186px;
-      margin: 20px 0 37px 0;
-      border: 1px solid $bdcDefault;
-      background-color: $bgContent;
+      margin: 0 20px 0 20px;
       .list {
-        margin: 25px 20px;
+        position: absolute;
+        top: 20px;
+        bottom: 20px;
         .item {
+          display: inline-block;
           margin-left: 11px;
         }
       }
@@ -100,5 +123,24 @@ export default {
     }
   }
 }
+
+// transition
+.next-enter {
+  transform: translateX(-670px);
+}
+.next-leave-to {
+  transform: translateX(670px);
+}
+.next-enter-active, .next-leave-active {
+  transition: all .8s ease;
+}
+.prev-enter {
+  transform: translateX(670px);
+}
+.prev-leave-to {
+  transform: translateX(-670px);
+}
+.prev-enter-active, .prev-leave-active {
+  transition: all .8s ease;
+}
 </style>
-      

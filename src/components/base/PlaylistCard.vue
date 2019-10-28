@@ -106,6 +106,10 @@ export default {
         width: 16px;
         height: 17px;
         background: url('../../../public/img/icons/iconall.png') no-repeat 0 0;
+        &:hover {
+          cursor: pointer;
+          background: url('../../../public/img/icons/iconall.png') no-repeat 0 -60px;
+        }
       }
     }
   }

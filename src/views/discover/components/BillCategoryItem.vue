@@ -3,11 +3,13 @@
     <div class="header">
       <div class="header-left">
         <img class="left-pic" :src="coverImgUrl" alt="">
-        <a href="" class="left-link">
+        <a href="#" class="left-link" @click="toToplistView()">
         </a>
       </div>
       <div class="header-right">
-        <div class="right-title">{{name}}</div>
+        <div class="right-title">
+          <a href="#" @click="toToplistView()">{{name}}</a>
+        </div>
         <div class="right-options">
           <span class="option-play"></span>
           <span class="option-addall"></span>
@@ -17,17 +19,23 @@
     <div class="list">
       <div class="item" v-for="(item, i) of list" :key="i">
         <span class="item-order">{{i+1}}</span>
-        <span class="item-name" @click="toSongView(item)">{{item.name}}</span>
+        <a class="item-name" @click="toSongView(item)">{{item.name}}</a>
+        <div class="item-opt">
+          <span class="opt opt-play" @click="handleToPlay(item)"></span>
+          <span class="opt opt-add"></span>
+          <span class="opt opt-collect"></span>
+        </div>
       </div>
     </div>
     <div class="footer">
-      <span class="show-all" @click="toToplistView()">查看全部&gt;</span>
+      <a class="show-all" @click="toToplistView()">查看全部&gt;</a>
     </div>
   </div>
 </template>
 
 <script>
 import { getBillboard } from  '@/api/get.js';
+import { toPlay } from '~api/control.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -58,7 +66,6 @@ export default {
   methods: {
     initialData() {
       const idx = this.toIdx[`id_${this.id}`];
-      // ???????
       getBillboard(idx).then(res => {
         const playlist = res.data.playlist;
         this.name = playlist.name;
@@ -68,15 +75,16 @@ export default {
         console.log(err);
       });
     },
-    // ????
     toSongView(item) {
       // console.log(item.id);
       this.$router.push({ path: '/song', query: { id: item.id }});
     },
-    // ?????
     toToplistView() {
       // console.log(this.id);
       this.$router.push({ path: '/discover/toplist', query: { id: this.id }});
+    },
+    handleToPlay(item) {
+      toPlay(this.$store, item);
     },
   },
 
@@ -86,6 +94,7 @@ export default {
 <style lang="scss" scoped>
 
 @import '@/assets/css/variables.scss';
+@import '@/assets/css/mixins.scss';
 
 .container {
   .header {
@@ -119,6 +128,7 @@ export default {
         color: #333;
         font-size: $fontMinL;
         font-weight: bold;
+        @include hoverText();
       }
       .right-options {
         margin-top: 10px;
@@ -130,9 +140,17 @@ export default {
         }
         .option-play {
           background: url('../../../../public/img/icons/index.png') no-repeat -267px -205px;
+          &:hover {
+            cursor: pointer;
+            background: url('../../../../public/img/icons/index.png') no-repeat -267px -235px;
+          }
         }
         .option-addall {
           background: url('../../../../public/img/icons/index.png') no-repeat -300px -205px;
+          &:hover {
+            cursor: pointer;
+            background: url('../../../../public/img/icons/index.png') no-repeat -300px -235px;
+          }
         }
       }
     }
@@ -140,11 +158,12 @@ export default {
   .list {
     color: $textDefault;
     .item {
+      position: relative;
       height: 32px;
       padding-left: 20px;
       line-height: 32px;
       .item-order, .item-name {
-        display: inline-block;
+        float: left;
         height: 32px;
       }
       .item-order {
@@ -155,6 +174,43 @@ export default {
       .item-name {
         width: 170px;
         font-size: $fontMin;
+      }
+      .item-opt {
+        display: none;
+        position: absolute;
+        width: 75px;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        .opt {
+          float: left;
+          width: 17px;
+          height: 17px;
+        }
+        .opt-play {
+          margin-top: 8px;
+          margin-right: 8px;
+          background: url('../../../../public/img/icons/index.png') no-repeat -267px -268px;
+          &:hover {
+            background: url('../../../../public/img/icons/index.png') no-repeat -267px -288px;
+          }
+        }
+        .opt-add {
+          margin-top: 10px;
+          margin-right: 6px;
+          background: url('../../../../public/img/icons/icon.png') no-repeat 0 -700px;
+          &:hover {
+            background: url('../../../../public/img/icons/icon.png') no-repeat -22px -700px;
+          }
+        }
+        .opt-collect {
+          margin-top: 8px;
+          margin-right: 10px;
+          background: url('../../../../public/img/icons/index.png') no-repeat -297px -268px;
+          &:hover {
+            background: url('../../../../public/img/icons/index.png') no-repeat -297px -288px;
+          }
+        }
       }
       &:nth-child(odd) {
         background-color: $bgTableDark;
@@ -171,8 +227,13 @@ export default {
       }
       &:hover {
         .item-name {
+          width: 96px;
           cursor: pointer;
           text-decoration: underline;
+          @include ellipse();
+        }
+        .item-opt {
+          display: block;
         }
       }
     }
