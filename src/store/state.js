@@ -68,12 +68,18 @@ const state = {
     },
     info: {},
   },
-  nowPlay: {
+  nowPlay: { // 当前播放信息
     name: '',
     singer: [],
     id: '',
     picUrl: '',
+    from: '', // 来自歌单/专辑
+    mvId: '', // mv
   },
+  playlist: [], // 播放列表
+  /* playMode: 0, // 0 -> 循环, 1 ->随机, 2 -> 单曲循环
+  voice: 1, // 音量
+  isBarLock: true, // 锁定播放条 */
 };
 
 export default state;

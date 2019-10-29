@@ -1,5 +1,8 @@
 export const UPDATE_FEATURE_RANK = 'UPDATE_FEATURE_RANK';
 export const UPDATE_GLOBAL_RANK = 'UPDATE_GLOBAL_RANK';
 export const UPDATE_NOW_PLAY = 'UPDATE_NOW_PLAY';
+export const CHANGE_PLAYLIST = 'CHANGE_PLAYLIST';
+export const CLEAR_PLAYLIST = 'CLEAR_PLAYLIST';
+export const ADD_TO_PLAYLIST = 'ADD_TO_PLAYLIST';
 
 export default {};

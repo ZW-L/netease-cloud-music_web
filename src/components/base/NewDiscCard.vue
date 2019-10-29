@@ -5,7 +5,7 @@
         :src="album.picUrl" 
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
-      <span :class="['play-icon', `play-icon-${size}`]"></span>
+      <span :class="['play-icon', `play-icon-${size}`]" @click.stop="playAll()"></span>
     </div>
     <p class="card-title" ref="title" @click="toAlbumView()">{{album.name}}</p>
     <p class="card-artists">
@@ -17,7 +17,8 @@
 </template>
 
 <script>
-import { addSeparator } from '@/api/util.js'
+import { addSeparator } from '~api/util.js'
+import { getAlbumDetail } from '~api/get.js';
 
 export default {
   name: 'new-disc-card',
@@ -61,6 +62,12 @@ export default {
   methods: {
     toAlbumView() {
       this.$router.push({ path: '/album', query: { id: this.album.id }});
+    },
+    playAll() {
+      getAlbumDetail(this.album.id).then(res => {
+        const playlist = res.data.songs;
+        this.$store.dispatch('changePlaylist', playlist);
+      });
     },
   },
 }
@@ -143,6 +150,7 @@ lg: 130x130
 }
 
 .play-icon {
+  z-index: 10;
   display: none;
   position: absolute;
   background-color: #ccc;
@@ -153,6 +161,7 @@ lg: 130x130
     height: 22px;
     background: url('../../../public/img/icons/iconall.png') no-repeat 0 -85px;
     &:hover {
+      cursor: pointer;
       background: url('../../../public/img/icons/iconall.png') no-repeat 0 -110px;      
     }
   }
@@ -163,6 +172,7 @@ lg: 130x130
     height: 28px;
     background: url('../../../public/img/icons/iconall.png') no-repeat 0 -140px;
     &:hover {
+      cursor: pointer;
       background: url('../../../public/img/icons/iconall.png') no-repeat 0 -170px;      
     }
   }

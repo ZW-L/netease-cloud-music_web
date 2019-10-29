@@ -23,7 +23,7 @@
             </span>
           </p>
           <div class="info-btn">
-            <btn-bar>
+            <btn-bar @playAll="handlePlayAll">
               <span slot="collect">({{detail.subscribedCount}})</span>
               <span slot="share">({{detail.shareCount}})</span>
               <span slot="comment">({{detail.commentCount}})</span>
@@ -62,6 +62,7 @@ import BtnBar from '@/components/base/BtnBar.vue';
 import SongListTable from '@/components/base/SongListTable.vue';
 import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '~api/get.js';
 import { dateFormat } from '~api/util.js';
+import { toPlay } from '~api/control.js';
 
 export default {
   name: 'playlist-detail',
@@ -135,6 +136,9 @@ export default {
         // console.log(res.data);
         this.relativeRecommend = res.data.playlists;
       });
+    },
+    handlePlayAll() {
+      this.$store.dispatch('changePlaylist', this.songList);
     },
   },
 

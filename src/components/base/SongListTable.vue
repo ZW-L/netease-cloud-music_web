@@ -22,7 +22,7 @@
           <td class="td-indent">
             <span class="td-indent-order">{{i+1}}</span>
             <span class="td-title-play"
-              @click="toPlay(item)"
+              @click="handlePlay(item)"
             >&nbsp;</span>
           </td>
           <td class="td-title">
@@ -91,14 +91,8 @@ export default {
     _getDuration(d) {
       return getDuration(d);
     },
-    toPlay(item) {
-      console.log(item);
-      const payload = {};
-      payload.id = item.id;
-      payload.name = item.name;
-      payload.singer = item.ar;
-      payload.picUrl = `${item.al.picUrl}?param=34y34`;
-      this.$store.commit('UPDATE_NOW_PLAY', payload);
+    handlePlay(item) {
+      this.$store.dispatch('toPlay', item);
     },
     toSongView(item) {
       this.$router.push({ path: '/song', query: { id: item.id }});

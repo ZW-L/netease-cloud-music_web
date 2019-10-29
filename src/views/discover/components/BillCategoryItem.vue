@@ -11,7 +11,7 @@
           <a href="#" @click="toToplistView()">{{name}}</a>
         </div>
         <div class="right-options">
-          <span class="option-play"></span>
+          <span class="option-play" @click="playAll()"></span>
           <span class="option-addall"></span>
         </div>
       </div>
@@ -22,7 +22,7 @@
         <a class="item-name" @click="toSongView(item)">{{item.name}}</a>
         <div class="item-opt">
           <span class="opt opt-play" @click="handleToPlay(item)"></span>
-          <span class="opt opt-add"></span>
+          <span class="opt opt-add" @click="handleAdd(item)"></span>
           <span class="opt opt-collect"></span>
         </div>
       </div>
@@ -71,20 +71,26 @@ export default {
         this.name = playlist.name;
         this.coverImgUrl = playlist.coverImgUrl;
         this.list = playlist.tracks.slice(0, 10);
-      }).catch(err => {
-        console.log(err);
       });
     },
     toSongView(item) {
-      // console.log(item.id);
       this.$router.push({ path: '/song', query: { id: item.id }});
     },
     toToplistView() {
-      // console.log(this.id);
       this.$router.push({ path: '/discover/toplist', query: { id: this.id }});
     },
     handleToPlay(item) {
-      toPlay(this.$store, item);
+      this.$store.dispatch('toPlay', item);
+    },
+    handleAdd(item) {
+      this.$store.dispatch('addToPlaylist', item);
+    },
+    playAll() {
+      const idx = this.toIdx[`id_${this.id}`];
+      getBillboard(idx).then(res => {
+        const playlist = res.data.playlist.tracks;
+        this.$store.dispatch('changePlaylist', playlist);
+      });
     },
   },
 

@@ -62,7 +62,7 @@ export default {
     },
     handleShowList(choose) {
       // 后续应该添加节流函数
-      this.vname = choose === 'prev' ? 'prev' : 'next';
+      this.vname = choose === 'prev' ? 'next' : 'prev';
       this.showList = this.showList === 'first' ? 'second' : 'first';
     },
   },

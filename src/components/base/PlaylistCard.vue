@@ -2,14 +2,14 @@
   <div class="content">
     <div class="wrapper">
       <img :src="picUrl" class="img">
-      <a href="#" class="img-link"  @click="toPlaylistView()"></a>
+      <a href="#" class="img-link" @click="toPlaylistView()"></a>
       <div class="info">
         <span class="info-headset"></span>
         <span class="info-count">{{playCount}}</span>
-        <span class="info-play"></span>
+        <span class="info-play" @click="playAll()"></span>
       </div>
     </div>
-    <div class="title"  @click="toPlaylistView()">
+    <div class="title" @click="toPlaylistView()">
       <p :class="['title-name', titleEllipsis ? 'ellipsis' : '']">{{info.name}}</p>
     </div>
     <slot></slot>
@@ -18,6 +18,7 @@
 
 <script>
 import { picUrlFormat } from '~api/util.js';
+import { getPlaylistDetail } from '~api/get.js';
 
 export default {
   name: 'play-list-card',
@@ -53,6 +54,12 @@ export default {
   methods: {
     toPlaylistView() {
       this.$router.push({ path: '/playlist', query: { id: this.info.id }});
+    },
+    playAll() {
+      getPlaylistDetail(this.info.id).then(res => {
+        const playlist = res.data.playlist.tracks;
+        this.$store.dispatch('changePlaylist', playlist);
+      });
     },
   },
 

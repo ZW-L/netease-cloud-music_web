@@ -28,10 +28,10 @@
               @click="handlePlay(i)"
             >&nbsp;</span>
             <span class="td-title-name">
-              <em class="td-title-name-main" @click="toSongView()">{{item.name}}</em>
+              <em class="td-title-name-main" @click="toSongView(item)">{{item.name}}</em>
               <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
             </span>
-            <span class="td-title-mv">&nbsp;</span>
+            <span item.idass="td-title-mv">&nbsp;</span>
           </div>
         </td>
         <td class="td-duration">
@@ -73,16 +73,10 @@ export default {
     },
     handlePlay(i) {
       const item = this.songList[i];
-      console.log(item);
-      const payload = {};
-      payload.id = item.id;
-      payload.name = item.name;
-      payload.singer = item.ar;
-      payload.picUrl = `${item.al.picUrl}?param=34y34`;
-      this.$store.commit('UPDATE_NOW_PLAY', payload);
+      this.$store.dispatch('toPlay', item);
     },
-    toSongView() {
-      this.$router.push('/song/123');
+    toSongView(item) {
+      this.$router.push({ path: '/song', query: { id: item.id }});
     }
   },
 

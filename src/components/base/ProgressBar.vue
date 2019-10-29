@@ -147,6 +147,9 @@ export default {
         height: 24px;
         // margin-left: -11px;
         background: url('../../../public/img/icons/iconall.png') no-repeat 0 -250px;
+        &:hover {
+          background: url('../../../public/img/icons/iconall.png') no-repeat 0 -280px;
+        }
       }
     }
   }

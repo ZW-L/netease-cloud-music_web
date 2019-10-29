@@ -49,7 +49,13 @@ export default {
   methods: {
     // 播放
     handleToPlay() {
-      toPlay(this.$store, this.detail);
+      if (this.$route.name === 'song') {
+        this.$store.dispatch('toPlay', this.detail);
+        // toPlay(this.$store, this.detail);
+      } else {
+        // 触发事件，通知父组件更新播放列表
+        this.$emit('playAll');
+      }
     }
   },
 }
@@ -71,6 +77,9 @@ export default {
     background: url('../../../public/img/icons/button2.png') no-repeat 0 -387px;
     line-height: 18px;
     color: $textLight;
+    &:hover {
+      cursor: pointer;
+    }
     .btn-play-icon {
       float: left;
       width: 20px;

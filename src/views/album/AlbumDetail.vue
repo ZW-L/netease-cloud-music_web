@@ -18,7 +18,7 @@
           <p class="info-about info-date">发行时间：{{publishDate}}</p>
           <p class="info-about info-company">发行公司：{{detail.company}}</p>
           <div class="info-btn">
-            <btn-bar>
+            <btn-bar @playAll="handlePalyAll">
               <span slot="share">({{detail.info.shareCount}})</span>
               <span slot="comment">({{detail.info.commentCount}})</span>
             </btn-bar>
@@ -117,12 +117,13 @@ export default {
         console.log(err);
       }).finally(() => {
         // 获取歌手的相关专辑
-        // console.log(this.detail.artists[0].id);
         getAllAlbum(this.detail.artists[0].id, 5).then(res => {
-          // console.log(res.data.hotAlbums);
           this.ownAlbums = res.data.hotAlbums;
         });
       });
+    },
+    handlePalyAll() {
+      this.$store.dispatch('changePlaylist', this.songList);
     },
   },
 
