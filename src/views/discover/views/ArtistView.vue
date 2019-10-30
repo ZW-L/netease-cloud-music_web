@@ -1,10 +1,12 @@
 <template>
-  <div></div>
+  <div class="artist">
+    <h3 class="title">页面开发中...</h3>
+  </div>
 </template>
 
 <script>
 export default {
-  name: '',
+  name: 'artist-view',
 
   components: {},
 
@@ -20,4 +22,20 @@ export default {
 
 <style lang="scss" scoped>
 
+.artist {
+  box-sizing: border-box;
+  width: 982px;
+  height: 1000px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  .title {
+    height: 100vh;
+    padding-top: 100px;
+    line-height: 50px;
+    font-size: 25px;
+    text-align: center
+  }
+}
 </style>

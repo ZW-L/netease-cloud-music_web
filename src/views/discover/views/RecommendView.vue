@@ -1,6 +1,6 @@
 <template>
   <div class="recommend">
-    <home-carousel class="carousel" :banner="banner"></home-carousel>
+    <home-carousel class="carousel"></home-carousel>
     <div class="content">
       <div class="content-left">
         <hot-category></hot-category>

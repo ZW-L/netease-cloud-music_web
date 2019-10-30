@@ -40,7 +40,7 @@ export default {
 
   mounted() {
     getPersonalized(8).then(res => {
-      console.log(res.data.result);
+      // console.log(res.data.result);
       this.playlist = this.playlist.concat(res.data.result);
     });
   },

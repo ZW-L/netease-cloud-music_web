@@ -2,8 +2,8 @@
   <div class="play-list-table">
     <div class="list-title">
       <span class="title-main">歌曲列表</span>
-      <span class="title-sub">{{trackCount}}首歌</span>
-      <span class="title-play">播放：
+      <span class="title-sub">{{songList.length}}首歌</span>
+      <span class="title-play" v-show="showPlayCount">播放：
         <em class="title-play-count">{{playCount}}</em>次
       </span>
     </div>
@@ -28,7 +28,7 @@
           <td class="td-title">
             <div class="td-title-more">
               <span class="td-title-name">
-                <em class="td-title-name-main" @click="toSongView(item)">{{item.name}}</em>
+                <router-link :to="`/song?id=${item.id}`" class="td-title-name-main">{{item.name}}</router-link>
                 <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
               </span>
               <span class="td-title-mv">&nbsp;</span>
@@ -50,7 +50,7 @@
             </span>
           </td>
           <td v-if="showAlbum" class="td-album">
-            {{item.al.name}}
+            <router-link :to="`/album?id=${item.al.id}`">{{item.al.name}}</router-link>
           </td>
         </tr>
       </tbody>
@@ -73,18 +73,14 @@ export default {
       type: Boolean,
       default: false,
     },
-    trackCount: {
-      type: Number,
-      default: 100,
-    },
     playCount: {
       type: Number,
       default: 999,
     },
-  },
-
-  mounted() {
-    // console.log(this.songList);
+    showPlayCount: {
+      type: Boolean,
+      default: true,
+    },
   },
 
   methods: {
@@ -94,9 +90,6 @@ export default {
     handlePlay(item) {
       this.$store.dispatch('toPlay', item);
     },
-    toSongView(item) {
-      this.$router.push({ path: '/song', query: { id: item.id }});
-    }
   },
 
 };

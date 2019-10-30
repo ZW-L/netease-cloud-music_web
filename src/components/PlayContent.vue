@@ -80,13 +80,15 @@ export default {
       return this.nowPlay.id;
     },
     lyrics() {
-      console.log(this.lyric);
+      // console.log(this.lyric);
       return this.lyric.split('\n').map(v => v.replace(/[\[\]\d\:\.]+/, ''));
     },
   },
 
   mounted() {
-    this.initialData();
+    if (this.songId) {
+      this.initialData();
+    }
   },
 
   methods: {

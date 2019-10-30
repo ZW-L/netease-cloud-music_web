@@ -252,7 +252,6 @@ export default {
               cursor: pointer;
             }
             .ctrl-text {
-              // font-weight: bold;
               color: $textLinkBlueLight;
             }
             .ctrl-icon {

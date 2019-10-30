@@ -26,7 +26,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 #app {
   background-color: rgb(245, 245, 245);
 }

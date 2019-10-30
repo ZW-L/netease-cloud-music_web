@@ -34,8 +34,14 @@
             <span class="tag-item" v-for="(tag, i) of detail.tags" :key="i">{{tag}}</span>
           </div>
           <div class="info-desc">
-            介绍：{{detail.desc}}
+            介绍：
+            <p class="desc-item" v-for="(item, i) of desc" :key="i">{{item}}</p>
           </div>
+          <p v-show="shortDesc.length !== fullDesc.length" class="desc-control" @click="handleShowAll()">
+            <em v-if="!showAll" class="ctrl-text">展开</em>
+            <em v-else class="ctrl-text">收起</em>
+            <i :class="['ctrl-icon', showAll ? 'ctrl-up-icon' : 'ctrl-down-icon']"></i>
+          </p>
         </div>
       </div>
       <song-list-table 
@@ -75,6 +81,7 @@ export default {
 
   data() {
     return {
+      showAll: false, // 是否显示全部歌单介绍
       detail: {}, // 歌单详情
       songList: [], // 歌单的所有歌曲
       playlistLikes: [], // 边栏参数，喜欢歌单的人
@@ -96,6 +103,18 @@ export default {
     },
     createTime() {
       return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01';
+    },
+    shortDesc() {
+      if (this.detail.desc.length <= 100) {
+        return this.fullDesc;
+      }
+      return this.detail.desc.slice(0, 97).concat('...').split('\n');
+    },
+    fullDesc() {
+      return this.detail.desc.split('\n');
+    },
+    desc() {
+      return this.showAll ? this.fullDesc : this.shortDesc;
     },
   },
 
@@ -140,6 +159,9 @@ export default {
     handlePlayAll() {
       this.$store.dispatch('changePlaylist', this.songList);
     },
+    handleShowAll() {
+      this.showAll = !this.showAll;
+    },
   },
 
   watch: {
@@ -152,8 +174,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import '~css/variables.scss';
+@import '~css/mixins.scss';
 
 .container {
   overflow: hidden;
@@ -246,6 +268,32 @@ export default {
         .info-desc {
           margin-top: 4px;
           line-height: 18px;
+          color: $info;
+          .desc-item {
+            margin-bottom: 15px;
+          }
+        }
+        .desc-control {
+          float: right;
+          // background-color: #ccc;
+          &:hover {
+            cursor: pointer;
+          }
+          .ctrl-text {
+            color: $textLinkBlueLight;
+          }
+          .ctrl-icon {
+            display: inline-block;
+            width: 11px;
+            height: 8px;
+            margin-left: 5px;
+          }
+          .ctrl-down-icon {
+            background: url('../../../public/img/icons/icon.png') no-repeat -65px -520px;
+          }
+          .ctrl-up-icon {
+            background: url('../../../public/img/icons/icon.png') no-repeat -45px -520px;
+          }
         }
       }
     }

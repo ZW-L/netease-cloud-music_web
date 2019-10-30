@@ -10,7 +10,16 @@
           </li>
         </ul>
         <div class="search">
-          <input class="search-input" type="text" placeholder="音乐/视频/用户/电台">
+          <input class="search-input" type="text" placeholder="音乐/视频/用户/电台" 
+            v-model="searchText"
+            @focus="handleFocus(1)"
+            @blur="handleFocus(0)"
+          >
+          <music-search 
+            v-show="searchText && isFoucus" 
+            class="search-content"
+            :searchResult="searchResult"
+          ></music-search>
         </div>
         <div class="creator-center">创作者中心</div>
         <div class="sign">
@@ -22,7 +31,7 @@
       <div class="sub-header">
         <ul class="sub-nav">
           <li v-for="(item, i) of subNav" :key="i"
-            :class="['sub-nav-item', { 'sub-nav-item-active': subNavActive === i }]" 
+            :class="['sub-nav-item', { 'sub-nav-item-active': navActive(i) }]" 
             @click="handleSubNavClick(i)"
           >{{item.title}}</li>
         </ul>
@@ -32,12 +41,18 @@
 </template>
 
 <script>
+import MusicSearch from '@/components/MusicSearch.vue';
+import { getSearchSuggest } from '~api/get.js';
+
 export default {
   name: 'music-header',
 
+  components: {
+    MusicSearch,
+  },
+
   data() {
     return {
-      subNavActive: 0,
       nav: ['发现音乐', '我的音乐', '朋友', '商城', '音乐人', '下载客户端', ],
       subNav: [
         { title: '推荐', path: '/discover/recommend' },
@@ -47,13 +62,48 @@ export default {
         { title: '歌手', path: '/discover/artist' },
         { title: '新碟上架', path: '/discover/album' },
       ],
+      isFoucus: false, // 标记搜索输入框是否获取焦点
+      searchText: '', // 绑定搜索输入框内容
+      searchResult: {
+        order: '',
+        albums: '',
+        songs: '',
+        artists: '',
+        playlists: '',
+        mvs: '',
+      },
     }
   },
 
   methods: {
     handleSubNavClick(i) {
-      this.subNavActive = i;
       this.$router.push(this.subNav[i].path);
+    },
+    handleFocus(flag) {
+      // 因为 blur 事件优先于 click 事件，会导致 click 后不能跳转，因此先将 blur 延迟
+      setTimeout(() => {
+        this.isFoucus = !!flag;
+      }, 100);
+    },
+    navActive(i) {
+      return this.$route.path === this.subNav[i].path;
+    },
+  },
+
+  watch: {
+    searchText(text) {
+      const search = text.replace(/\s/g, '');
+      if (search !== '') {
+        getSearchSuggest(search).then(res => {
+          const data = res.data.result;
+          this.searchResult.albums = data.albums || '';
+          this.searchResult.songs = data.songs || '';
+          this.searchResult.artists = data.artists || '';
+          this.searchResult.playlists = data.albums || '';
+          this.searchResult.mvs = data.mvs || '';
+          this.searchResult.order = data.order || '';
+        });
+      }
     },
   },
 }
@@ -67,6 +117,7 @@ export default {
 .header {
   width: 100%;
   height: 104px;
+  margin-bottom: 1px; // 先保留，未发现哪里样式出错了 1px
   .wrapper-main {
     background-color: $bgHeader;
     border-bottom: 1px solid $bdcDark;
@@ -120,16 +171,17 @@ export default {
     }
   }
   .search {
+    position: relative;
     margin-left: 30px;
     margin-top: 19px;
     width: 158px;
     height: 32px;
     border-radius: 32px;
-    overflow: hidden;
+    // overflow: hidden;
     background: url('../../public/img/icons/topbar.png') no-repeat 0 -99px;
     background-color: $bgDefault;
     .search-input {
-      width: 100%;
+      width: 100px;
       height: 16px;
       margin-top: 8px;
       margin-left: 30px;
@@ -144,6 +196,12 @@ export default {
           color: $textLight;
         }
       }
+    }
+    .search-content {
+      z-index: 99;
+      position: absolute;
+      top: 40px;
+      color: #000;
     }
   }
   .creator-center {
@@ -181,7 +239,7 @@ export default {
       box-sizing: border-box;
       display: block;
       height: 25px;
-      margin: 5px 17px 0px;
+      margin: 4px 17px 0px;
       padding: 3px 12px;
       line-height: 20px;
       font-size: $fontMin;

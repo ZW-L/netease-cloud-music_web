@@ -150,6 +150,10 @@ export default {
       console.log(this.nowPlay);
     },
     handleEnded() {
+      if (this.playlist.length === 1) {
+        // 只有一首歌时，重新播放
+        this.handlePlay();
+      }
       if (this.defaultPlayMode === 0) {
         // 列表循环时，提交 nowPlay
         const next = this.songIndex === this.playlist.length - 1 ?  0 : this.songIndex + 1;

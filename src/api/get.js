@@ -114,3 +114,9 @@ export const getSimSong = function (songId) {
   const url = `${baseUrl}/simi/song?id=${songId}`;
   return axios.get(url);
 };
+
+// 搜索建议
+export const getSearchSuggest = function (keywords = '') {
+  const url = `${baseUrl}/search/suggest?keywords=${keywords}`;
+  return axios.get(url);
+};

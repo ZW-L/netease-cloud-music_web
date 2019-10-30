@@ -28,10 +28,16 @@
       <div class="desc">
         <h3 class="desc-title">专辑介绍：</h3>
         <div class="desc-content">
-          <p class="content-line" v-for="(item, i) of description" :key="i">{{item}}</p>
+          <p class="content-line" v-for="(item, i) of desc" :key="i">{{item}}</p>
+          <!-- <p class="content-line" v-for="(item, i) of description" :key="i">{{item}}</p> -->
         </div>
+        <p v-show="shortDesc.length !== fullDesc.length" class="desc-control" @click="handleShowAll()">
+          <em v-if="!showAll" class="ctrl-text">展开</em>
+          <em v-else class="ctrl-text">收起</em>
+          <i :class="['ctrl-icon', showAll ? 'ctrl-up-icon' : 'ctrl-down-icon']"></i>
+        </p>
       </div>
-      <song-list-table :songList="songList"></song-list-table>
+      <song-list-table :songList="songList" :showPlayCount="false"></song-list-table>
       <div class="comment"></div>
     </div>
     <div class="aside">
@@ -66,7 +72,7 @@ export default {
       detail: { // 专辑详情
         artists: [],
         publishTime: 0,
-        description: '',
+        desc: '',
         name: '',
         company: '',
         picUrl: '',
@@ -75,6 +81,7 @@ export default {
           commentCount: 0,
         },
       },
+      showAll: false, // 是否显示全部专辑介绍
       albumLikes: [1], // 边栏参数，喜欢这个专辑的人
       ownAlbums: [], // 边栏参数，Ta 的其他热门专辑
       download: true, // 边栏参数，显示 app 下载选项
@@ -88,9 +95,21 @@ export default {
     publishDate() {
       return dateFormat(this.detail.publishTime)
     },
-    description() {
-      return this.detail.description.split('\t');
-    }
+    /* desc() {
+      return this.detail.desc.split('\n');
+    }, */
+    fullDesc() {
+      return this.detail.desc.split('\n');
+    },
+    shortDesc() {
+      if (this.detail.desc.length <= 100) {
+        return this.fullDesc;
+      }
+      return this.detail.desc.slice(0, 97).concat('...').split('\n');
+    },
+    desc() {
+      return this.showAll ? this.fullDesc : this.shortDesc;
+    },
   },
 
   mounted() {
@@ -102,17 +121,17 @@ export default {
       // 获取专辑信息
       const albumId = this.$route.query.id;
       getAlbumDetail(albumId).then(res => {
-        // console.log(res.data.album);
         const album = res.data.album;
         this.songList = res.data.songs;
         this.detail.artists = album.artists;
         this.detail.publishTime = album.publishTime;
-        this.detail.description = album.description;
+        this.detail.desc = album.description;
         this.detail.name = album.name;
         this.detail.company = album.company;
         this.detail.picUrl = album.picUrl;
         this.detail.info.shareCount = album.info.shareCount;
         this.detail.info.commentCount = album.info.commentCount;
+        console.log(this.fullDesc);
       }).catch(err => {
         console.log(err);
       }).finally(() => {
@@ -124,6 +143,10 @@ export default {
     },
     handlePalyAll() {
       this.$store.dispatch('changePlaylist', this.songList);
+    },
+    handleShowAll() {
+      console.log('click...');
+      this.showAll = !this.showAll;
     },
   },
 
@@ -212,20 +235,37 @@ export default {
       }
     }
     .desc {
-      // overflow: hidden;
       margin-bottom: 30px;
       font-size: $fontMin;
       .desc-title {
         height: 24px;
-        // margin-bottom: 5px;
         line-height: 24px;
         font-weight: bold;
       }
       .desc-content {
-        // height: 24px;
         text-indent: 2em;
-        line-height: 24px;
-        // white-space: wrap;
+        line-height: 30px;
+      }
+      .desc-control {
+        float: right;
+        &:hover {
+          cursor: pointer;
+        }
+        .ctrl-text {
+          color: $textLinkBlueLight;
+        }
+        .ctrl-icon {
+          display: inline-block;
+          width: 11px;
+          height: 8px;
+          margin-left: 5px;
+        }
+        .ctrl-down-icon {
+          background: url('../../../public/img/icons/icon.png') no-repeat -65px -520px;
+        }
+        .ctrl-up-icon {
+          background: url('../../../public/img/icons/icon.png') no-repeat -45px -520px;
+        }
       }
     }
     .comment {}

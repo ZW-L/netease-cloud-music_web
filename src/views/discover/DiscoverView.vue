@@ -1,21 +1,29 @@
 <template>
-  <div>
+  <div class="discover">
+    <div class="about-btn" @click="handleShow()">关于网站</div>
+    <transition name="show">
+      <about-site v-show="isShow" class="about-site" @show="handleShow"></about-site>
+    </transition>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import AboutSite from './AboutSite.vue';
 import { getToplistDetail } from '~api/get.js';
 
 export default {
   name: 'discover-view',
 
-  components: {},
+  components: {
+    AboutSite,
+  },
 
   props: {},
 
   data() {
     return {
+      isShow: false,
     }
   },
 
@@ -37,7 +45,10 @@ export default {
       }).catch(err => {
         console.log(err);
       });
-    }
+    },
+    handleShow() {
+      this.isShow = !this.isShow;
+    },
   },
 
 }
@@ -45,4 +56,29 @@ export default {
 
 <style lang="scss" scoped>
 
+.discover {
+  position: relative;
+  .about-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: rgb(80, 195, 126);
+    color: #fff;
+    &:hover {
+      cursor: pointer;
+      background-color: rgb(14, 117, 55);
+    }
+  }
+}
+
+.show-enter, .show-leave {
+  
+}
+.show-enter-active, .show-enter-leave {
+  
+}
 </style>
