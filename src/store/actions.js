@@ -11,11 +11,14 @@ const extractSongDetail = function (item) {
   return ret;
 };
 
+const findIndexOfPlaylist = function (playlist, item) {
+  return playlist.findIndex(v => v.id === item.id);
+};
+
 export default {
   // 播放歌曲
   toPlay({ commit, state }, song) {
-    const index = state.playlist.findIndex(v => v.id === song.id);
-    console.log(index);
+    const index = findIndexOfPlaylist(state.playlist, song);
     // 如果播放列表不存在则添加
     if (index < 0) {
       commit('ADD_TO_PLAYLIST', song);
@@ -36,9 +39,23 @@ export default {
   },
   // 添加到播放列表
   addToPlaylist({ commit, state }, song) {
-    const index = state.playlist.findIndex(v => v.id === song.id);
+    if (state.playlist.length === 0) { // 播放列表为空时，立即播放
+      const detail = extractSongDetail(song);
+      commit('UPDATE_NOW_PLAY', detail);
+    }
+    const index = findIndexOfPlaylist(state.playlist, song);
     if (index < 0) {
       commit('ADD_TO_PLAYLIST', song);
+    }
+  },
+  // 从播放列表中删除一首歌
+  removeFromPlaylist({ commit, state }, song) {
+    let index = findIndexOfPlaylist(state.playlist, song);
+    commit('REMOVE_FROM_PLAYLIST', index);
+    if (song.id === state.nowPlay.id) { // 删除的是正在播放的音乐时
+      index = index === state.playlist.length - 1 ? index : 0; // 删除的是最后一首音乐时
+      const detail = extractSongDetail(state.playlist[index]);
+      commit('UPDATE_NOW_PLAY', detail);
     }
   },
 };

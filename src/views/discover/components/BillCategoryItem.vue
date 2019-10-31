@@ -3,32 +3,31 @@
     <div class="header">
       <div class="header-left">
         <img class="left-pic" :src="coverImgUrl" alt="">
-        <a href="#" class="left-link" @click="toToplistView()">
-        </a>
+        <router-link :to="`/discover/toplist?id=${id}`" class="left-link"></router-link>
       </div>
       <div class="header-right">
         <div class="right-title">
-          <a href="#" @click="toToplistView()">{{name}}</a>
+          <router-link :to="`/discover/toplist?id=${id}`">{{name}}</router-link>
         </div>
         <div class="right-options">
           <span class="option-play" @click="playAll()"></span>
-          <span class="option-addall"></span>
+          <span href="#" class="option-addall" @click="handleShowAbout()"></span>
         </div>
       </div>
     </div>
     <div class="list">
       <div class="item" v-for="(item, i) of list" :key="i">
         <span class="item-order">{{i+1}}</span>
-        <a class="item-name" @click="toSongView(item)">{{item.name}}</a>
+        <router-link :to="`/song?id=${item.id}`" class="item-name">{{item.name}}</router-link>
         <div class="item-opt">
           <span class="opt opt-play" @click="handleToPlay(item)"></span>
           <span class="opt opt-add" @click="handleAdd(item)"></span>
-          <span class="opt opt-collect"></span>
+          <span href="#" class="opt opt-collect" @click="handleShowAbout()"></span>
         </div>
       </div>
     </div>
     <div class="footer">
-      <a class="show-all" @click="toToplistView()">查看全部&gt;</a>
+      <router-link :to="`/discover/toplist?id=${id}`" class="show-all">查看全部&gt;</router-link>
     </div>
   </div>
 </template>
@@ -73,16 +72,11 @@ export default {
         this.list = playlist.tracks.slice(0, 10);
       });
     },
-    toSongView(item) {
-      this.$router.push({ path: '/song', query: { id: item.id }});
-    },
-    toToplistView() {
-      this.$router.push({ path: '/discover/toplist', query: { id: this.id }});
-    },
     handleToPlay(item) {
       this.$store.dispatch('toPlay', item);
     },
     handleAdd(item) {
+      console.log('click...');
       this.$store.dispatch('addToPlaylist', item);
     },
     playAll() {
@@ -91,6 +85,9 @@ export default {
         const playlist = res.data.playlist.tracks;
         this.$store.dispatch('changePlaylist', playlist);
       });
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 
@@ -192,6 +189,9 @@ export default {
           float: left;
           width: 17px;
           height: 17px;
+          &:hover {
+            cursor: pointer;
+          }
         }
         .opt-play {
           margin-top: 8px;

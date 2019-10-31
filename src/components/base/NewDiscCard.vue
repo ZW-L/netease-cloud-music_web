@@ -1,15 +1,19 @@
 <template>
   <div :class="['card', `card-${size}`]">
-    <div :class="['card-wrapper', `card-wrapper-${size}`]" @click="toAlbumView()">
+    <router-link :to="`/album?id=${album.id}`" tag="div"
+      :class="['card-wrapper', `card-wrapper-${size}`]"
+    >
       <img :class="['card-img', `card-img-${size}`]"
         :src="album.picUrl" 
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
       <span :class="['play-icon', `play-icon-${size}`]" @click.stop="playAll()"></span>
-    </div>
-    <p class="card-title" ref="title" @click="toAlbumView()">{{album.name}}</p>
+    </router-link>
+    <p class="card-title" ref="title">
+      <router-link :to="`/album?id=${album.id}`">{{album.name}}</router-link>
+    </p>
     <p class="card-artists">
-      <span v-for="(item, i) of artists" :key="i" class="singer">
+      <span v-for="(item, i) of artists" :key="i" class="singer" @click="handleShowAbout()">
         {{item}}
       </span>
     </p>
@@ -60,14 +64,14 @@ export default {
   },
 
   methods: {
-    toAlbumView() {
-      this.$router.push({ path: '/album', query: { id: this.album.id }});
-    },
     playAll() {
       getAlbumDetail(this.album.id).then(res => {
         const playlist = res.data.songs;
         this.$store.dispatch('changePlaylist', playlist);
       });
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 }

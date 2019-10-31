@@ -4,5 +4,7 @@ export const UPDATE_NOW_PLAY = 'UPDATE_NOW_PLAY';
 export const CHANGE_PLAYLIST = 'CHANGE_PLAYLIST';
 export const CLEAR_PLAYLIST = 'CLEAR_PLAYLIST';
 export const ADD_TO_PLAYLIST = 'ADD_TO_PLAYLIST';
+export const REMOVE_FROM_PLAYLIST = 'REMOVE_FROM_PLAYLIST';
+export const SHOW_ABOUT_SITE = 'SHOW_ABOUT_SITE';
 
 export default {};

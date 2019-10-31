@@ -40,7 +40,7 @@
         >
           <p class="slot-creator">
             <em class="creator-by">by</em>
-            <a href="#" class="creator-name">{{item.creator.nickname}}</a>
+            <a class="creator-name" @click="handleShowAbout()">{{item.creator.nickname}}</a>
           </p>
         </playlist-card>
       </div>
@@ -175,6 +175,9 @@ export default {
         return { name: v, subs, };
       });
       return ret;
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 
@@ -374,7 +377,7 @@ export default {
             color: $titleDivide;
           }
           .creator-name {
-            color: $titleMore;            
+            color: $titleMore;      
           }
         }
       }

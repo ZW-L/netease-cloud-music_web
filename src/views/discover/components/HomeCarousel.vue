@@ -5,9 +5,15 @@
   >
     <div class="content">
       <div class="img-wrapper">
-        <div class="img-item" v-for="(item, i) of banner" :key="i">
-          <img :class="[ i === active ? 'active' : 'none' ]" :src="item.imageUrl" alt="">
-        </div>
+        <transition-group name="fade">
+          <div v-for="(item, i) of banner" :key="i"
+            v-show="i === active"
+            class="img-item"
+            @click="toView(item)"
+          >
+            <img :src="item.imageUrl" key="img">
+          </div>
+        </transition-group>
         <div class="content-prev" @click="handleControl('prev')">&nbsp;</div>
         <div class="content-next" @click="handleControl('next')">&nbsp;</div>
         <div class="content-paganation">
@@ -18,7 +24,9 @@
           ></span>
         </div>
       </div>
-      <div class="content-download"></div>
+      <div class="content-download" @click="handleDownload()">
+        <p class="download-desc">PC 安卓 iPhone WP iPad Mac 六大客户端</p>
+      </div>
     </div>
   </div>
 </template>
@@ -38,13 +46,7 @@ export default {
   },
 
   mounted() {
-    getBanner().then(res => {
-      this.banner = this.banner.concat(res.data.banners);
-    }).catch(err => {
-      console.log(err);
-    }).finally(() => {
-      this.start();
-    });
+    this.initialData();
   },
 
   beforeDestroy() {
@@ -52,6 +54,15 @@ export default {
   },
 
   methods: {
+    initialData() {
+      getBanner().then(res => {
+        this.banner = this.banner.concat(res.data.banners);
+      }).catch(err => {
+        console.log(err);
+      }).finally(() => {
+        this.start();
+      });
+    },
     handleControl(tag) {
       if (typeof tag === 'number') {
         console.log(`jump to ${tag}.`);
@@ -64,6 +75,19 @@ export default {
         this.active = this.active === this.banner.length - 1 ? 0 : this.active + 1;
       }
     },
+    handleDownload() {
+      window.open('https://music.163.com/#/download');
+    },
+    toView(item) {
+      const { targetType, targetId, url } = item;
+      if (targetType === 3000) {
+        window.open(url);
+      } else if (targetType === 1) {
+        this.$router.push({ path: '/song', query: { id: targetId }});
+      } else if (targetType === 10) {
+        this.$router.push({ path: '/album', query: { id: targetId }});
+      }
+    },
     start() {
       this.timer = setInterval(() => {
         this.handleControl('next');
@@ -73,47 +97,37 @@ export default {
     stop() {
       clearInterval(this.timer);
       console.log(`clear interval: ${this.timer}`);
-    }
+    },
   },
 
 };
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
+@import '@/assets/css/animation.scss';
+
+@include fade(.8s);
 
 .wrapper {
   width: 100%;
-  height: 100%;
-  // 需要自适应
-  background-color: rgb(40, 38, 39);
+  background-color: $bdcCarousel;
   .content {
     position: relative;
     width: 982px;
-    height: 100%;
-    margin-left: 50%;
-    left: -491px;
-    text-align: center;
+    margin: 0 auto;
     color: $textLight;
     .img-wrapper {
       position: relative;
       float: left;
-      width: 732px;
-      height: 336px;
+      width: 730px;
+      height: 285px;
       .img-item {
         position: absolute;
-        width: 732px;
-        height: 336px;
         img {
-          opacity: 0;
           width: 100%;
-          height: 336px;
-          transition: all 1s;
-        }
-        .active {
-          opacity: 1;
+          height: 285px;
         }
       }
       .content-prev, .content-next {
@@ -126,13 +140,13 @@ export default {
         @include hoverBg(rgba(0, 0, 0, .1));
       }
       .content-prev {
-        left: -40px;
-        top: 130px;
+        left: -60px;
+        top: 100px;
         background: url('../../../../public/img/icons/banner.png') no-repeat 0 -360px;
       }
       .content-next {
-        left: 985px;
-        top: 130px;
+        left: 1005px;
+        top: 100px;
         background: url('../../../../public/img/icons/banner.png') no-repeat 0 -508px;
       }
       .content-paganation {
@@ -154,10 +168,24 @@ export default {
       }
     }
     .content-download {
-      margin-left: 732px;
-      width: 250px;
-      height: 336px;
-      background: url('../../../../public/img/icons/download.png') no-repeat 0 0;
+      position: relative;
+      margin-left: 730px;
+      width: 252px;
+      height: 285px;
+      background: url('../../../../public/img/icons/download.png') no-repeat 0 -27px;
+      &:hover {
+        cursor: pointer;
+      }
+      .download-desc {
+        position: absolute;
+        bottom: 8px;
+        width: 100%;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        font-size: $fontMin;
+        color: $inputInfo;
+      }
     }
   }
 }

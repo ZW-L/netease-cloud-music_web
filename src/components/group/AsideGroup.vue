@@ -8,7 +8,7 @@
     <div v-if="inSingers.length" class="content in-singers">
       <h3 class="title">
         入驻歌手
-        <em class="title-more">查看全部&gt;</em>
+        <em class="title-more" @click="handleShowAbout()">查看全部&gt;</em>
       </h3>
       <div class="list">
         <div class="item" v-for="(item, i) of inSingers" :key="i">
@@ -22,7 +22,7 @@
         </div>
       </div>
       <div class="footer">
-        <p class="footer-text" href="">申请成为音乐人</p>
+        <p class="footer-text" @click="handleShowAbout()">申请成为音乐人</p>
       </div>
     </div>
     <div v-if="hotPlayers.length" class="content hot-players">
@@ -54,7 +54,7 @@
             <p class="info-name" @click="toPlaylistView(item)">{{item.name}}</p>
             <p class="info-creator">
               <em>by</em>
-              <em v-show="item.creator" class="creator-name">{{item.creator.nickname}}</em>
+              <em v-show="item.creator" class="creator-name" @click="handleShowAbout()">{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -67,7 +67,7 @@
           <div class="item-info">
             <p class="info-name" @click="toSongView(item)">{{item.name}}</p>
             <p class="info-singers">
-              <span class="singer-item" v-for="(si, i) of similarSongSingers(item)" :key="i">{{si}}</span>
+              <span class="singer-item" @click="handleShowAbout()">{{similarSongSingers(item)}}</span>
             </p>
           </div>
           <div class="item-ctrl">
@@ -81,13 +81,15 @@
     <div v-if="albumLikes.length" class="content album-likes">
       <h3 class="title">喜欢这个专辑的人</h3>
       <div class="list">
-        <div class="item" v-for="i of 8" :key="i"></div>
+        <div class="item" v-for="i of 8" :key="i">
+          <img src="../../../public/img/icons/user_default.jpg" @click="handleShowAbout()">
+        </div>
       </div>
     </div>
     <div v-if="ownAlbums.length" class="content own-albums">
       <h3 class="title">
         Ta 的其他热门专辑
-        <em class="title-more">全部&gt;</em>
+        <em class="title-more" @click="handleShowAbout()">全部&gt;</em>
       </h3>
       <div class="list">
         <div class="item" v-for="(item, i) of ownAlbums" :key="i">
@@ -106,7 +108,7 @@
       <h3 class="title">喜欢这个歌单的人</h3>
       <div class="list">
         <div class="item" v-for="(item, i) of playlistLikes" :key="i">
-          <img v-show="item.avatarUrl" :src="item.avatarUrl+'?param=40y40'">
+          <img v-show="item.avatarUrl" :src="item.avatarUrl+'?param=40y40'" @click="handleShowAbout()">
         </div>
       </div>
     </div>
@@ -121,7 +123,7 @@
             <p class="info-name" @click="toPlaylistView(item)">{{item.name}}</p>
             <p v-show="item.creator !== undefined" class="info-creator">
               <em>by</em>
-              <em class="creator-name">{{item.creator.nickname}}</em>
+              <em class="creator-name" @click="handleShowAbout()">{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -219,6 +221,9 @@ export default {
     toPlaySong(item) {
       // console.log(item);
       toPlayById(this.$store, item.id);
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 
@@ -387,6 +392,11 @@ export default {
       }
       .info-singers {
         color: $inputInfo;
+        .singer-item {
+          &:hover {
+            @include hoverText();
+          }
+        }
       }
     }
     .item-ctrl {

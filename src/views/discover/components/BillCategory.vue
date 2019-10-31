@@ -50,7 +50,7 @@ export default {
     .column {
       box-sizing: border-box;
       display: inline-block;
-      width: 230px;
+      width: 229px;
       border: 1px solid $bdcDefault;
     }
   }

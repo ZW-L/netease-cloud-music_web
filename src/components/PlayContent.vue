@@ -27,17 +27,17 @@
           <span v-show="item.id === nowPlay.id" class="song-tag"></span>
           <h4 class="song-name">{{item.name}}</h4>
           <span class="song-ctrl">
-            <i class="ctrl-icon ctrl-collect"></i>
-            <i class="ctrl-icon ctrl-share"></i>
-            <i class="ctrl-icon ctrl-download"></i>
-            <i class="ctrl-icon ctrl-delete"></i>
+            <i class="ctrl-icon ctrl-collect" @click.stop="handleShowAbout()"></i>
+            <i class="ctrl-icon ctrl-share" @click.stop="handleShowAbout()"></i>
+            <i class="ctrl-icon ctrl-download" @click.stop="handleShowAbout()"></i>
+            <i class="ctrl-icon ctrl-delete" @click.stop="handleDelete(item)"></i>
           </span>
-          <span class="song-singer">{{_getSingers(i)}}</span>
-          <span class="song-duration">{{_getDuration(i)}}</span>
+          <span class="song-singer">{{_getSingers(item)}}</span>
+          <span class="song-duration">{{_getDuration(item)}}</span>
           <span class="song-from"></span>
         </li>
       </ul>
-      <div class="wr-right">
+      <div class="wr-right" ref="lyricWrapper">
         <ul class="lyric" ref="content">
           <li
             v-for="(item, i) of lyrics" :key="i" 
@@ -94,15 +94,19 @@ export default {
   methods: {
     initialData() {
       getLyric(this.songId).then(res => {
-        // console.log(res.data.lrc.lyric);
         this.lyric = res.data.lrc ? res.data.lrc.lyric : '';
       });
     },
-    _getSingers(i) {
-      return getSingers(this.playlist[i].ar);
+    _getPlaylistIndex(item) {
+      return this.playlist.findIndex(v => v.id === item.id);
     },
-    _getDuration(i) {
-      return getDuration(this.playlist[i].dt);
+    _getSingers(item) {
+      const index = this._getPlaylistIndex(item);
+      return getSingers(this.playlist[index].ar);
+    },
+    _getDuration(item) {
+      const index = this._getPlaylistIndex(item);
+      return getDuration(this.playlist[index].dt);
     },
     closeContent() {
       this.$emit('close');
@@ -112,6 +116,12 @@ export default {
     },
     handleClearPlaylist() {
       this.$store.dispatch('clearPlaylist');
+    },
+    handleDelete(item) {
+      this.$store.dispatch('removeFromPlaylist', item);
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 

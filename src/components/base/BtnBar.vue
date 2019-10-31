@@ -4,20 +4,20 @@
       <i class="btn-play-icon"></i>
       <em>播放</em>
     </div>
-    <div class="btn-add"></div>
-    <div class="btn-collect">
+    <div class="btn-add" @click="handleShowAbout()"></div>
+    <div class="btn-collect" @click="handleShowAbout()">
       <i class="btn-collect-icon iconfont icon-shoucangjia"></i>
       <em class="em-text">
         <slot name="collect">收藏</slot>
       </em>
     </div>
-    <div class="btn-share">
+    <div class="btn-share" @click="handleShowAbout()">
       <i class="btn-comment-icon iconfont icon-fenxiang"></i>
       <em class="em-text">
         <slot name="share">分享</slot>
       </em>
     </div>
-    <div class="btn-download">
+    <div class="btn-download" @click="handleShowAbout()">
       <i class="btn-comment-icon iconfont icon-xiazai"></i>
       <em class="em-text">
         <slot name="download">下载</slot>
@@ -56,7 +56,10 @@ export default {
         // 触发事件，通知父组件更新播放列表
         this.$emit('playAll');
       }
-    }
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
+    },
   },
 }
 </script>

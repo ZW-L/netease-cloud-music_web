@@ -43,8 +43,8 @@
         </a>
       </div>
       <div class="other-options">
-        <a href="#" class="op-collect"></a>
-        <a href="#" class="op-share"></a>
+        <a href="#" class="op-collect" @click="handleShowAbout()"></a>
+        <a href="#" class="op-share" @click="handleShowAbout()"></a>
       </div>
     </div>
     <div class="audio-wrapper">
@@ -235,6 +235,9 @@ export default {
       const container = this.$refs.container;
       this.isBarLock = !this.isBarLock;
       container.style.bottom = this.isBarLock ? '0' : '-43px';
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
   watch: {
@@ -513,7 +516,7 @@ export default {
   }
 }
 .audio-wrapper {
-  // visibility: hidden;
+  visibility: hidden;
   position: absolute;
   top: -60px;
 }

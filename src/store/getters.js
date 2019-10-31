@@ -12,6 +12,8 @@ export const nowPlay = state => state.nowPlay;
 
 export const playlist = state => state.playlist;
 
+export const isShowAboutSite = state => state.isShowAboutSite;
+
 /* export const playMode = state => state.playMode;
 
 export const voice = state => state.voice;

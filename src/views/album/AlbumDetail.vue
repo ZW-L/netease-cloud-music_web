@@ -29,7 +29,6 @@
         <h3 class="desc-title">专辑介绍：</h3>
         <div class="desc-content">
           <p class="content-line" v-for="(item, i) of desc" :key="i">{{item}}</p>
-          <!-- <p class="content-line" v-for="(item, i) of description" :key="i">{{item}}</p> -->
         </div>
         <p v-show="shortDesc.length !== fullDesc.length" class="desc-control" @click="handleShowAll()">
           <em v-if="!showAll" class="ctrl-text">展开</em>
@@ -95,11 +94,8 @@ export default {
     publishDate() {
       return dateFormat(this.detail.publishTime)
     },
-    /* desc() {
-      return this.detail.desc.split('\n');
-    }, */
     fullDesc() {
-      return this.detail.desc.split('\n');
+      return this.detail.desc.split('\n').concat('');
     },
     shortDesc() {
       if (this.detail.desc.length <= 100) {
@@ -131,7 +127,7 @@ export default {
         this.detail.picUrl = album.picUrl;
         this.detail.info.shareCount = album.info.shareCount;
         this.detail.info.commentCount = album.info.commentCount;
-        console.log(this.fullDesc);
+        // console.log(this.fullDesc);
       }).catch(err => {
         console.log(err);
       }).finally(() => {

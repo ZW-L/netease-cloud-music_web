@@ -2,16 +2,16 @@
   <div class="content">
     <div class="wrapper">
       <img :src="picUrl" class="img">
-      <a href="#" class="img-link" @click="toPlaylistView()"></a>
+      <router-link :to="`/playlist?id=${info.id}`" class="img-link"></router-link>
       <div class="info">
         <span class="info-headset"></span>
         <span class="info-count">{{playCount}}</span>
         <span class="info-play" @click="playAll()"></span>
       </div>
     </div>
-    <div class="title" @click="toPlaylistView()">
+    <router-link tag="div" :to="`/playlist?id=${info.id}`" class="title">
       <p :class="['title-name', titleEllipsis ? 'ellipsis' : '']">{{info.name}}</p>
-    </div>
+    </router-link>
     <slot></slot>
   </div>
 </template>
@@ -52,9 +52,6 @@ export default {
   },
 
   methods: {
-    toPlaylistView() {
-      this.$router.push({ path: '/playlist', query: { id: this.info.id }});
-    },
     playAll() {
       getPlaylistDetail(this.info.id).then(res => {
         const playlist = res.data.playlist.tracks;
@@ -75,8 +72,9 @@ export default {
   .wrapper {
     position: relative;
     height: 140px;
+    background-color: #ccc;
     .img {
-      height: 140px;
+      width: 140px;
     }
     .img-link {
       position: absolute;

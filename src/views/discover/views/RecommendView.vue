@@ -60,28 +60,26 @@ export default {
   position: relative;
   .carousel {
     width: 100%;
-    height: 336px;
+    height: 285px;
   }
   .content {
+    box-sizing: border-box;
     overflow: hidden;
     width: 982px;
     margin: 0 auto;
-    .content-left, .content-right {
-      float: left;
-      box-sizing: border-box;
-      background-color: $bgDefault;
-    }
+    background-color: $bgDefault;
+    border-left: 1px solid $bdcDefault;
+    border-right: 1px solid $bdcDefault;
     .content-left {
-      width: 732px;
+      box-sizing: border-box;
+      float: left;
+      width: 730px;
       padding: 20px 20px 40px 20px;
-      border: 1px solid $bdcDefault;
-      border-bottom: none;
+      border-right: 1px solid $bdcDefault;
     }
     .content-right {
+      float: left;
       width: 250px;
-      padding-bottom: 40px;
-      border: 1px solid $bdcDefault;
-      border-left: none;
     }
   }
 }

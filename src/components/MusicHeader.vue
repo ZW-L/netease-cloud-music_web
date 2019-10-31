@@ -2,7 +2,7 @@
   <div class="header">
     <div class="wrapper-main">
       <div class="main-header">
-        <h1 class="title"></h1>
+        <router-link to="/discover/recommend" tag="h1" class="title"></router-link>
         <ul class="nav">
           <li class="nav-item" v-for="item of nav" :key="item">{{item}}</li>
           <li class="nav-item">
@@ -21,9 +21,9 @@
             :searchResult="searchResult"
           ></music-search>
         </div>
-        <div class="creator-center">创作者中心</div>
+        <div class="creator-center" @click="handleShowAbout()">创作者中心</div>
         <div class="sign">
-          <span class="sign-status">登录</span>
+          <span class="sign-status" @click="handleShowAbout()">登录</span>
         </div>
       </div>
     </div>
@@ -87,6 +87,9 @@ export default {
     },
     navActive(i) {
       return this.$route.path === this.subNav[i].path;
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 

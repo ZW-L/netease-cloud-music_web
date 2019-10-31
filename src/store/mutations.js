@@ -24,4 +24,10 @@ export default {
     state.playlist.length = 0;
     state.playlist = [];
   },
+  [types.REMOVE_FROM_PLAYLIST](state, index) {
+    state.playlist.splice(index, 1);
+  },
+  [types.SHOW_ABOUT_SITE](state) {
+    state.isShowAboutSite = !state.isShowAboutSite;
+  },
 };

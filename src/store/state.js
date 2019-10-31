@@ -77,9 +77,7 @@ const state = {
     mvId: '', // mv
   },
   playlist: [], // 播放列表
-  /* playMode: 0, // 0 -> 循环, 1 ->随机, 2 -> 单曲循环
-  voice: 1, // 音量
-  isBarLock: true, // 锁定播放条 */
+  isShowAboutSite: false, // 是否显示关于网站
 };
 
 export default state;

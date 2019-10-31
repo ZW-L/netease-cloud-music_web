@@ -31,21 +31,21 @@
                 <router-link :to="`/song?id=${item.id}`" class="td-title-name-main">{{item.name}}</router-link>
                 <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
               </span>
-              <span class="td-title-mv">&nbsp;</span>
+              <span v-if="item.mv > 0" class="td-title-mv"  @click="handleShowAbout()">&nbsp;</span>
             </div>
           </td>
           <td class="td-duration">
             <span class="td-duration-time">{{_getDuration(item.dt)}}</span>
             <div class="td-duration-options">
-              <span class="opt-add"></span>
-              <span class="opt-collect"></span>
-              <span class="opt-share"></span>
-              <span class="opt-download"></span>
+              <span class="opt-add" @click="handleAddToPlaylist(item)"></span>
+              <span class="opt-collect" @click="handleShowAbout()"></span>
+              <span class="opt-share" @click="handleShowAbout()"></span>
+              <span class="opt-download" @click="handleShowAbout()"></span>
             </div>
           </td>
           <td class="td-singers">
             <span v-for="(singer, index) of item.ar" :key="index">
-              <em href="" class="td-singers-name">{{singer.name}}</em>
+              <em href="" class="td-singers-name" @click="handleShowAbout()">{{singer.name}}</em>
               <em v-show="index < item.ar.length - 1" class="td-singers-devide"> / </em>
             </span>
           </td>
@@ -89,6 +89,12 @@ export default {
     },
     handlePlay(item) {
       this.$store.dispatch('toPlay', item);
+    },
+    handleAddToPlaylist(item) {
+      this.$store.dispatch('addToPlaylist', item);
+    },
+    handleShowAbout() {
+      this.$store.commit('SHOW_ABOUT_SITE');
     },
   },
 

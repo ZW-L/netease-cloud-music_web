@@ -82,7 +82,19 @@ export default {
   data() {
     return {
       showAll: false, // 是否显示全部歌单介绍
-      detail: {}, // 歌单详情
+      detail: { // 歌单详情
+        coverImgUrl: '',
+        name: '',
+        creator: '',
+        createTime: 0,
+        subscribedCount: 0,
+        shareCount: 0,
+        commentCount: 0,
+        tags: [],
+        desc: '',
+        trackCount: 0,
+        playCount: 0,
+      },
       songList: [], // 歌单的所有歌曲
       playlistLikes: [], // 边栏参数，喜欢歌单的人
       relativeRecommend: [], // 边栏参数，相关歌单推荐
@@ -111,7 +123,7 @@ export default {
       return this.detail.desc.slice(0, 97).concat('...').split('\n');
     },
     fullDesc() {
-      return this.detail.desc.split('\n');
+      return this.detail.desc.split('\n').concat('');
     },
     desc() {
       return this.showAll ? this.fullDesc : this.shortDesc;
@@ -127,22 +139,19 @@ export default {
     initialData() {
       // 获取歌单信息
       getPlaylistDetail(this.playlistId).then(res => {
-        // console.log(res.data);
         const data = res.data.playlist;
         const obj = this.detail;
-        this.detail = Object.assign({}, this.detail, {
-          coverImgUrl: data.coverImgUrl,
-          name: data.name,
-          creator: data.creator,
-          createTime: data.createTime,
-          subscribedCount: data.subscribedCount,
-          shareCount: data.shareCount,
-          commentCount: data.commentCount,
-          tags: data.tags,
-          desc: data.description,
-          trackCount: data.trackCount,
-          playCount: data.playCount,
-        });
+        obj.coverImgUrl = data.coverImgUrl,
+        obj.name = data.name,
+        obj.creator = data.creator,
+        obj.createTime = data.createTime,
+        obj.subscribedCount = data.subscribedCount,
+        obj.shareCount = data.shareCount,
+        obj.commentCount = data.commentCount,
+        obj.tags = data.tags,
+        obj.desc = data.description,
+        obj.trackCount = data.trackCount,
+        obj.playCount = data.playCount,
         this.songList = data.tracks;
       });
       // 获取喜欢歌单的人
@@ -300,8 +309,8 @@ export default {
     .comment {}
   }
   .aside {
-    width: 270px;
     float: left;
+    width: 270px;
   }
 }
 </style>
