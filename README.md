@@ -33,6 +33,11 @@ npm run serve
 
 ## 概览
 
+### 效果
+
+![主页](/public/doc/gif_01.gif)
+![播放](/public/doc/gif_02.gif)
+
 ### 已实现功能
 + 基本完成的页面：
   + 推荐 /discover/recommend
