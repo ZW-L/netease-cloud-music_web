@@ -1,6 +1,6 @@
 ## 网易云音乐 Web 客户端
 
-基于 Vue 实现的网易云音乐 Web 客户端，在线地址：[vue-netease-cloud-music-web](http://zwlife.top)。
+基于 Vue 实现的网易云音乐 Web 客户端，在线地址：[vue-netease-cloud-music-web](http://webmusic.zwlife.top)。
 
 ### 技术栈
 `vue`, `vue-router`, `vuex`, `axios`, `webpack`, `sass`
