@@ -6,6 +6,7 @@ import './registerServiceWorker';
 
 import './assets/css/reset.css';
 import '../public/img/iconfont/iconfont.css';
+import './assets/css/bgImage.scss';
 
 Vue.config.productionTip = false;
 

@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Router from 'vue-router';
-// 发现页组件
+// 发现页
 import Discover from '@discover/DiscoverView.vue';
 import DiscoverAlbum from '@discover/views/AlbumView.vue';
 import DiscoverArtist from '@discover/views/ArtistView.vue';
@@ -8,17 +8,18 @@ import DiscoverDjradio from '@discover/views/DjradioView.vue';
 import DiscoverPlaylist from '@discover/views/PlaylistView.vue';
 import DiscoverRecommend from '@discover/views/RecommendView.vue';
 import DiscoverToplist from '@discover/views/ToplistView.vue';
-// 歌单详情页组件
+// 歌单详情页
 import PlaylistDetail from '@/views/playlist/PlaylistDetail.vue';
-// 专辑详情页组件
+// 专辑详情页
 import AlbumDetail from '@/views/album/AlbumDetail.vue';
-// 歌曲详情页组件
+// 歌曲详情页
 import SongDetail from '@/views/song/SongDetail.vue';
 
 Vue.use(Router);
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes: [
     {

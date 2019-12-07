@@ -32,7 +32,7 @@
           提供的网易云音乐 API：
           <a href="https://github.com/Binaryify/NeteaseCloudMusicApi" target="_blank">NeteaseCloudMusicApi</a>
         </li>
-        <li>网站源码地址：<a href="" target="_blank">GitHub</a>，欢迎技术交流</li>
+        <li>网站源码地址：<a href="https://github.com/ZW-L/netease-cloud-music_web" target="_blank">GitHub</a>，欢迎技术交流</li>
       </ul>
       <h4>温馨提示：请勿对本网站产生依赖！</h4>
     </div>

@@ -1,6 +1,6 @@
 <template>
-  <div class="djradio">
-    <h3 class="title">页面开发中...</h3>
+  <div :class="$style.djradio">
+    <h3 :class="$style.title">页面开发中...</h3>
   </div>
 </template>
 
@@ -16,11 +16,10 @@ export default {
     return {
     }
   },
-
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss" module>
 
 .djradio {
   box-sizing: border-box;

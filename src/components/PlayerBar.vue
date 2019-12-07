@@ -1,28 +1,33 @@
 <template>
-  <div :class="['container', isBarLock ? 'container-lock' : 'container-open']" ref="container">
-    <div class="right-bg">
-      <span :class="['icon', isBarLock ? 'icon-lock' : 'icon-open']" @click="handleLock()"></span>
+  <div class="container" ref="container">
+    <div class="right-bg playbar--right-bg">
+      <span
+        :class="['icon', isBarLock ? 'playbar--right-bg_lock' : 'playbar--right-bg_open']" 
+        @click="handleLock()"
+      ></span>
     </div>
-    <div class="right-scroll"></div>
-    <div class="left-bg"></div>
+    <div class="right-scroll playbar--right-scroll"></div>
+    <div class="left-bg playbar--left-bg"></div>
     <div class="content">
       <div class="main-ctrl">
-        <span class="ctrl-prev" ref="prev" @click="handlePlayPrev()"></span>
-        <span :class="['ctrl-play', playClass]" ref="play"
+        <span class="ctrl-prev playbar--prev" ref="prev" @click="handlePlayPrev()"></span>
+        <span 
+          :class="['ctrl-play', 'playbar--play', isPaused ? 'playbar--play_paused' : 'playbar--play_playing']" 
+          ref="play"
           @click="handlePlay()"
         ></span>
-        <span class="ctrl-next" ref="next" @click="handlePlayNext()"></span>
+        <span class="ctrl-next playbar--next" ref="next" @click="handlePlayNext()"></span>
       </div>
       <div class="song-info">
         <div class="info-pic">
           <img v-show="nowPlay.picUrl" class="pic" :src="nowPlay.picUrl">
-          <a href="#" class="info-href" @click="toSongView()"></a>
+          <a href="#" class="info-href playbar--song-link" @click="toSongView()"></a>
         </div>
         <div class="info-gp">
           <div class="info-title">
             <a class="info-title-name" @click="toSongView()">{{nowPlay.name}}</a>
             <a class="info-title-singer">{{singers}}</a>
-            <a v-show="nowPlay.name" class="info-title-icon">&nbsp;</a>
+            <a v-show="nowPlay.name" class="info-title-icon playbar--song-from">&nbsp;</a>
           </div>
           <progress-bar
             :duration="duration"
@@ -36,15 +41,15 @@
           <div class="column-line"></div>
           <div class="column-btn"></div>
         </div>
-        <a href="#" class="ctrl-voice" @click.prevent="handleChangeVoice()"></a>
+        <a href="#" class="ctrl-voice playbar--voice" @click.prevent="handleChangeVoice()"></a>
         <a href="#" :class="['ctrl-mode', nowMode]" @click.prevent="handleChangePlaymode()"></a>
-        <a class="ctrl-shown" @click="handleShowPlayContent()">
+        <a class="ctrl-list playbar--list" @click="handleShowPlayContent()">
           <em>{{playlist.length}}</em>
         </a>
       </div>
       <div class="other-options">
-        <a href="#" class="op-collect" @click="handleShowAbout()"></a>
-        <a href="#" class="op-share" @click="handleShowAbout()"></a>
+        <a href="#" class="op-collect playbar--collect" @click="handleShowAbout()"></a>
+        <a href="#" class="op-share playbar--share" @click="handleShowAbout()"></a>
       </div>
     </div>
     <div class="audio-wrapper">
@@ -56,7 +61,6 @@
         <source src="" type="">
       </audio>
     </div>
-    <!-- <div  class="play-wrapper"> -->
     <transition name="slide">
       <play-content 
         v-show="isShowPlayContent" 
@@ -65,7 +69,6 @@
         :currentTime="currentTime"
       ></play-content>
     </transition>
-    <!-- </div> -->
   </div>
 </template>
 
@@ -107,19 +110,16 @@ export default {
     singers() {
       return getSingers(this.nowPlay.singer);
     },
-    playClass() {
-      return this.isPaused ? 'paused' : 'playing';
-    },
     nowMode() {
       switch(this.defaultPlayMode) {
         case 0:
-          return 'list-cycle';
+          return 'playbar--mode_list-cycle';
           break;
         case 1:
-          return 'random-play';
+          return 'playbar--mode_random-play';
           break;
         case 2:
-          return 'single-cycle';
+          return 'playbar--mode_single-cycle';
           break;
       }
     },
@@ -269,25 +269,13 @@ export default {
     right: 15px;
     width: 52px;
     height: 67px;
-    background: url('../../public/img/icons/playbar.png') no-repeat 0 -380px;
     .icon {
       display: block;
       width: 18px;
       height: 18px;
       margin: 6px 0 0 17px;
-      &-lock {
-        background: url('../../public/img/icons/playbar.png') no-repeat -100px -380px;
-        &:hover {
-          cursor: pointer;
-          background: url('../../public/img/icons/playbar.png') no-repeat -100px -400px;
-        }
-      }
-      &-open {
-        background: url('../../public/img/icons/playbar.png') no-repeat -80px -380px;
-        &:hover {
-          cursor: pointer;
-          background: url('../../public/img/icons/playbar.png') no-repeat -80px -400px;
-        }
+      &:hover {
+        cursor: pointer;
       }
     }
   }
@@ -297,12 +285,10 @@ export default {
     right: 0px;
     width: 15px;
     height: 54px;
-    background: url('../../public/img/icons/playbar.png') no-repeat -52px -393px;
   }
   .left-bg {
     height: 53px;
     margin-right: 67px;
-    background: url('../../public/img/icons/playbar.png') repeat-x 0 0;
   }
 }
 .content {
@@ -313,7 +299,6 @@ export default {
   margin-left: -490px;
   width: 980px;
   height: 47px;
-  // background-color: #ccc;
   .main-ctrl {
     float: left;
     padding-top: 6px;
@@ -325,10 +310,6 @@ export default {
       height: 28px;
       margin-top: 5px;
       margin-right: 8px;
-      background: url('../../public/img/icons/playbar.png') no-repeat 0 -130px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -30px -130px;
-      }
     }
     .ctrl-play {
       float: left;
@@ -336,28 +317,12 @@ export default {
       height: 36px;
       margin-right: 8px;
     }
-    .paused {
-      background: url('../../public/img/icons/playbar.png') no-repeat 0 -204px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -40px -204px;
-      }
-    }
-    .playing {
-      background: url('../../public/img/icons/playbar.png') no-repeat 0 -165px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -40px -165px;
-      }
-    }
     .ctrl-next {
       float: left;
       width: 28px;
       height: 28px;
       margin-top: 5px;
       margin-right: 8px;
-      background: url('../../public/img/icons/playbar.png') no-repeat -80px -130px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -110px -130px;
-      }
     }
   }
   .song-info {
@@ -376,7 +341,6 @@ export default {
         left: 0;
         width: 34px;
         height: 35px;
-        background: url('../../public/img/icons/playbar.png') no-repeat 0 -80px;
       }
     }
     .info-gp {
@@ -404,10 +368,6 @@ export default {
           width: 14px;
           height: 15px;
           margin: 7px 0 0 3px;
-          background: url('../../public/img/icons/playbar.png') no-repeat -110px -103px;
-          &:hover {
-            background: url('../../public/img/icons/playbar.png') no-repeat -130px -103px;
-          }
         }
       }
     }
@@ -419,18 +379,6 @@ export default {
       width: 25px;
       height: 25px;
       margin: 11px 2px 0 0;
-    }
-    .op-collect {
-      background: url('../../public/img/icons/playbar.png') no-repeat -88px -163px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -88px -189px;
-      }
-    }
-    .op-share {
-      background: url('../../public/img/icons/playbar.png') no-repeat -114px -163px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -114px -189px;
-      }
     }
   }
   .more-ctrl {
@@ -473,31 +421,7 @@ export default {
       height: 25px;
       margin: 11px 2px 0 0;
     }
-    .ctrl-voice {
-      background: url('../../public/img/icons/playbar.png') no-repeat -2px -248px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -31px -248px;
-      }
-    }
-    .single-cycle {
-      background: url('../../public/img/icons/playbar.png') no-repeat -66px -344px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -93px -344px;
-      }
-    }
-    .random-play {
-      background: url('../../public/img/icons/playbar.png') no-repeat -66px -248px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -93px -248px;
-      }
-    }
-    .list-cycle {
-      background: url('../../public/img/icons/playbar.png') no-repeat -3px -344px;
-      &:hover {
-        background: url('../../public/img/icons/playbar.png') no-repeat -33px -344px;
-      }
-    }
-    .ctrl-shown {
+    .ctrl-list {
       float: left;
       width: 59px;
       height: 25px;
@@ -506,11 +430,9 @@ export default {
       text-indent: 29px;
       font-size: $fontMin;
       color: $homeLogin;
-      background: url('../../public/img/icons/playbar.png') no-repeat -42px -68px;
       &:hover {
         cursor: pointer;
         color: $textLight;
-        background: url('../../public/img/icons/playbar.png') no-repeat -42px -98px;
       }
     }
   }
@@ -526,7 +448,6 @@ export default {
     z-index: 10;
     position: absolute;
     top: -295px;
-    // top: -200px;
     width: 982px;
     height: 300px;
     margin-left: 50%;
