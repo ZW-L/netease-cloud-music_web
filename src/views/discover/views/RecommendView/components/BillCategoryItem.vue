@@ -33,9 +33,9 @@
 </template>
 
 <script>
-import { getBillboard } from  '@/api/get.js';
-import { toPlay } from '~api/control.js';
-import { mapGetters } from 'vuex';
+import { getBillboard } from '@/api/get'
+// import { toPlay } from '~api/control'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'bill-category-item',
@@ -59,35 +59,35 @@ export default {
   },
 
   mounted() {
-    this.initialData();
+    this.initialData()
   },
 
   methods: {
     initialData() {
-      const idx = this.toIdx[`id_${this.id}`];
+      const idx = this.toIdx[`id_${this.id}`]
       getBillboard(idx).then(res => {
-        const playlist = res.data.playlist;
-        this.name = playlist.name;
-        this.coverImgUrl = playlist.coverImgUrl;
-        this.list = playlist.tracks.slice(0, 10);
-      });
+        const { playlist } = res.data
+        this.name = playlist.name
+        this.coverImgUrl = playlist.coverImgUrl
+        this.list = playlist.tracks.slice(0, 10)
+      })
     },
     handleToPlay(item) {
-      this.$store.dispatch('toPlay', item);
+      this.$store.dispatch('toPlay', item)
     },
     handleAdd(item) {
-      console.log('click...');
-      this.$store.dispatch('addToPlaylist', item);
+      console.log('click...')
+      this.$store.dispatch('addToPlaylist', item)
     },
     playAll() {
-      const idx = this.toIdx[`id_${this.id}`];
+      const idx = this.toIdx[`id_${this.id}`]
       getBillboard(idx).then(res => {
-        const playlist = res.data.playlist.tracks;
-        this.$store.dispatch('changePlaylist', playlist);
-      });
+        const playlist = res.data.playlist.tracks
+        this.$store.dispatch('changePlaylist', playlist)
+      })
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 
@@ -95,7 +95,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 
@@ -119,7 +118,7 @@ export default {
         width: 80px;
         height: 80px;
         left: 0;
-        background: url('../../../../public/img/icons/coverall.png') no-repeat -145px -57px;
+        background: url('../../../../../../public/img/icons/coverall.png') no-repeat -145px -57px;
       }
     }
     .header-right {
@@ -142,17 +141,17 @@ export default {
           margin-right: 10px;
         }
         .option-play {
-          background: url('../../../../public/img/icons/index.png') no-repeat -267px -205px;
+          background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -205px;
           &:hover {
             cursor: pointer;
-            background: url('../../../../public/img/icons/index.png') no-repeat -267px -235px;
+            background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -235px;
           }
         }
         .option-addall {
-          background: url('../../../../public/img/icons/index.png') no-repeat -300px -205px;
+          background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -205px;
           &:hover {
             cursor: pointer;
-            background: url('../../../../public/img/icons/index.png') no-repeat -300px -235px;
+            background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -235px;
           }
         }
       }
@@ -196,25 +195,25 @@ export default {
         .opt-play {
           margin-top: 8px;
           margin-right: 8px;
-          background: url('../../../../public/img/icons/index.png') no-repeat -267px -268px;
+          background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -268px;
           &:hover {
-            background: url('../../../../public/img/icons/index.png') no-repeat -267px -288px;
+            background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -288px;
           }
         }
         .opt-add {
           margin-top: 10px;
           margin-right: 6px;
-          background: url('../../../../public/img/icons/icon.png') no-repeat 0 -700px;
+          background: url('../../../../../../public/img/icons/icon.png') no-repeat 0 -700px;
           &:hover {
-            background: url('../../../../public/img/icons/icon.png') no-repeat -22px -700px;
+            background: url('../../../../../../public/img/icons/icon.png') no-repeat -22px -700px;
           }
         }
         .opt-collect {
           margin-top: 8px;
           margin-right: 10px;
-          background: url('../../../../public/img/icons/index.png') no-repeat -297px -268px;
+          background: url('../../../../../../public/img/icons/index.png') no-repeat -297px -268px;
           &:hover {
-            background: url('../../../../public/img/icons/index.png') no-repeat -297px -288px;
+            background: url('../../../../../../public/img/icons/index.png') no-repeat -297px -288px;
           }
         }
       }

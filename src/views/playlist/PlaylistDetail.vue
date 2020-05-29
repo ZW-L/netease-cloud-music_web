@@ -37,15 +37,17 @@
             介绍：
             <p class="desc-item" v-for="(item, i) of desc" :key="i">{{item}}</p>
           </div>
-          <p v-show="shortDesc.length !== fullDesc.length" class="desc-control" @click="handleShowAll()">
-            <em v-if="!showAll" class="ctrl-text">展开</em>
-            <em v-else class="ctrl-text">收起</em>
-            <i :class="['ctrl-icon', showAll ? 'ctrl-up-icon' : 'ctrl-down-icon']"></i>
+          <p v-show="shortDesc.length !== fullDesc.length"
+            class="desc-control"
+            @click="handleShowAll()">
+              <em v-if="!showAll" class="ctrl-text">展开</em>
+              <em v-else class="ctrl-text">收起</em>
+              <i :class="['ctrl-icon', showAll ? 'ctrl-up-icon' : 'ctrl-down-icon']"></i>
           </p>
         </div>
       </div>
-      <song-list-table 
-        :songList="songList" 
+      <song-list-table
+        :songList="songList"
         :showAlbum="true"
         :trackCount="detail.trackCount"
         :playCount="detail.playCount"
@@ -63,12 +65,12 @@
 </template>
 
 <script>
-import AsideGroup from '@/components/group/AsideGroup';
-import BtnBar from '@/components/base/BtnBar.vue';
-import SongListTable from '@/components/base/SongListTable.vue';
-import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '~api/get.js';
-import { dateFormat } from '~api/util.js';
-import { toPlay } from '~api/control.js';
+import AsideGroup from '@/components/group/AsideGroup.vue'
+import BtnBar from '@/components/base/BtnBar.vue'
+import SongListTable from '@/components/base/SongListTable.vue'
+import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '~api/get'
+import { dateFormat } from '~api/util'
+// import { toPlay } from '~api/control'
 
 export default {
   name: 'playlist-detail',
@@ -99,39 +101,39 @@ export default {
       playlistLikes: [], // 边栏参数，喜欢歌单的人
       relativeRecommend: [], // 边栏参数，相关歌单推荐
       download: true, // 边栏参数，app 选项
-    };
+    }
   },
 
   computed: {
     playlistId() {
-      return this.$route.query.id;
+      return this.$route.query.id
     },
     // 怎么优化处理数据？？？
     creatorPic() {
-      return this.detail.creator ? `${this.detail.creator.avatarUrl}?param=40y40` : '';
+      return this.detail.creator ? `${this.detail.creator.avatarUrl}?param=40y40` : ''
     },
     creatorName() {
-      return this.detail.creator ? this.detail.creator.nickname : '';
+      return this.detail.creator ? this.detail.creator.nickname : ''
     },
     createTime() {
-      return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01';
+      return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01'
     },
     shortDesc() {
       if (this.detail.desc.length <= 100) {
-        return this.fullDesc;
+        return this.fullDesc
       }
-      return this.detail.desc.slice(0, 97).concat('...').split('\n');
+      return this.detail.desc.slice(0, 97).concat('...').split('\n')
     },
     fullDesc() {
-      return this.detail.desc.split('\n').concat('');
+      return this.detail.desc.split('\n').concat('')
     },
     desc() {
-      return this.showAll ? this.fullDesc : this.shortDesc;
+      return this.showAll ? this.fullDesc : this.shortDesc
     },
   },
 
   mounted() {
-    this.initialData();
+    this.initialData()
   },
 
   methods: {
@@ -139,43 +141,44 @@ export default {
     initialData() {
       // 获取歌单信息
       getPlaylistDetail(this.playlistId).then(res => {
-        const data = res.data.playlist;
-        const obj = this.detail;
-        obj.coverImgUrl = data.coverImgUrl,
-        obj.name = data.name,
-        obj.creator = data.creator,
-        obj.createTime = data.createTime,
-        obj.subscribedCount = data.subscribedCount,
-        obj.shareCount = data.shareCount,
-        obj.commentCount = data.commentCount,
-        obj.tags = data.tags,
-        obj.desc = data.description,
-        obj.trackCount = data.trackCount,
-        obj.playCount = data.playCount,
-        this.songList = data.tracks;
-      });
+        const data = res.data.playlist
+        const obj = this.detail
+        obj.coverImgUrl = data.coverImgUrl
+        obj.name = data.name
+        obj.creator = data.creator
+        obj.createTime = data.createTime
+        obj.subscribedCount = data.subscribedCount
+        obj.shareCount = data.shareCount
+        obj.commentCount = data.commentCount
+        obj.tags = data.tags
+        obj.desc = data.description
+        obj.trackCount = data.trackCount
+        obj.playCount = data.playCount
+        this.songList = data.tracks
+      })
       // 获取喜欢歌单的人
       getCollectPlaylistUsers(this.playlistId, 8).then(res => {
         // console.log(res.data.subscribers);
-        this.playlistLikes = res.data.subscribers;
-      });
+        this.playlistLikes = res.data.subscribers
+      })
       // 获取相关歌单推荐
       getRelativePlaylist(this.playlistId).then(res => {
         // console.log(res.data);
-        this.relativeRecommend = res.data.playlists;
-      });
+        this.relativeRecommend = res.data.playlists
+      })
     },
     handlePlayAll() {
-      this.$store.dispatch('changePlaylist', this.songList);
+      this.$store.dispatch('changePlaylist', this.songList)
     },
     handleShowAll() {
-      this.showAll = !this.showAll;
+      this.showAll = !this.showAll
     },
   },
 
   watch: {
-    '$route' (to, from) {
-      this.initialData();
+    // eslint-disable-next-line
+    '$route'(to, from) {
+      this.initialData()
     },
   },
 

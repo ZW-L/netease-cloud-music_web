@@ -5,7 +5,7 @@
     </div>
     <div class="content hot">
       <div class="content-item" v-for="(item, i) of newest" :key="i">
-        <new-disc-card :album="item" size="lg" ttSize="m"></new-disc-card>
+        <new-disc-card :album="item" size="lg" ttSize="m" />
       </div>
     </div>
     <div class="header">
@@ -16,30 +16,25 @@
     </div>
     <div class="content all">
       <div class="content-item" v-for="(item, i) of newestAll" :key="i">
-        <new-disc-card :album="item" size="lg" ttSize="m"></new-disc-card>
+        <new-disc-card :album="item" size="lg" ttSize="m" />
       </div>
     </div>
-    <base-pagination 
-      @changePage="handleChangePage"
-      :pages="15"
-    ></base-pagination>
+    <base-pagination @changePage="handleChangePage" :pages="15" />
   </div>
 </template>
 
 <script>
-import BasePagination from '@/components/base/pagination.vue';
-import NewDiscCard from '@/components/base/NewDiscCard.vue';
-import { addSeparator } from '~api/util.js';
-import { getNewest, getNewestAll } from '~api/get.js';
+import BasePagination from '@/components/base/pagination.vue'
+import NewDiscCard from '@/components/base/NewDiscCard.vue'
+import { addSeparator } from '~api/util'
+import { getNewest, getNewestAll } from '~api/get'
 
 export default {
   name: 'album-view',
-
   components: {
     BasePagination,
     NewDiscCard,
   },
-
   data() {
     return {
       cates: ['全部', '华语', '欧美', '日本'],
@@ -53,65 +48,61 @@ export default {
       newest: [],
       newestAll: [],
       limit: 35,
-    };
+    }
   },
-
   computed: {
     allCates() {
-      return addSeparator(this.cates);
+      return addSeparator(this.cates)
     },
   },
-
   mounted() {
-    this.handleGetData();
+    this.handleGetData()
   },
-
   methods: {
     // 提取 albums 的关键数据
-    _extractAlbums(albums) {
+    extractAlbums(albums) {
       return albums.map(v => ({
         name: v.name,
         picUrl: `${v.picUrl}?param=130x130`,
         id: v.id,
         artists: v.artists,
-      }));
+      }))
     },
     handleGetData() {
       // 热门新碟
       getNewest().then(res => {
         // console.log(res.data.albums);
-        this.newest = this._extractAlbums(res.data.albums.slice(0, 10));
+        this.newest = this.extractAlbums(res.data.albums.slice(0, 10))
         // console.log(this.newest);
       }).catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
       // 全部热门新碟
       getNewestAll().then(res => {
         // console.log(res.data.albums);
-        this.newestAll = this._extractAlbums(res.data.albums);
+        this.newestAll = this.extractAlbums(res.data.albums)
         // console.log(this.newestAll);
       }).catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
     },
     handleChangePage(page) {
       // 将视图清空(会导致子组件全部销毁，应该显示其他信息，这样不用销毁组件？)
-      this.newestAll = [];
-      const offset = (page-1) * this.limit;
+      this.newestAll = []
+      const offset = (page - 1) * this.limit
       getNewestAll(offset).then(res => {
-        console.log(res.data.albums);
-        this.newestAll = this._extractAlbums(res.data.albums);
+        console.log(res.data.albums)
+        this.newestAll = this.extractAlbums(res.data.albums)
         // console.log(this.newestAll);
       }).catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
     },
   },
-};
+}
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 
 .album {

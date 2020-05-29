@@ -1,21 +1,8 @@
-import Vue from 'vue';
-import Router from 'vue-router';
-// 发现页
-import Discover from '@discover/DiscoverView.vue';
-import DiscoverAlbum from '@discover/views/AlbumView.vue';
-import DiscoverArtist from '@discover/views/ArtistView.vue';
-import DiscoverDjradio from '@discover/views/DjradioView.vue';
-import DiscoverPlaylist from '@discover/views/PlaylistView.vue';
-import DiscoverRecommend from '@discover/views/RecommendView.vue';
-import DiscoverToplist from '@discover/views/ToplistView.vue';
-// 歌单详情页
-import PlaylistDetail from '@/views/playlist/PlaylistDetail.vue';
-// 专辑详情页
-import AlbumDetail from '@/views/album/AlbumDetail.vue';
-// 歌曲详情页
-import SongDetail from '@/views/song/SongDetail.vue';
+import Vue from 'vue'
+import Router from 'vue-router'
+import Layout from '@/layout'
 
-Vue.use(Router);
+Vue.use(Router)
 
 export default new Router({
   // mode: 'history',
@@ -28,60 +15,69 @@ export default new Router({
     },
     {
       path: '/discover',
-      name: 'discover',
       redirect: '/discover/recommend',
-      component: Discover,
+      component: Layout,
       children: [
         {
           path: 'album', // /discover/album
-          name: 'discover-album',
-          component: DiscoverAlbum,
+          component: () => import('@discover/views/AlbumView.vue'),
         },
         {
           path: 'artist',
-          name: 'discover-artist',
-          component: DiscoverArtist,
+          component: () => import('@discover/views/ArtistView.vue'),
         },
         {
           path: 'djradio',
-          name: 'discover-diradio',
-          component: DiscoverDjradio,
+          component: () => import('@discover/views/DjradioView.vue'),
         },
         {
           path: 'playlist',
-          name: 'discover-playlist',
-          component: DiscoverPlaylist,
+          component: () => import('@discover/views/PlaylistView.vue'),
         },
         {
           path: 'recommend',
-          name: 'discover-recommend',
-          component: DiscoverRecommend,
           alias: '/discover',
+          component: () => import('@discover/views/RecommendView/index.vue'),
         },
         {
           path: 'toplist', // /discover/toplist?idx=:idx
-          name: 'discover-toplist',
-          component: DiscoverToplist,
+          component: () => import('@discover/views/ToplistView/index.vue'),
         },
       ],
     },
     {
       path: '/album', // /album?id=:id
-      name: 'album',
-      component: AlbumDetail,
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/album/AlbumDetail.vue'),
+        },
+      ],
     },
     {
       path: '/playlist', // /playlist?cate=:cate
-      name: 'playlist',
-      component: PlaylistDetail,
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/playlist/PlaylistDetail.vue'),
+        },
+      ],
     },
     {
       path: '/song', // /song?id=:id
-      name: 'song',
-      component: SongDetail,
+      component: Layout,
+      children: [
+        {
+          path: '',
+          component: () => import('@/views/song/SongDetail.vue'),
+        },
+      ],
     },
   ],
+  /* eslint-disable-next-line */
   scrollBehavior(to, from, savedPosition) {
-    return { x: 0, y: 0 };
+    return { x: 0, y: 0 }
   },
-});
+})

@@ -1,22 +1,19 @@
 <template>
   <div class="container">
-    <category-header 
-      :title="title"
-      :morePath="morePath"
-    ></category-header>
+    <category-header :title="title" :morePath="morePath" />
     <div class="content">
       <div class="wrapper">
         <transition :name="vname">
           <ul v-show="showList==='first'" class="list first-list" ref="first">
             <li class="item" v-for="(item, i) of albums.slice(0, 5)" :key="i">
-              <new-disc-card :album="item"></new-disc-card>
+              <new-disc-card :album="item" />
             </li>
           </ul>
         </transition>
         <transition :name="vname">
           <ul v-show="showList==='second'" class="list second-list" ref="second">
             <li class="item" v-for="(item, i) of albums.slice(5, 10)" :key="i">
-              <new-disc-card :album="item"></new-disc-card>
+              <new-disc-card :album="item" />
             </li>
           </ul>
         </transition>
@@ -28,18 +25,16 @@
 </template>
 
 <script>
-import CategoryHeader from '@/components/base/CategoryHeader.vue';
-import NewDiscCard from '@/components/base/NewDiscCard.vue';
-import { getNewest } from '@/api/get.js';
+import CategoryHeader from '@/components/base/CategoryHeader.vue'
+import NewDiscCard from '@/components/base/NewDiscCard.vue'
+import { getNewest } from '@/api/get'
 
 export default {
   name: 'new-category',
-
   components: {
     CategoryHeader,
     NewDiscCard,
   },
-
   data() {
     return {
       title: '新碟上架',
@@ -47,23 +42,21 @@ export default {
       albums: [],
       showList: 'first',
       vname: '',
-    };
+    }
   },
-
   mounted() {
-    this.initialData();
+    this.initialData()
   },
-
   methods: {
     initialData() {
       getNewest().then(res => {
-        this.albums = this.albums.concat(res.data.albums).slice(0, 10);
-      });
+        this.albums = this.albums.concat(res.data.albums).slice(0, 10)
+      })
     },
     handleShowList(choose) {
-      // 后续应该添加节流函数
-      this.vname = choose === 'prev' ? 'next' : 'prev';
-      this.showList = this.showList === 'first' ? 'second' : 'first';
+      // todo: 添加节流函数
+      this.vname = choose === 'prev' ? 'next' : 'prev'
+      this.showList = this.showList === 'first' ? 'second' : 'first'
     },
   },
 
@@ -109,16 +102,16 @@ export default {
     }
     .prev {
       left: 5px;
-      background: url('../../../../public/img/icons/index.png') no-repeat -260px -75px;
+      background: url('../../../../../../public/img/icons/index.png') no-repeat -260px -75px;
       &:hover {
-        background: url('../../../../public/img/icons/index.png') no-repeat -280px -75px;
+        background: url('../../../../../../public/img/icons/index.png') no-repeat -280px -75px;
       }
     }
     .next {
       right: 5px;
-      background: url('../../../../public/img/icons/index.png') no-repeat -300px -75px;
+      background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -75px;
       &:hover {
-        background: url('../../../../public/img/icons/index.png') no-repeat -320px -75px;
+        background: url('../../../../../../public/img/icons/index.png') no-repeat -320px -75px;
       }
     }
   }

@@ -10,13 +10,13 @@
           </li>
         </ul>
         <div class="search">
-          <input class="search-input" type="text" placeholder="音乐/视频/用户/电台" 
+          <input class="search-input" type="text" placeholder="音乐/视频/用户/电台"
             v-model="searchText"
             @focus="handleFocus(1)"
             @blur="handleFocus(0)"
           >
-          <music-search 
-            v-show="searchText && isFoucus" 
+          <music-search
+            v-show="searchText && isFoucus"
             class="search-content"
             :searchResult="searchResult"
           ></music-search>
@@ -31,7 +31,7 @@
       <div class="sub-header">
         <ul class="sub-nav">
           <li v-for="(item, i) of subNav" :key="i"
-            :class="['sub-nav-item', { 'sub-nav-item-active': navActive(i) }]" 
+            :class="['sub-nav-item', { 'sub-nav-item-active': navActive(i) }]"
             @click="handleSubNavClick(i)"
           >{{item.title}}</li>
         </ul>
@@ -41,19 +41,17 @@
 </template>
 
 <script>
-import MusicSearch from '@/components/MusicSearch.vue';
-import { getSearchSuggest } from '~api/get.js';
+import MusicSearch from '@/components/MusicSearch.vue'
+import { getSearchSuggest } from '~api/get'
 
 export default {
   name: 'music-header',
-
   components: {
     MusicSearch,
   },
-
   data() {
     return {
-      nav: ['发现音乐', '我的音乐', '朋友', '商城', '音乐人', '下载客户端', ],
+      nav: ['发现音乐', '我的音乐', '朋友', '商城', '音乐人', '下载客户端'],
       subNav: [
         { title: '推荐', path: '/discover/recommend' },
         { title: '排行榜', path: '/discover/toplist' },
@@ -74,38 +72,36 @@ export default {
       },
     }
   },
-
   methods: {
     handleSubNavClick(i) {
-      this.$router.push(this.subNav[i].path);
+      this.$router.push(this.subNav[i].path)
     },
     handleFocus(flag) {
       // 因为 blur 事件优先于 click 事件，会导致 click 后不能跳转，因此先将 blur 延迟
       setTimeout(() => {
-        this.isFoucus = !!flag;
-      }, 100);
+        this.isFoucus = !!flag
+      }, 100)
     },
     navActive(i) {
-      return this.$route.path === this.subNav[i].path;
+      return this.$route.path === this.subNav[i].path
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
-
   watch: {
     searchText(text) {
-      const search = text.replace(/\s/g, '');
+      const search = text.replace(/\s/g, '')
       if (search !== '') {
         getSearchSuggest(search).then(res => {
-          const data = res.data.result;
-          this.searchResult.albums = data.albums || '';
-          this.searchResult.songs = data.songs || '';
-          this.searchResult.artists = data.artists || '';
-          this.searchResult.playlists = data.albums || '';
-          this.searchResult.mvs = data.mvs || '';
-          this.searchResult.order = data.order || '';
-        });
+          const data = res.data.result
+          this.searchResult.albums = data.albums || ''
+          this.searchResult.songs = data.songs || ''
+          this.searchResult.artists = data.artists || ''
+          this.searchResult.playlists = data.albums || ''
+          this.searchResult.mvs = data.mvs || ''
+          this.searchResult.order = data.order || ''
+        })
       }
     },
   },
@@ -113,7 +109,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 
@@ -138,7 +133,7 @@ export default {
   .title {
     width: 176px;
     height: 69px;
-    background: url('../../public/img/icons/topbar.png') no-repeat;
+    background: url('../../../../public/img/icons/topbar.png') no-repeat;
     @include hoverText();
   }
   .nav {
@@ -169,7 +164,7 @@ export default {
         left: -12px;
         width: 28px;
         height: 19px;
-        background: url('../../public/img/icons/topbar.png') no-repeat -190px 0;
+        background: url('../../../../public/img/icons/topbar.png') no-repeat -190px 0;
       }
     }
   }
@@ -181,7 +176,7 @@ export default {
     height: 32px;
     border-radius: 32px;
     // overflow: hidden;
-    background: url('../../public/img/icons/topbar.png') no-repeat 0 -99px;
+    background: url('../../../../public/img/icons/topbar.png') no-repeat 0 -99px;
     background-color: $bgDefault;
     .search-input {
       width: 100px;
@@ -227,7 +222,7 @@ export default {
       padding-right: 20px;
       color: $homeLogin;
       @include hoverLighter($infoDark, none);
-      background: url('../../public/img/icons/topbar.png') no-repeat right -55px;
+      background: url('../../../../public/img/icons/topbar.png') no-repeat right -55px;
     }
   }
 }

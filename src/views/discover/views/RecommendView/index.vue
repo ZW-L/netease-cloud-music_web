@@ -1,35 +1,33 @@
 <template>
   <div class="recommend">
-    <home-carousel class="carousel"></home-carousel>
+    <home-carousel class="carousel" />
     <div class="content">
       <div class="content-left">
-        <hot-category></hot-category>
-        <new-category></new-category>
-        <bill-category></bill-category>
+        <hot-category />
+        <new-category />
+        <bill-category />
       </div>
       <div class="content-right">
         <aside-group
           :loginInfo="loginInfo"
           :inSingers="homeSinger"
-          :hotPlayers="homeHoster"
-        ></aside-group>
+          :hotPlayers="homeHoster"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import HomeCarousel from '@discover/components/HomeCarousel.vue';
-import HotCategory from '@discover/components/HotCategory.vue';
-import NewCategory from '@discover/components/NewCategory.vue';
-import BillCategory from '@discover/components/BillCategory.vue';
-import AsideGroup from '@/components/group/AsideGroup.vue'; 
-import { mapGetters } from 'vuex';
-import { getToplistDetail } from '~api/get.js';
+import { mapGetters } from 'vuex'
+import AsideGroup from '@/components/group/AsideGroup.vue'
+import HomeCarousel from './components/HomeCarousel.vue'
+import HotCategory from './components/HotCategory.vue'
+import NewCategory from './components/NewCategory.vue'
+import BillCategory from './components/BillCategory.vue'
+import { getToplistDetail } from '~api/get'
 
 export default {
   name: 'recommend-view',
-
   components: {
     HomeCarousel,
     HotCategory,
@@ -37,23 +35,36 @@ export default {
     BillCategory,
     AsideGroup,
   },
-
   data() {
     return {
       category: ['入驻歌手', '热门主播'],
       loginInfo: true,
-    };
+    }
   },
-
   computed: {
     ...mapGetters(['homeSinger', 'homeHoster']),
   },
-
+  mounted() {
+    this.initialData()
+  },
+  methods: {
+    initialData() {
+      // 获取排行榜的信息，保存至 store
+      getToplistDetail().then(res => {
+        const data = res.data.list
+        const featureRank = data.slice(0, 4)
+        const globalRank = data.slice(4)
+        this.$store.commit('UPDATE_FEATURE_RANK', featureRank)
+        this.$store.commit('UPDATE_GLOBAL_RANK', globalRank)
+      }).catch(err => {
+        console.log(err)
+      })
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 
 .recommend {

@@ -79,38 +79,38 @@ export default {
           logo_size: [110, 450],
         },
       ],
-    };
+    }
   },
 
   computed: {
     devideLinks() {
-      return this.links.join('_').split(/\b/).map(v => v === '_' ? '|' : v);
+      return this.links.join('_').split(/\b/).map(v => (v === '_' ? '|' : v))
     },
     bg() {
-      const res = [],
-            logos = this.logos;
-      let logo_bg = '',
-          logo_bgSize = '',
-          tt_bg = '',
-          tt_bgSize = '';
-      for (let i = 0; i < logos.length; i+= 1) {
-        const obj = {};
-        logo_bg = `url(${logos[i].logo_url}) no-repeat ${logos[i].logo_pos[0]}px ${logos[i].logo_pos[1]}px`;
-        logo_bgSize = `${logos[i].logo_size[0]}px ${logos[i].logo_size[1]}px`;
-        tt_bg = `url(${logos[i].tt_url}) no-repeat ${logos[i].tt_pos[0]}px ${logos[i].tt_pos[1]}px`;
-        tt_bgSize = `${logos[i].tt_size[0]}px ${logos[i].tt_size[1]}px`;
-        obj.logoStyle = { 'background': logo_bg, 'background-size': logo_bgSize },
-        obj.ttStyle = { 'background': tt_bg, 'background-size': tt_bgSize },
-        res.push(obj);
+      const res = []
+      const { logos } = this
+      let logoBg = ''
+      let logoSize = ''
+      let titleBg = ''
+      let titleSize = ''
+      for (let i = 0; i < logos.length; i += 1) {
+        const obj = {}
+        logoBg = `url(${logos[i].logo_url}) no-repeat ${logos[i].logo_pos[0]}px ${logos[i].logo_pos[1]}px`
+        logoSize = `${logos[i].logo_size[0]}px ${logos[i].logo_size[1]}px`
+        titleBg = `url(${logos[i].tt_url}) no-repeat ${logos[i].tt_pos[0]}px ${logos[i].tt_pos[1]}px`
+        titleSize = `${logos[i].tt_size[0]}px ${logos[i].tt_size[1]}px`
+        obj.logoStyle = { background: logoBg, 'background-size': logoSize }
+        obj.ttStyle = { background: titleBg, 'background-size': titleSize }
+        res.push(obj)
       }
-      return res;
+      return res
     },
   },
 
   methods: {
     getBg(i) {
-      return this.bg[i];
-    }
+      return this.bg[i]
+    },
   },
 
 }

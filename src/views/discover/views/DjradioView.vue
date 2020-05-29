@@ -7,11 +7,8 @@
 <script>
 export default {
   name: 'djradio-view',
-
   components: {},
-
   props: {},
-
   data() {
     return {
     }
@@ -20,7 +17,6 @@ export default {
 </script>
 
 <style lang="scss" module>
-
 .djradio {
   box-sizing: border-box;
   width: 982px;

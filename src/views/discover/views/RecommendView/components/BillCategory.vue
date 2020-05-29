@@ -1,45 +1,33 @@
 <template>
   <div class="container">
-    <category-header 
-      :title="title"
-      :morePath="morePath"
-    ></category-header>
+    <category-header :title="title" :morePath="morePath" />
     <div class="content">
-      <bill-category-item 
-        v-for="i of bill" :key="i" 
-        :id="i" class="column"
-      ></bill-category-item>
+      <bill-category-item v-for="i of bill" :key="i" :id="i" class="column" />
     </div>
   </div>
 </template>
 
 <script>
-// import PlaylistCard from '@/components/base/PlaylistCard.vue';
-import CategoryHeader from '@/components/base/CategoryHeader.vue';
-import BillCategoryItem from './BillCategoryItem.vue';
+import CategoryHeader from '@/components/base/CategoryHeader.vue'
+import BillCategoryItem from './BillCategoryItem.vue'
 
 export default {
   name: 'bill-category',
-
   components: {
-    // PlaylistCard,
     CategoryHeader,
     BillCategoryItem,
   },
-
   data() {
     return {
       title: '榜单',
       morePath: '/discover/toplist',
       bill: [19723756, 3779629, 2884035],
-    };
+    }
   },
-
 }
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 
 .container {
@@ -56,4 +44,3 @@ export default {
   }
 }
 </style>
-      

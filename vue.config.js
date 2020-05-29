@@ -1,7 +1,7 @@
-const path = require('path');
+const path = require('path')
 
 function resolve(dir) {
-  return path.join(__dirname, dir);
+  return path.join(__dirname, dir)
 }
 
 module.exports = {
@@ -24,6 +24,6 @@ module.exports = {
       .set('@', resolve('src'))
       .set('@discover', resolve('src/views/discover'))
       .set('@friend', resolve('src/views/friend'))
-      .set('@my', resolve('src/views/my'));
+      .set('@my', resolve('src/views/my'))
   },
-};
+}

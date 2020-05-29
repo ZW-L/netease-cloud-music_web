@@ -4,7 +4,7 @@
       <div class="cate" v-for="cate of singerCate" :key="cate.title">
         <h4 class="cate-title">{{cate.title}}</h4>
         <ul class="cate-list">
-          <li class="cate-item" 
+          <li class="cate-item"
             v-for="item of cate.list" :key="item.name"
             @click="handleChangeCate(item.name, item.id)"
           >{{item.name}}</li>
@@ -16,10 +16,7 @@
         <h4 class="header-title">{{activeCate}}</h4>
         <span class="header-more" v-show="isHeaderMore">更多 &gt;</span>
       </div>
-      <alphabet-cate
-        :reset="reset"
-        @getArtistList="getArtistList(catId, $event)"
-      ></alphabet-cate>
+      <alphabet-cate :reset="reset" @getArtistList="getArtistList(catId, $event)" />
       <div class="ar-content-main">
         <div class="main-top10">
           <div class="main-top10-item" v-for="(ar, index) of artists.slice(0, 10)" :key="index">
@@ -47,19 +44,16 @@
 
 <script>
 import AlphabetCate from '@/components/base/AlphabetCate.vue'
-import CategoryHeader from '@/components/base/CategoryHeader.vue'
-import { getArtistCate } from '~api/get.js'
+// import CategoryHeader from '@/components/base/CategoryHeader.vue'
+import { getArtistCate } from '~api/get'
 
 export default {
   name: 'artist-view',
-
   components: {
-    CategoryHeader,
+    // CategoryHeader,
     AlphabetCate,
   },
-
   props: {},
-
   data() {
     return {
       singerCate: [
@@ -117,13 +111,11 @@ export default {
       reset: false, // 通知子组件更新
     }
   },
-
   computed: {
     isHeaderMore() {
       return this.activeCate === '推荐歌手'
-    }
+    },
   },
-
   methods: {
     handleChangeCate(cate, catId) {
       this.activeCate = cate
@@ -134,7 +126,7 @@ export default {
         this.getArtistList(catId)
       }
     },
-    getArtistList(catId, initial='', limit=100) {
+    getArtistList(catId, initial = '', limit = 100) {
       getArtistCate(catId, initial, limit).then(res => {
         console.log(res.data)
         this.catId = catId
@@ -149,7 +141,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .ar {
   overflow: hidden;
   box-sizing: border-box;

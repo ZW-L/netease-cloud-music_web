@@ -54,7 +54,10 @@
             <p class="info-name" @click="toPlaylistView(item)">{{item.name}}</p>
             <p class="info-creator">
               <em>by</em>
-              <em v-show="item.creator" class="creator-name" @click="handleShowAbout()">{{item.creator.nickname}}</em>
+              <em v-show="item.creator"
+                class="creator-name"
+                @click="handleShowAbout()"
+              >{{item.creator.nickname}}</em>
             </p>
           </div>
         </div>
@@ -67,7 +70,9 @@
           <div class="item-info">
             <p class="info-name" @click="toSongView(item)">{{item.name}}</p>
             <p class="info-singers">
-              <span class="singer-item" @click="handleShowAbout()">{{similarSongSingers(item)}}</span>
+              <span class="singer-item"
+                @click="handleShowAbout()"
+              >{{similarSongSingers(item)}}</span>
             </p>
           </div>
           <div class="item-ctrl">
@@ -108,7 +113,9 @@
       <h3 class="title">喜欢这个歌单的人</h3>
       <div class="list">
         <div class="item" v-for="(item, i) of playlistLikes" :key="i">
-          <img v-show="item.avatarUrl" :src="item.avatarUrl+'?param=40y40'" @click="handleShowAbout()">
+          <img v-show="item.avatarUrl"
+            :src="item.avatarUrl+'?param=40y40'"
+            @click="handleShowAbout()">
         </div>
       </div>
     </div>
@@ -143,8 +150,8 @@
 </template>
 
 <script>
-import { getSingers, dateFormat } from '~api/util.js';
-import { toPlayById } from '~api/control.js';
+import { getSingers, dateFormat } from '~api/util'
+import { toPlayById } from '~api/control'
 
 export default {
   name: 'aside-group',
@@ -192,38 +199,33 @@ export default {
     },
   },
 
-  data() {
-    return {
-    }
-  },
-
   methods: {
     similarSongSingers(item) {
-      return getSingers(item.artists);
+      return getSingers(item.artists)
     },
     handleFormatTime(time) {
-      return dateFormat(time);
+      return dateFormat(time)
     },
     toPlaylistView(item) {
-      this.$router.push({ path: 'playlist', query: { id: item.id }});
+      this.$router.push({ path: 'playlist', query: { id: item.id } })
     },
     toSongView(item) {
-      this.$router.push({ path: 'song', query: { id: item.id }});
+      this.$router.push({ path: 'song', query: { id: item.id } })
     },
     toAlbumView(item) {
       // 有可能路由相同，此时不跳转
-      if (this.$route.query.id == item.id) {
-        console.log('same route');
-        return ;
+      if (this.$route.query.id === item.id) {
+        console.log('same route')
+        return
       }
-      this.$router.push({ path: 'album', query: { id: item.id }});
+      this.$router.push({ path: 'album', query: { id: item.id } })
     },
     toPlaySong(item) {
       // console.log(item);
-      toPlayById(this.$store, item.id);
+      toPlayById(this.$store, item.id)
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 
@@ -373,7 +375,7 @@ export default {
   }
 }
 
-// 相似歌曲 
+// 相似歌曲
 .similar-song {
   .item {
     height: 30px;
@@ -421,7 +423,7 @@ export default {
   }
 }
 
-// Ta 的其他热门专辑 
+// Ta 的其他热门专辑
 .own-albums {
   .item {
     overflow: hidden;

@@ -6,7 +6,7 @@
     <div class="content">
       <div class="img-wrapper">
         <transition-group name="fade">
-          <div v-for="(item, i) of banner" :key="i"
+          <div v-for="(item, i) of banner" :key="item.url"
             v-show="i === active"
             class="img-item"
             @click="toView(item)"
@@ -19,7 +19,7 @@
         <div class="content-paganation">
           <span
             v-for="i of banner.length" :key="i"
-            :class="[ 'pag-dot', i - 1 === active ? 'pag-dot-active' : 'none' ]" 
+            :class="[ 'pag-dot', i - 1 === active ? 'pag-dot-active' : 'none' ]"
             @click="handleControl(i-1)"
           ></span>
         </div>
@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import { getBanner } from '@/api/get.js';
+import { getBanner } from '@/api/get'
 
 export default {
   name: 'home-carousel',
@@ -46,68 +46,67 @@ export default {
   },
 
   mounted() {
-    this.initialData();
+    this.initialData()
   },
 
   beforeDestroy() {
-    this.stop();
+    this.stop()
   },
 
   methods: {
     initialData() {
       getBanner().then(res => {
-        this.banner = this.banner.concat(res.data.banners);
+        this.banner = this.banner.concat(res.data.banners)
       }).catch(err => {
-        console.log(err);
+        console.log(err)
       }).finally(() => {
-        this.start();
-      });
+        this.start()
+      })
     },
     handleControl(tag) {
       if (typeof tag === 'number') {
-        console.log(`jump to ${tag}.`);
-        this.active = tag;
-      }else if (tag === 'prev') {
-        console.log('prev');
-        this.active = this.active === 0 ? this.banner.length - 1 : this.active - 1;
-      } else if (tag === 'next'){
-        console.log('next');
-        this.active = this.active === this.banner.length - 1 ? 0 : this.active + 1;
+        console.log(`jump to ${tag}.`)
+        this.active = tag
+      } else if (tag === 'prev') {
+        console.log('prev')
+        this.active = this.active === 0 ? this.banner.length - 1 : this.active - 1
+      } else if (tag === 'next') {
+        console.log('next')
+        this.active = this.active === this.banner.length - 1 ? 0 : this.active + 1
       }
     },
     handleDownload() {
-      window.open('https://music.163.com/#/download');
+      window.open('https://music.163.com/#/download')
     },
     toView(item) {
-      const { targetType, targetId, url } = item;
+      const { targetType, targetId, url } = item
       if (targetType === 3000) {
-        window.open(url);
+        window.open(url)
       } else if (targetType === 1) {
-        this.$router.push({ path: '/song', query: { id: targetId }});
+        this.$router.push({ path: '/song', query: { id: targetId } })
       } else if (targetType === 10) {
-        this.$router.push({ path: '/album', query: { id: targetId }});
+        this.$router.push({ path: '/album', query: { id: targetId } })
       }
     },
     start() {
       this.timer = setInterval(() => {
-        this.handleControl('next');
-      }, 4000);
-      console.log(`start: ${this.timer}`);
+        this.handleControl('next')
+      }, 4000)
+      console.log(`start: ${this.timer}`)
     },
     stop() {
-      clearInterval(this.timer);
-      console.log(`clear interval: ${this.timer}`);
+      clearInterval(this.timer)
+      console.log(`clear interval: ${this.timer}`)
     },
   },
 
-};
+}
 </script>
 
 <style lang="scss" scoped>
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 @import '@/assets/css/animation.scss';
-
 @include fade(.8s);
 
 .wrapper {
@@ -142,12 +141,12 @@ export default {
       .content-prev {
         left: -60px;
         top: 100px;
-        background: url('../../../../public/img/icons/banner.png') no-repeat 0 -360px;
+        background: url('../../../../../../public/img/icons/banner.png') no-repeat 0 -360px;
       }
       .content-next {
         left: 1005px;
         top: 100px;
-        background: url('../../../../public/img/icons/banner.png') no-repeat 0 -508px;
+        background: url('../../../../../../public/img/icons/banner.png') no-repeat 0 -508px;
       }
       .content-paganation {
         position: absolute;
@@ -172,7 +171,7 @@ export default {
       margin-left: 730px;
       width: 252px;
       height: 285px;
-      background: url('../../../../public/img/icons/download.png') no-repeat 0 -27px;
+      background: url('../../../../../../public/img/icons/download.png') no-repeat 0 -27px;
       &:hover {
         cursor: pointer;
       }

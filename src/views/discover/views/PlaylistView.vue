@@ -44,31 +44,24 @@
           </p>
         </playlist-card>
       </div>
-      <base-pagination 
-        :pages="pages"
-        @changePage="handleChangePage"
-      ></base-pagination>
+      <base-pagination :pages="pages" @changePage="handleChangePage" />
     </div>
   </div>
 </template>
 
 <script>
-import PlaylistCard from '@/components/base/PlaylistCard.vue';
-import BasePagination from '@/components/base/pagination.vue';
-import { addSeparator, pageChanges } from '~api/util.js';
-import { getCategoryList, getCategoryBy } from '~api/get.js';
-import { boxOffsetLeft, boxOffsetTop } from '~api/dom.js';
+import PlaylistCard from '@/components/base/PlaylistCard.vue'
+import BasePagination from '@/components/base/pagination.vue'
+import { addSeparator } from '~api/util'
+import { getCategoryList, getCategoryBy } from '~api/get'
+import { boxOffsetLeft, boxOffsetTop } from '~api/dom'
 
 export default {
   name: 'playlist-view',
-
   components: {
     PlaylistCard,
     BasePagination,
   },
-
-  props: {},
-
   data() {
     return {
       titleEllipsis: true, // 歌单组件参数，单行标题
@@ -79,119 +72,115 @@ export default {
       // cate: '全部', // 当前的分类
       sub: '', // 当前的子分类
       length: 35, // 每页的歌单总数/偏移
-    };
+    }
   },
-
   computed: {
     cate() {
-      return this.$route.query.cate || '全部';
+      return this.$route.query.cate || '全部'
     },
     // 一个 x 和 y 的区间，超过这个区间外的位置会隐藏歌单分类选项
     outerArea() {
-      const cate = this.$refs.category;
-      const offsetX = boxOffsetLeft(cate);
-      const offsetY = boxOffsetTop(cate);
-      const width = cate.clientWidth;
-      const height = cate.clientHeight;
+      const cate = this.$refs.category
+      const offsetX = boxOffsetLeft(cate)
+      const offsetY = boxOffsetTop(cate)
+      const width = cate.clientWidth
+      const height = cate.clientHeight
       return {
         sectionX: [offsetX, offsetX + width],
         sectionY: [offsetY, offsetY + height],
-      };
+      }
     },
   },
-
   mounted() {
-    this.initialData();
+    this.initialData()
     // 添加全局事件监听，这里是事件捕获，如果是冒泡的话点击 "选择分类" 时由于 click 冒泡会触发这个事件
-    window.addEventListener('click', this.hideCategory, true);
+    window.addEventListener('click', this.hideCategory, true)
   },
-
   beforeDestroy() {
     // 取消全局事件监听
-    window.removeEventListener('click', this.hideCategory, true);
+    window.removeEventListener('click', this.hideCategory, true)
   },
-
   methods: {
     // 初始化显示
     initialData() {
       // 获取歌单分类信息
       getCategoryList().then(res => {
-        this.categoryList = this._toClassify(res.data);
-      });
+        this.categoryList = this.toClassify(res.data)
+      })
       // 获取默认分类(全部风格)
       getCategoryBy(this.cate).then(res => {
-        this.playlists = res.data.playlists;
-      });
+        this.playlists = res.data.playlists
+      })
     },
     // 切换页码时
     handleChangePage(page) {
-      const offset = (page - 1) * this.length;
+      const offset = (page - 1) * this.length
       getCategoryBy(this.cate, offset, this.length).then(res => {
-        this.playlists = res.data.playlists;
-      });
+        this.playlists = res.data.playlists
+      })
     },
     // 隐藏歌单分类选项
-    hideCategory() {
+    hideCategory(event) {
       // 只有当歌单分类选项处于显示的情况下才响应时间
       if (this.display === 'none') {
-        return ;
+        return
       }
-      console.log('click event catch by window!');
-      const ex = event.pageX;
-      const ey = event.pageY;
-      if (ex < this.outerArea.sectionX[0] || ex > this.outerArea.sectionX[1] || 
-          ey < this.outerArea.sectionY[0] || ey > this.outerArea.sectionY[1]) {
-        this.$refs.category.style.display = 'none';
-        this.display = 'none';
+      console.log('click event catch by window!')
+      const ex = event.pageX
+      const ey = event.pageY
+      if (ex < this.outerArea.sectionX[0] || ex > this.outerArea.sectionX[1]
+        || ey < this.outerArea.sectionY[0] || ey > this.outerArea.sectionY[1]) {
+        this.$refs.category.style.display = 'none'
+        this.display = 'none'
       }
     },
     // 显示歌单分类选项
     toggleShowCategory() {
-      const category = this.$refs.category;
+      const { category } = this.$refs
       if (this.display === 'none') {
-        category.style.display = 'block';
-        this.display = 'block';
+        category.style.display = 'block'
+        this.display = 'block'
       } else {
-        category.style.display = 'none';
-        this.display = 'none';
+        category.style.display = 'none'
+        this.display = 'none'
       }
     },
     // 切换分类
     toChangeCategory(cate) {
       // 关闭分类选项
-      this.toggleShowCategory();
+      this.toggleShowCategory()
       // 重复选择当前路由
       if (this.cate === cate) {
-        return ;
+        return
       }
-      this.$router.push({ path: '/discover/playlist', query: { cate: cate }});
+      this.$router.push({ path: '/discover/playlist', query: { cate } })
     },
     // 将得到的分类信息格式化
-    _toClassify(cate) {
-      const sub = cate.sub;
+    toClassify(cate) {
+      const { sub } = cate
       const ret = Object.values(cate.categories).map((v, i) => {
-        let subs = sub.filter(sv => sv.category === i).map(smv => smv.name);
-        subs = addSeparator(subs);
-        return { name: v, subs, };
-      });
-      return ret;
+        let subs = sub.filter(sv => sv.category === i).map(smv => smv.name)
+        subs = addSeparator(subs)
+        return { name: v, subs }
+      })
+      return ret
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 
   watch: {
+    // eslint-disable-next-line
     '$route' (to, from) {
-      this.initialData();
+      this.initialData()
     },
   },
 
-};
+}
 </script>
 
 <style lang="scss" scoped>
-
 @import '@/assets/css/variables.scss';
 @import '@/assets/css/mixins.scss';
 
@@ -377,7 +366,7 @@ export default {
             color: $titleDivide;
           }
           .creator-name {
-            color: $titleMore;      
+            color: $titleMore;
           }
         }
       }

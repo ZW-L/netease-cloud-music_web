@@ -44,19 +44,19 @@ export default {
   name: 'about-site',
 
   mounted() {
-    const filter = this.$refs.filter;
-    filter.addEventListener('click', this.handleShow, false);
+    const { filter } = this.$refs
+    filter.addEventListener('click', this.handleShow, false)
   },
 
   beforeDestroy() {
-    const filter = this.$refs.filter;
-    filter.removeEventListener('click', this.handleShow, false);
+    const { filter } = this.$refs
+    filter.removeEventListener('click', this.handleShow, false)
   },
 
   methods: {
     handleShow() {
-      console.log('click');
-      this.$emit('show');
+      console.log('click')
+      this.$emit('show')
     },
   },
 

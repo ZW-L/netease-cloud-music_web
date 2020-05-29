@@ -2,44 +2,36 @@
   <div id="app">
     <div class="about-btn" @click="handleShowAbout()">关于网站</div>
     <transition name="show">
-      <about-site v-show="isShowAboutSite" class="about-site" @show="handleShowAbout()"></about-site>
+      <about-site
+        v-show="isShowAboutSite"
+        class="about-site"
+        @show="handleShowAbout()" />
     </transition>
-    <music-header></music-header>
-    <router-view></router-view>
-    <music-footer></music-footer>
-    <player-bar></player-bar>
+    <router-view />
+    <player-bar />
   </div>
 </template>
 
 <script>
-import MusicHeader from '@/components/MusicHeader.vue';
-import MusicFooter from '@/components/MusicFooter.vue';
-import PlayerBar from '@/components/PlayerBar.vue';
-import AboutSite from '@discover/AboutSite.vue';
-import { mapGetters } from 'vuex';
+import PlayerBar from '@/components/PlayerBar.vue'
+import AboutSite from '@discover/AboutSite.vue'
+import { mapGetters } from 'vuex'
 
 export default {
-
   name: 'app',
-  
   components: {
-    MusicHeader,
-    MusicFooter,
     PlayerBar,
     AboutSite,
   },
-  
   computed: {
     ...mapGetters(['isShowAboutSite']),
   },
-
   methods: {
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
-  
-};
+}
 </script>
 
 <style lang="scss" scoped>
