@@ -24,7 +24,7 @@ import HomeCarousel from './components/HomeCarousel.vue'
 import HotCategory from './components/HotCategory.vue'
 import NewCategory from './components/NewCategory.vue'
 import BillCategory from './components/BillCategory.vue'
-import { getToplistDetail } from '~api/get'
+
 
 export default {
   name: 'recommend-view',
@@ -43,23 +43,6 @@ export default {
   },
   computed: {
     ...mapGetters(['homeSinger', 'homeHoster']),
-  },
-  mounted() {
-    this.initialData()
-  },
-  methods: {
-    initialData() {
-      // 获取排行榜的信息，保存至 store
-      getToplistDetail().then(res => {
-        const data = res.data.list
-        const featureRank = data.slice(0, 4)
-        const globalRank = data.slice(4)
-        this.$store.commit('UPDATE_FEATURE_RANK', featureRank)
-        this.$store.commit('UPDATE_GLOBAL_RANK', globalRank)
-      }).catch(err => {
-        console.log(err)
-      })
-    },
   },
 }
 </script>

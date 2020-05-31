@@ -16,6 +16,7 @@
 import PlayerBar from '@/views/player/index.vue'
 import AboutSite from '@discover/AboutSite.vue'
 import { mapGetters } from 'vuex'
+import { getToplistDetail } from '@/api/get'
 
 export default {
   name: 'app',
@@ -26,9 +27,31 @@ export default {
   computed: {
     ...mapGetters(['isShowAboutSite']),
   },
+  mounted() {
+    this.initialData()
+  },
   methods: {
     handleShowAbout() {
       this.$store.commit('SHOW_ABOUT_SITE')
+    },
+    initialData() {
+      let featureRank = this.$storage.getLocalStorage('featureRank')
+      let globalRank = this.$storage.getLocalStorage('globalRank')
+      if (featureRank && globalRank) {
+        // get data from storage, and save to store
+        this.$store.dispatch('updateToplistDetail', { featureRank, globalRank })
+      } else {
+        // fetch new data and save to store, update storage
+        console.log('fetch data...')
+        getToplistDetail().then(res => {
+          const data = res.data.list
+          featureRank = data.slice(0, 4)
+          globalRank = data.slice(4)
+          this.$store.dispatch('updateToplistDetail', { featureRank, globalRank })
+          this.$storage.setLocalStorage('featureRank', featureRank, 300)
+          this.$storage.setLocalStorage('globalRank', globalRank, 300)
+        }).catch(console.log)
+      }
     },
   },
 }

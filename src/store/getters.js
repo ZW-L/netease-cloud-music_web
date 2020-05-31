@@ -1,3 +1,5 @@
+import * as storage from '@/utils/storage'
+
 // homeStatic
 export const homeSinger = state => state.homeStatic.homeSinger
 export const homeHoster = state => state.homeStatic.homeHoster

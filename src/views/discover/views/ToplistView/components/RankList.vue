@@ -75,25 +75,21 @@ export default {
       this.$emit('updateId', id)
       // 获取排行榜的歌曲列表
       getBillboard(this.idx).then(res => {
-        this.extractBillboardData(res)
+        const detail = res.data.playlist
+        const info = this.listInfo
+        info.name = detail.name
+        info.coverImgUrl = detail.coverImgUrl
+        info.updateTime = detail.updateTime
+        info.updateFrequency = detail.updateFrequency || info.updateFrequency
+        info.subscribedCount = detail.subscribedCount
+        info.shareCount = detail.shareCount
+        info.commentCount = detail.commentCount
+        this.trackCount = detail.trackCount
+        this.playCount = detail.playCount
+        this.songList = detail.tracks
       }).catch(err => {
         console.log(err)
       })
-    },
-    // 提取排行榜右侧的信息: 图片、歌曲信息等各种数据
-    extractBillboardData(res) {
-      const detail = res.data.playlist
-      const info = this.listInfo
-      info.name = detail.name
-      info.coverImgUrl = detail.coverImgUrl
-      info.updateTime = detail.updateTime
-      info.updateFrequency = detail.updateFrequency || info.updateFrequency
-      info.subscribedCount = detail.subscribedCount
-      info.shareCount = detail.shareCount
-      info.commentCount = detail.commentCount
-      this.trackCount = detail.trackCount
-      this.playCount = detail.playCount
-      this.songList = detail.tracks
     },
   },
 

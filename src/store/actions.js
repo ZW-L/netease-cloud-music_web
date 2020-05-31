@@ -16,6 +16,10 @@ const findIndexOfPlaylist = function (playlist, item) {
 }
 
 export default {
+  updateToplistDetail({ commit }, { featureRank, globalRank }) {
+    commit('UPDATE_FEATURE_RANK', featureRank)
+    commit('UPDATE_GLOBAL_RANK', globalRank)
+  },
   // 播放歌曲
   toPlay({ commit, state }, song) {
     const index = findIndexOfPlaylist(state.play.playlist, song)

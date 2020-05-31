@@ -61,7 +61,7 @@ export default new Router({
       children: [
         {
           path: '',
-          component: () => import('@/views/playlist/PlaylistDetail.vue'),
+          component: () => import('@/views/playlist/index.vue'),
         },
       ],
     },
