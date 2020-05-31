@@ -5,19 +5,21 @@
       <!-- 单曲 -->
       <li v-show="searchResult.songs" class="list-item">
         <h3 class="title-left">
-          <i class="icon-song"></i>
+          <i class="title-left__icon-song"></i>
           <em>单曲</em>
         </h3>
         <ul class="sub-list">
           <li class="sub-item" v-for="(item, i) of searchResult.songs" :key="i">
-            <router-link :to="`/song?id=${item.id}`">{{item.name}} - {{getArtists(item.artists)}}</router-link>
+            <router-link
+              :to="`/song?id=${item.id}`"
+            >{{item.name}} - {{getArtists(item.artists)}}</router-link>
           </li>
         </ul>
       </li>
       <!-- 歌手 -->
       <li v-show="searchResult.singers" class="list-item">
         <h3 class="title-left">
-          <i class="icon-singer"></i>
+          <i class="title-left__icon-singer"></i>
           <em>歌手</em>
         </h3>
         <ul class="sub-list">
@@ -27,19 +29,21 @@
       <!-- 专辑 -->
       <li v-show="searchResult.albums" class="list-item">
         <h3 class="title-left">
-          <i class="icon-album"></i>
+          <i class="title-left__icon-album"></i>
           <em>专辑</em>
         </h3>
         <ul class="sub-list">
           <li class="sub-item" v-for="(item, i) of searchResult.albums" :key="i">
-            <router-link :to="`/album?id=${item.id}`">{{item.name}} - {{item.artist.name}}</router-link>
+            <router-link
+              :to="`/album?id=${item.id}`"
+            >{{item.name}} - {{item.artist.name}}</router-link>
           </li>
         </ul>
       </li>
       <!-- 视频 -->
       <li v-show="searchResult.mvs" class="list-item">
         <h3 class="title-left">
-          <i class="icon-video"></i>
+          <i class="title-left__icon-video"></i>
           <em>视频</em>
         </h3>
         <ul class="sub-list">
@@ -51,7 +55,7 @@
       <!-- 歌单 -->
       <li v-show="searchResult.playlists" class="list-item">
         <h3 class="title-left">
-          <a class="icon-playlist"></a>
+          <a class="title-left__icon-playlist"></a>
           <em>歌单</em>
         </h3>
         <ul class="sub-list">
@@ -65,8 +69,6 @@
 </template>
 
 <script>
-import { getSingers } from '~api/get.js';
-
 export default {
   name: 'music-search',
 
@@ -79,13 +81,14 @@ export default {
 
   methods: {
     getArtists(ar) {
-      return Array.isArray(ar) ? ar.map(v => v.name).join('/') : '';
+      return Array.isArray(ar) ? ar.map(v => v.name).join('/') : ''
     },
   },
 
   watch: {
+    /* eslint-disable-next-line */
     'searchResult.tag' (newVal) {
-      console.log(this.searchResult);
+      console.log(this.searchResult)
     },
   },
 
@@ -93,8 +96,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~css/variables.scss';
-@import '~css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .ms {
   overflow: hidden;
@@ -127,17 +130,6 @@ export default {
         padding: 8px;
         float: left;
         width: 65px;
-        @each $i, $x, $y in ((song, -35, -300), (singer, -50, -300), 
-                             (album, -35, -320), (video, -60, -862), 
-                             (playlist, -50, -320)) {
-          .icon-#{$i} {
-            float: left;
-            width: 14px;
-            height: 15px;
-            margin-right: 5px;
-            background: url('../../public/img/icons/icon.png') no-repeat #{$x}px #{$y}px;
-          }
-        }
       }
       .sub-list {
         box-sizing: border-box;

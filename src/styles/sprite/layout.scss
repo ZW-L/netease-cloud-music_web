@@ -1,0 +1,46 @@
+.header {
+  .main-header {
+    &__title,
+    &__badge,
+    &__search,
+    &__sign__status {
+      background-image: url('../../public/img/icons/topbar.png');
+    }
+
+    &__title {
+      background-position: 0 0;
+    }
+
+    &__badge {
+      background-position: -190px 0;
+    }
+
+    &__search {
+      background-repeat: no-repeat;
+      background-position: 0 -99px;
+
+      // 使用 scss 函数秀一把
+      .ms {
+        .title-left {
+          @each $i, $x, $y in ((song, -35, -300), (singer, -50, -300),
+                                (album, -35, -320), (video, -60, -862),
+                                (playlist, -50, -320)) {
+          &__icon-#{$i} {
+            float: left;
+            width: 14px;
+            height: 15px;
+            margin-right: 5px;
+            background: url('../../public/img/icons/icon.png') no-repeat #{$x}px #{$y}px;
+            }
+          }
+        }
+      }
+    }
+
+    &__sign {
+      &__status {
+        background-position: right -55px;
+      }
+    }
+  }
+}

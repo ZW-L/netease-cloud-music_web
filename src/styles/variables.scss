@@ -1,3 +1,13 @@
+// size
+$headerHeight: 104px;
+$mainHeaderHeight: 69px;
+$subHeaderHeight: 35px;
+
+$footerHeight: 148px;
+// bug: scss 不能执行 vh 和 px 的运算，即使是在 calc() 中
+// 2px 暂用来调整滚动条
+$minMainAppHeight: calc(100vh - 104px - 148px - 2px);
+
 /* font-size */
 $fontExtraMin: 10px;
 $fontMin: 12px;

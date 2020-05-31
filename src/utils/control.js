@@ -1,4 +1,4 @@
-import * as get from './get'
+import * as get from '@/api/get'
 
 /**
  * 知道歌曲的详情时，提取信息直接提交到 store

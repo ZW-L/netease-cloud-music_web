@@ -19,12 +19,7 @@ export default {
 <style lang="scss" module>
 .djradio {
   box-sizing: border-box;
-  width: 982px;
-  height: 1000px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  overflow: hidden;
   .title {
     height: 100vh;
     padding-top: 100px;

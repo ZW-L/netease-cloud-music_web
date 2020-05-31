@@ -65,7 +65,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
+@import '@/styles/variables.scss';
 
 .recommend {
   position: relative;
@@ -76,11 +76,6 @@ export default {
   .content {
     box-sizing: border-box;
     overflow: hidden;
-    width: 982px;
-    margin: 0 auto;
-    background-color: $bgDefault;
-    border-left: 1px solid $bdcDefault;
-    border-right: 1px solid $bdcDefault;
     .content-left {
       box-sizing: border-box;
       float: left;

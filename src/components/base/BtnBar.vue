@@ -34,8 +34,6 @@
 </template>
 
 <script>
-import { toPlay } from '~api/control.js';
-
 export default {
   name: 'btn-bar',
 
@@ -50,24 +48,23 @@ export default {
     // 播放
     handleToPlay() {
       if (this.$route.name === 'song') {
-        this.$store.dispatch('toPlay', this.detail);
+        this.$store.dispatch('toPlay', this.detail)
         // toPlay(this.$store, this.detail);
       } else {
         // 触发事件，通知父组件更新播放列表
-        this.$emit('playAll');
+        this.$emit('playAll')
       }
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-
-@import '~css/variables.scss';
-@import '~css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .bar {
   display: flex;

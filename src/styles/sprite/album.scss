@@ -1,0 +1,31 @@
+.album {
+  .poster {
+    .poster-img {
+      &__mask {
+        background: url('../../public/img/icons/coverall.png') no-repeat 0 -986px;
+      }
+    }
+
+    .poster-info {
+      &__icon {
+        background: url('../../public/img/icons/icon.png') no-repeat 0 -186px;
+      }
+    }
+  }
+
+  .desc {
+    .desc-ctrl {
+      &__down-icon,
+      &__up-icon {
+        background: url('../../public/img/icons/icon.png') no-repeat;
+      }
+
+      &__down-icon {
+        background-position: -65px -520px;
+      }
+      &__up-icon {
+        background-position: -45px -520px;
+      }
+    }
+  }
+}

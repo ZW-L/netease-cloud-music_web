@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="new-cate">
     <category-header :title="title" :morePath="morePath" />
     <div class="content">
       <div class="wrapper">
@@ -18,8 +18,8 @@
           </ul>
         </transition>
       </div>
-      <span class="prev" @click="handleShowList('prev')">&nbsp;</span>
-      <span class="next" @click="handleShowList('next')">&nbsp;</span>
+      <span class="new-cate__prev" @click="handleShowList('prev')">&nbsp;</span>
+      <span class="new-cate__next" @click="handleShowList('next')">&nbsp;</span>
     </div>
   </div>
 </template>
@@ -64,10 +64,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
-.container {
+.new-cate {
   position: relative;
   width: 100%;
   .content {
@@ -91,7 +91,8 @@ export default {
         }
       }
     }
-    .prev, .next {
+    .new-cate__prev,
+    .new-cate__next {
       position: absolute;
       width: 17px;
       height: 17px;
@@ -100,19 +101,11 @@ export default {
         cursor: pointer;
       }
     }
-    .prev {
+    .new-cate__prev {
       left: 5px;
-      background: url('../../../../../../public/img/icons/index.png') no-repeat -260px -75px;
-      &:hover {
-        background: url('../../../../../../public/img/icons/index.png') no-repeat -280px -75px;
-      }
     }
-    .next {
+    .new-cate__next {
       right: 5px;
-      background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -75px;
-      &:hover {
-        background: url('../../../../../../public/img/icons/index.png') no-repeat -320px -75px;
-      }
     }
   }
 }

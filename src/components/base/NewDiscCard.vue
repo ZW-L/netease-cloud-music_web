@@ -4,7 +4,7 @@
       :class="['card-wrapper', `card-wrapper-${size}`]"
     >
       <img :class="['card-img', `card-img-${size}`]"
-        :src="album.picUrl" 
+        :src="album.picUrl"
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
       <span :class="['play-icon', `play-icon-${size}`]" @click.stop="playAll()"></span>
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { addSeparator } from '~api/util.js'
-import { getAlbumDetail } from '~api/get.js';
+import { addSeparator } from '@/utils/util'
+import { getAlbumDetail } from '@/api/get'
 
 export default {
   name: 'new-disc-card',
@@ -44,46 +44,45 @@ export default {
 
   data() {
     return {
-      fontSize: { 
-        'xm': '12px',
-        'm': '14px',
-        'l': '16px',
+      fontSize: {
+        xm: '12px',
+        m: '14px',
+        l: '16px',
       },
-    };
+    }
   },
 
   computed: {
     artists() {
-      const artists = this.album.artists.map(v => v.name);
-      return addSeparator(artists, '/');
+      const artists = this.album.artists.map(v => v.name)
+      return addSeparator(artists, '/')
     },
   },
 
   mounted() {
-    this.$refs.title.style.fontSize = this.fontSize[this.ttSize];
+    this.$refs.title.style.fontSize = this.fontSize[this.ttSize]
   },
 
   methods: {
     playAll() {
       getAlbumDetail(this.album.id).then(res => {
-        const playlist = res.data.songs;
-        this.$store.dispatch('changePlaylist', playlist);
-      });
+        const playlist = res.data.songs
+        this.$store.dispatch('changePlaylist', playlist)
+      })
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
-
-/* 
-xm: 
+/*
+xm:
 md: 100x100
 lg: 130x130
 */
@@ -166,7 +165,7 @@ lg: 130x130
     background: url('../../../public/img/icons/iconall.png') no-repeat 0 -85px;
     &:hover {
       cursor: pointer;
-      background: url('../../../public/img/icons/iconall.png') no-repeat 0 -110px;      
+      background: url('../../../public/img/icons/iconall.png') no-repeat 0 -110px;
     }
   }
   &-#{lg} {
@@ -177,7 +176,7 @@ lg: 130x130
     background: url('../../../public/img/icons/iconall.png') no-repeat 0 -140px;
     &:hover {
       cursor: pointer;
-      background: url('../../../public/img/icons/iconall.png') no-repeat 0 -170px;      
+      background: url('../../../public/img/icons/iconall.png') no-repeat 0 -170px;
     }
   }
 }

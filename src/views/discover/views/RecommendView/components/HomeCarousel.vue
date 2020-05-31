@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper" ref="wrapper"
+  <div class="carousel"
     @mouseenter="stop()"
     @mouseleave="start()"
   >
@@ -14,8 +14,8 @@
             <img :src="item.imageUrl" key="img">
           </div>
         </transition-group>
-        <div class="content-prev" @click="handleControl('prev')">&nbsp;</div>
-        <div class="content-next" @click="handleControl('next')">&nbsp;</div>
+        <div class="content__prev" @click="handleControl('prev')">&nbsp;</div>
+        <div class="content__next" @click="handleControl('next')">&nbsp;</div>
         <div class="content-paganation">
           <span
             v-for="i of banner.length" :key="i"
@@ -24,7 +24,7 @@
           ></span>
         </div>
       </div>
-      <div class="content-download" @click="handleDownload()">
+      <div class="content__download" @click="handleDownload()">
         <p class="download-desc">PC 安卓 iPhone WP iPad Mac 六大客户端</p>
       </div>
     </div>
@@ -104,12 +104,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
-@import '@/assets/css/animation.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
+@import '@/styles/animation.scss';
+
 @include fade(.8s);
 
-.wrapper {
+.carousel {
   width: 100%;
   background-color: $bdcCarousel;
   .content {
@@ -129,7 +130,7 @@ export default {
           height: 285px;
         }
       }
-      .content-prev, .content-next {
+      .content__prev, .content__next {
         position: absolute;
         width: 37px;
         height: 63px;
@@ -138,15 +139,13 @@ export default {
         color: $textLight;
         @include hoverBg(rgba(0, 0, 0, .1));
       }
-      .content-prev {
+      .content__prev {
         left: -60px;
         top: 100px;
-        background: url('../../../../../../public/img/icons/banner.png') no-repeat 0 -360px;
       }
-      .content-next {
+      .content__next {
         left: 1005px;
         top: 100px;
-        background: url('../../../../../../public/img/icons/banner.png') no-repeat 0 -508px;
       }
       .content-paganation {
         position: absolute;
@@ -166,12 +165,11 @@ export default {
         }
       }
     }
-    .content-download {
+    .content__download {
       position: relative;
       margin-left: 730px;
       width: 252px;
       height: 285px;
-      background: url('../../../../../../public/img/icons/download.png') no-repeat 0 -27px;
       &:hover {
         cursor: pointer;
       }

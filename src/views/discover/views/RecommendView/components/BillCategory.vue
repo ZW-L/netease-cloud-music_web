@@ -28,7 +28,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
+@import '@/styles/variables.scss';
 
 .container {
   position: relative;

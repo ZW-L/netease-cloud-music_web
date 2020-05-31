@@ -150,8 +150,8 @@
 </template>
 
 <script>
-import { getSingers, dateFormat } from '~api/util'
-import { toPlayById } from '~api/control'
+import { toPlayById } from '@/utils/control'
+import { getSingers, dateFormat } from '@/utils/util'
 
 export default {
   name: 'aside-group',
@@ -233,8 +233,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~css/variables.scss';
-@import '~css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .content {
   box-sizing: border-box;

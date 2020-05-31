@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import { picUrlFormat } from '~api/util.js';
-import { getPlaylistDetail } from '~api/get.js';
+import { picUrlFormat } from '@/utils/util'
+import { getPlaylistDetail } from '@/api/get'
 
 export default {
   name: 'play-list-card',
@@ -26,12 +26,10 @@ export default {
   props: {
     info: {
       type: Object,
-      default: () => {
-        return {
-          playCount: 8000,
-          name: '珍藏在光影中的...',
-        };
-      },
+      default: () => ({
+        playCount: 8000,
+        name: '珍藏在光影中的...',
+      }),
     },
     titleEllipsis: {
       type: Boolean,
@@ -41,22 +39,22 @@ export default {
 
   computed: {
     playCount() {
-      const count = this.info.playCount;
-      return  count > 100000 ? `${Math.floor(count/10000)}万` : count;
+      const count = this.info.playCount
+      return count > 100000 ? `${Math.floor(count / 10000)}万` : count
     },
     picUrl() {
       // info 传入的图片键名不一定
-      const picUrl = this.info.picUrl || this.info.coverImgUrl;
-      return picUrlFormat(picUrl, 140, 140);
-    }
+      const picUrl = this.info.picUrl || this.info.coverImgUrl
+      return picUrlFormat(picUrl, 140, 140)
+    },
   },
 
   methods: {
     playAll() {
       getPlaylistDetail(this.info.id).then(res => {
-        const playlist = res.data.playlist.tracks;
-        this.$store.dispatch('changePlaylist', playlist);
-      });
+        const playlist = res.data.playlist.tracks
+        this.$store.dispatch('changePlaylist', playlist)
+      })
     },
   },
 
@@ -64,8 +62,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .content {
   width: 140px;

@@ -1,7 +1,7 @@
 <template>
   <div class="pagination">
     <a href="#"
-      :class="prevClasses" 
+      :class="prevClasses"
       @click="changePage('prev')"
     >
       <i class="iconfont icon-houtui"></i>
@@ -12,7 +12,7 @@
       @click="changePage(page)"
     >{{page}}</a>
     <a href="#"
-      :class="nextClasses" 
+      :class="nextClasses"
       @click="changePage('next')"
     >
       <em>下一页</em>
@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import { pageChanges } from '~api/util.js';
+import { pageChanges } from '@/utils/util'
 
 export default {
   name: 'base-pagination',
@@ -42,32 +42,32 @@ export default {
 
   computed: {
     prevClasses() {
-      return this.currentPage === 1 ? ['pagi-prev', 'pagi-prev-disabled'] : ['pagi-prev'];
+      return this.currentPage === 1 ? ['pagi-prev', 'pagi-prev-disabled'] : ['pagi-prev']
     },
     nextClasses() {
-      return this.currentPage === this.pages ? ['pagi-next', 'pagi-next-disabled'] : ['pagi-next'];
+      return this.currentPage === this.pages ? ['pagi-next', 'pagi-next-disabled'] : ['pagi-next']
     },
     showPages() {
-      return pageChanges(this.currentPage, this.pages);
+      return pageChanges(this.currentPage, this.pages)
     },
   },
 
   methods: {
     changePage(i) {
       if (i === '...') {
-        return;
+        return
       }
       if (i === 'prev') {
-        if (this.currentPage === 1) return;
-        this.currentPage = this.currentPage - 1;
+        if (this.currentPage === 1) return
+        this.currentPage = this.currentPage - 1
       } else if (i === 'next') {
-        if (this.currentPage === this.pages) return;
-        this.currentPage = this.currentPage + 1;
+        if (this.currentPage === this.pages) return
+        this.currentPage = this.currentPage + 1
       } else {
-        this.currentPage = i;
+        this.currentPage = i
       }
       // 触发 changePage 事件，向父组件传递 currentPage
-      this.$emit('changePage', this.currentPage);
+      this.$emit('changePage', this.currentPage)
     },
   },
 
@@ -75,9 +75,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .pagination {
   height: 26px;

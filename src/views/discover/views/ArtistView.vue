@@ -44,8 +44,7 @@
 
 <script>
 import AlphabetCate from '@/components/base/AlphabetCate.vue'
-// import CategoryHeader from '@/components/base/CategoryHeader.vue'
-import { getArtistCate } from '~api/get'
+import { getArtistCate } from '@/api/get'
 
 export default {
   name: 'artist-view',
@@ -144,11 +143,6 @@ export default {
 .ar {
   overflow: hidden;
   box-sizing: border-box;
-  width: 982px;
-  margin: 0 auto;
-  background-color: #fff;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
   .ar-sidebar {
     box-sizing: border-box;
     float: left;

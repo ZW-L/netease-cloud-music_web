@@ -32,7 +32,7 @@ export default new Router({
         },
         {
           path: 'playlist',
-          component: () => import('@discover/views/PlaylistView.vue'),
+          component: () => import('@discover/views/PlaylistView/index.vue'),
         },
         {
           path: 'recommend',
@@ -51,7 +51,7 @@ export default new Router({
       children: [
         {
           path: '',
-          component: () => import('@/views/album/AlbumDetail.vue'),
+          component: () => import('@/views/album/index.vue'),
         },
       ],
     },
@@ -71,7 +71,7 @@ export default new Router({
       children: [
         {
           path: '',
-          component: () => import('@/views/song/SongDetail.vue'),
+          component: () => import('@/views/song/index.vue'),
         },
       ],
     },

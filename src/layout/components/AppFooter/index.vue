@@ -117,13 +117,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .footer {
   width: 100%;
-  height: 148px;
+  height: $footerHeight;
   background-color: $bgFooter;
   border-top: 1px solid $bdcDefault;
   .wrapper {

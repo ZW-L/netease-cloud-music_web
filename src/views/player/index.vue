@@ -1,33 +1,33 @@
 <template>
-  <div class="container" ref="container">
-    <div class="right-bg playbar--right-bg">
+  <div class="playbar" ref="playbar">
+    <div class="right-bg playbar__right-bg">
       <span
-        :class="['icon', isBarLock ? 'playbar--right-bg_lock' : 'playbar--right-bg_open']" 
+        :class="playbarLockClass"
         @click="handleLock()"
       ></span>
     </div>
-    <div class="right-scroll playbar--right-scroll"></div>
-    <div class="left-bg playbar--left-bg"></div>
+    <div class="right-scroll playbar__right-scroll"></div>
+    <div class="left-bg playbar__left-bg"></div>
     <div class="content">
       <div class="main-ctrl">
-        <span class="ctrl-prev playbar--prev" ref="prev" @click="handlePlayPrev()"></span>
-        <span 
-          :class="['ctrl-play', 'playbar--play', isPaused ? 'playbar--play_paused' : 'playbar--play_playing']" 
+        <span class="ctrl-prev playbar__prev" ref="prev" @click="handlePlayPrev()"></span>
+        <span
+          :class="mainCtrlClass"
           ref="play"
           @click="handlePlay()"
         ></span>
-        <span class="ctrl-next playbar--next" ref="next" @click="handlePlayNext()"></span>
+        <span class="ctrl-next playbar__next" ref="next" @click="handlePlayNext()"></span>
       </div>
       <div class="song-info">
         <div class="info-pic">
           <img v-show="nowPlay.picUrl" class="pic" :src="nowPlay.picUrl">
-          <a href="#" class="info-href playbar--song-link" @click="toSongView()"></a>
+          <a href="#" class="info-href playbar__song-link" @click="toSongView()"></a>
         </div>
         <div class="info-gp">
           <div class="info-title">
             <a class="info-title-name" @click="toSongView()">{{nowPlay.name}}</a>
             <a class="info-title-singer">{{singers}}</a>
-            <a v-show="nowPlay.name" class="info-title-icon playbar--song-from">&nbsp;</a>
+            <a v-show="nowPlay.name" class="info-title-icon playbar__song-from">&nbsp;</a>
           </div>
           <progress-bar
             :duration="duration"
@@ -41,15 +41,15 @@
           <div class="column-line"></div>
           <div class="column-btn"></div>
         </div>
-        <a href="#" class="ctrl-voice playbar--voice" @click.prevent="handleChangeVoice()"></a>
+        <a href="#" class="ctrl-voice playbar__voice" @click.prevent="handleChangeVoice()"></a>
         <a href="#" :class="['ctrl-mode', nowMode]" @click.prevent="handleChangePlaymode()"></a>
-        <a class="ctrl-list playbar--list" @click="handleShowPlayContent()">
+        <a class="ctrl-list playbar__list" @click="handleShowPlayContent()">
           <em>{{playlist.length}}</em>
         </a>
       </div>
       <div class="other-options">
-        <a href="#" class="op-collect playbar--collect" @click="handleShowAbout()"></a>
-        <a href="#" class="op-share playbar--share" @click="handleShowAbout()"></a>
+        <a href="#" class="op-collect playbar__collect" @click="handleShowAbout()"></a>
+        <a href="#" class="op-share playbar__share" @click="handleShowAbout()"></a>
       </div>
     </div>
     <div class="audio-wrapper">
@@ -62,8 +62,8 @@
       </audio>
     </div>
     <transition name="slide">
-      <play-content 
-        v-show="isShowPlayContent" 
+      <play-content
+        v-show="isShowPlayContent"
         class="play-wrapper"
         @close="handleShowPlayContent"
         :currentTime="currentTime"
@@ -73,11 +73,11 @@
 </template>
 
 <script>
-import ProgressBar from './base/ProgressBar.vue';
-import PlayContent from './PlayContent.vue';
-import { mapGetters } from 'vuex';
-import { getSingers } from '@/api/util.js';
-import { getSongUrl } from '@/api/get.js';
+import { mapGetters } from 'vuex'
+import { getSingers } from '@/utils/util'
+import { getSongUrl } from '@/api/get'
+import ProgressBar from './components/ProgressBar.vue'
+import PlayContent from './components/PlayContent.vue'
 
 export default {
   name: 'player-bar',
@@ -102,25 +102,37 @@ export default {
   computed: {
     ...mapGetters(['nowPlay', 'playlist']),
     songId() {
-      return this.nowPlay.id;
+      return this.nowPlay.id
     },
     songIndex() {
-      return this.playlist.findIndex(v => v.id === this.songId);
+      return this.playlist.findIndex(v => v.id === this.songId)
     },
     singers() {
-      return getSingers(this.nowPlay.singer);
+      return getSingers(this.nowPlay.singer)
+    },
+    playbarLockClass() {
+      return [
+        'icon',
+        this.isBarLock ? 'playbar__right-bg--lock' : 'playbar__right-bg--open',
+      ]
+    },
+    mainCtrlClass() {
+      return [
+        'ctrl-play',
+        'playbar__play',
+        this.isPaused ? 'playbar__play--paused' : 'playbar__play--playing',
+      ]
     },
     nowMode() {
-      switch(this.defaultPlayMode) {
+      switch (this.defaultPlayMode) {
         case 0:
-          return 'playbar--mode_list-cycle';
-          break;
+          return 'playbar__mode--list-cycle'
         case 1:
-          return 'playbar--mode_random-play';
-          break;
+          return 'playbar__mode--random-play'
         case 2:
-          return 'playbar--mode_single-cycle';
-          break;
+          return 'playbar__mode--single-cycle'
+        default:
+          return 'playbar__mode--list-cycle'
       }
     },
   },
@@ -128,17 +140,17 @@ export default {
   methods: {
     // 能够开始播放时
     handleCanplay() {
-      this.duration = this.$refs.audio.duration;
+      this.duration = this.$refs.audio.duration
       // console.log(this.duration);
     },
     // 播放时间改变时
     handleTimeupdate() {
-      this.currentTime = this.$refs.audio.currentTime;
+      this.currentTime = this.$refs.audio.currentTime
     },
     // 子组件改变播放时间
     handleUpdate(t) {
-      console.log(t);
-      this.$refs.audio.currentTime = t;
+      console.log(t)
+      this.$refs.audio.currentTime = t
     },
     // 获取缓存事件（暂未使用）
     handleBuffered() {
@@ -147,113 +159,112 @@ export default {
       const start = buf.start(0);
       const end = buf.end(length - 1);
       console.log(length, start, end); */
-      console.log(this.nowPlay);
+      console.log(this.nowPlay)
     },
     handleEnded() {
       if (this.playlist.length === 1) {
         // 只有一首歌时，重新播放
-        this.handlePlay();
+        this.handlePlay()
       }
       if (this.defaultPlayMode === 0) {
         // 列表循环时，提交 nowPlay
-        const next = this.songIndex === this.playlist.length - 1 ?  0 : this.songIndex + 1;
-        this.$store.dispatch('toPlay', this.playlist[next]);
+        const next = this.songIndex === this.playlist.length - 1 ? 0 : this.songIndex + 1
+        this.$store.dispatch('toPlay', this.playlist[next])
       } else if (this.defaultPlayMode === 1) {
         // 随机播放时
-        this.$store.dispatch('toPlay', this.playlist[this._randomIndex()]);
+        this.$store.dispatch('toPlay', this.playlist[this.randomIndex()])
       } else {
         // 单曲循环时，重新播放即可
-        this.handlePlay();
+        this.handlePlay()
       }
     },
     // 开始/暂停按钮
     handlePlay() {
       if (this.$refs.audio.paused) {
-        this.$refs.audio.play();
-        this.isPaused = false;
+        this.$refs.audio.play()
+        this.isPaused = false
       } else {
-        this.$refs.audio.pause();
-        this.isPaused = true;
+        this.$refs.audio.pause()
+        this.isPaused = true
       }
     },
     handlePlayPrev() {
       if (this.defaultPlayMode === 1) {
         // 随机播放的上一曲
-        this.$store.dispatch('toPlay', this.playlist[this._randomIndex()]);
+        this.$store.dispatch('toPlay', this.playlist[this.randomIndex()])
       } else {
         // 列表循环和单曲循环的上一曲
-        const prevIndex = this.songIndex === 0 ? this.playlist.length - 1 : this.songIndex - 1;
-        this.$store.dispatch('toPlay', this.playlist[prevIndex]);
+        const prevIndex = this.songIndex === 0 ? this.playlist.length - 1 : this.songIndex - 1
+        this.$store.dispatch('toPlay', this.playlist[prevIndex])
       }
     },
     handlePlayNext() {
       if (this.defaultPlayMode === 1) {
         // 随机播放的下一曲
-        this.$store.dispatch('toPlay', this.playlist[this._randomIndex()]);
+        this.$store.dispatch('toPlay', this.playlist[this.randomIndex()])
       } else {
         // 列表循环和单曲循环的下一曲
-        const next = this.songIndex === this.playlist.length - 1 ?  0 : this.songIndex + 1;
-        this.$store.dispatch('toPlay', this.playlist[next]);
+        const next = this.songIndex === this.playlist.length - 1 ? 0 : this.songIndex + 1
+        this.$store.dispatch('toPlay', this.playlist[next])
       }
     },
     // 切换当前歌曲
-    _changeSong(id) {
+    changeSong(id) {
       getSongUrl(id).then(res => {
         // console.log(res.data);
-        this._handleChangeSrc(res.data.data[0].url, true);
+        this.handleChangeSrc(res.data.data[0].url, true)
       }).catch(err => {
-        console.log(err);
-      });
+        console.log(err)
+      })
     },
     // 切换 src 时需要进行的处理
-    _handleChangeSrc(src, toPlay) {
-      const audio = this.$refs.audio;
-      audio.pause();
-      audio.src = src;
-      this.isPaused = true;
+    handleChangeSrc(src, toPlay) {
+      const { audio } = this.$refs
+      audio.pause()
+      audio.src = src
+      this.isPaused = true
       if (toPlay) {
-        audio.play();
-        this.isPaused = false;
+        audio.play()
+        this.isPaused = false
       }
     },
-    _randomIndex() {
-      return Math.floor(Math.random() * this.playlist.length);
+    andomrIndex() {
+      return Math.floor(Math.random() * this.playlist.length)
     },
     handleShowPlayContent() {
-      this.isShowPlayContent = !this.isShowPlayContent;
+      this.isShowPlayContent = !this.isShowPlayContent
     },
     handleChangePlaymode() {
-      this.defaultPlayMode = this.defaultPlayMode === 2 ? 0 : this.defaultPlayMode + 1;
+      this.defaultPlayMode = this.defaultPlayMode === 2 ? 0 : this.defaultPlayMode + 1
     },
     handleChangeVoice() {
-      this.isShowVoice = !this.isShowVoice;
+      this.isShowVoice = !this.isShowVoice
     },
     toSongView() {
-      this.$router.push({ path: '/song', query: { id: this.nowPlay.id }});
+      this.$router.push({ path: '/song', query: { id: this.nowPlay.id } })
     },
     handleLock() {
-      const container = this.$refs.container;
-      this.isBarLock = !this.isBarLock;
-      container.style.bottom = this.isBarLock ? '0' : '-43px';
+      const { playbar } = this.$refs
+      this.isBarLock = !this.isBarLock
+      playbar.style.bottom = this.isBarLock ? '0' : '-43px'
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
   watch: {
     songId(newId) {
       // 当歌曲 id 改变时，切换当前播放的歌曲
-      this._changeSong(newId);
-    }
+      this.changeSong(newId)
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
 
-@import '~css/variables.scss';
-
-.container {
+.playbar {
   z-index: 99;
   position: fixed;
   bottom: -43px;
@@ -391,7 +402,7 @@ export default {
       height: 113px;
       top: -112px;
       left: -3px;
-      background: url('../../public/img/icons/playbar.png') 0 -503px;
+      background: url('../../../public/img/icons/playbar.png') 0 -503px;
       &-shown {
         display: block;
       }
@@ -401,7 +412,7 @@ export default {
         height: 0px; // max: 100px
         left: 14px;
         bottom: 9px;
-        background: url('../../public/img/icons/playbar.png') -40px bottom;
+        background: url('../../../public/img/icons/playbar.png') -40px bottom;
       }
       .column-btn {
         position: absolute;
@@ -409,9 +420,9 @@ export default {
         height: 19px;
         left: 7px;
         bottom: 0;
-        background: url('../../public/img/icons/iconall.png') -40px -250px;
+        background: url('../../../public/img/icons/iconall.png') -40px -250px;
         &:hover {
-          background: url('../../public/img/icons/iconall.png') -40px -280px;          
+          background: url('../../../public/img/icons/iconall.png') -40px -280px;
         }
       }
     }
@@ -443,7 +454,7 @@ export default {
   top: -60px;
 }
 
-.container {
+.playbar {
   .play-wrapper {
     z-index: 10;
     position: absolute;

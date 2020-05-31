@@ -2,14 +2,14 @@
   <div class="header">
     <div class="wrapper-main">
       <div class="main-header">
-        <router-link to="/discover/recommend" tag="h1" class="title"></router-link>
+        <router-link to="/discover/recommend" tag="h1" class="main-header__title"></router-link>
         <ul class="nav">
           <li class="nav-item" v-for="item of nav" :key="item">{{item}}</li>
           <li class="nav-item">
-            <span class="nav-hot"></span>
+            <span class="main-header__badge"></span>
           </li>
         </ul>
-        <div class="search">
+        <div class="main-header__search">
           <input class="search-input" type="text" placeholder="音乐/视频/用户/电台"
             v-model="searchText"
             @focus="handleFocus(1)"
@@ -22,8 +22,8 @@
           ></music-search>
         </div>
         <div class="creator-center" @click="handleShowAbout()">创作者中心</div>
-        <div class="sign">
-          <span class="sign-status" @click="handleShowAbout()">登录</span>
+        <div class="main-header__sign">
+          <span class="main-header__sign__status" @click="handleShowAbout()">登录</span>
         </div>
       </div>
     </div>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-import MusicSearch from '@/components/MusicSearch.vue'
+import MusicSearch from './components/MusicSearch.vue'
 import { getSearchSuggest } from '~api/get'
 
 export default {
@@ -109,12 +109,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .header {
   width: 100%;
-  height: 104px;
+  height: $headerHeight;
   margin-bottom: 1px; // 先保留，未发现哪里样式出错了 1px
   .wrapper-main {
     background-color: $bgHeader;
@@ -130,10 +130,9 @@ export default {
   height: 69px;
   margin: 0 auto;
   color: $homeDefault;
-  .title {
+  &__title {
     width: 176px;
     height: 69px;
-    background: url('../../../../public/img/icons/topbar.png') no-repeat;
     @include hoverText();
   }
   .nav {
@@ -157,26 +156,23 @@ export default {
       &:last-child {
         position: relative;
       }
-      .nav-hot {
+      .main-header__badge {
         position: absolute;
         display: block;
         top: 18px;
         left: -12px;
         width: 28px;
         height: 19px;
-        background: url('../../../../public/img/icons/topbar.png') no-repeat -190px 0;
       }
     }
   }
-  .search {
+  &__search {
     position: relative;
     margin-left: 30px;
     margin-top: 19px;
     width: 158px;
     height: 32px;
     border-radius: 32px;
-    // overflow: hidden;
-    background: url('../../../../public/img/icons/topbar.png') no-repeat 0 -99px;
     background-color: $bgDefault;
     .search-input {
       width: 100px;
@@ -214,15 +210,14 @@ export default {
     border-radius: 20px;
     @include hoverLighter($textLight, $bdcLight);
   }
-  .sign {
+  &__sign {
     height: 32px;
     margin: 19px 0 0 20px;
     line-height: 32px;
-    .sign-status {
+    &__status {
       padding-right: 20px;
       color: $homeLogin;
       @include hoverLighter($infoDark, none);
-      background: url('../../../../public/img/icons/topbar.png') no-repeat right -55px;
     }
   }
 }
@@ -245,9 +240,6 @@ export default {
       text-align: center;
       border-radius: 20px;
       @include hoverBg($bgSubHeaderItem);
-      /* &:first-child {
-        background-color: $bgSubHeaderItem;
-      } */
     }
     .sub-nav-item-active {
       background-color: $bgSubHeaderItem;

@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { addSeparator } from '~api/util.js';
+import { addSeparator } from '@/utils/util'
 
 export default {
   name: 'category-header',
@@ -33,22 +33,21 @@ export default {
     morePath: {
       type: String,
       default: '/',
-    }
+    },
   },
 
   computed: {
     devideList() {
-      return addSeparator(this.list);
+      return addSeparator(this.list)
     },
   },
 
-};
+}
 </script>
 
 <style lang="scss" scoped>
-
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .header {
   display: flex;

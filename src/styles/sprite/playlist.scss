@@ -1,0 +1,21 @@
+.playlist {
+  .poster {
+    &-info {
+      &__header-icon {
+        background: url('../../public/img/icons/icon2.png') no-repeat -110px -275px;
+      }
+    }
+
+    .desc-ctrl {
+      .ctrl-icon {
+        background: url('../../public/img/icons/icon.png') no-repeat;
+        &--up {
+          background-position: -65px -520px;
+        }
+        &--down {
+          background-position: -45px -520px;
+        }
+      }
+    }
+  }
+}

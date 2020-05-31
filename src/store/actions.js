@@ -18,7 +18,7 @@ const findIndexOfPlaylist = function (playlist, item) {
 export default {
   // 播放歌曲
   toPlay({ commit, state }, song) {
-    const index = findIndexOfPlaylist(state.playlist, song)
+    const index = findIndexOfPlaylist(state.play.playlist, song)
     // 如果播放列表不存在则添加
     if (index < 0) {
       commit('ADD_TO_PLAYLIST', song)
@@ -30,7 +30,7 @@ export default {
   changePlaylist({ commit, state }, playlist) {
     // 提交新的播放列表
     commit('CHANGE_PLAYLIST', playlist)
-    const detail = extractSongDetail(state.playlist[0])
+    const detail = extractSongDetail(state.play.playlist[0])
     // 提交当前播放歌曲
     commit('UPDATE_NOW_PLAY', detail)
   },
@@ -39,22 +39,22 @@ export default {
   },
   // 添加到播放列表
   addToPlaylist({ commit, state }, song) {
-    if (state.playlist.length === 0) { // 播放列表为空时，立即播放
+    if (state.play.playlist.length === 0) { // 播放列表为空时，立即播放
       const detail = extractSongDetail(song)
       commit('UPDATE_NOW_PLAY', detail)
     }
-    const index = findIndexOfPlaylist(state.playlist, song)
+    const index = findIndexOfPlaylist(state.play.playlist, song)
     if (index < 0) {
       commit('ADD_TO_PLAYLIST', song)
     }
   },
   // 从播放列表中删除一首歌
   removeFromPlaylist({ commit, state }, song) {
-    let index = findIndexOfPlaylist(state.playlist, song)
+    let index = findIndexOfPlaylist(state.play.playlist, song)
     commit('REMOVE_FROM_PLAYLIST', index)
     if (song.id === state.nowPlay.id) { // 删除的是正在播放的音乐时
-      index = index === state.playlist.length - 1 ? index : 0 // 删除的是最后一首音乐时
-      const detail = extractSongDetail(state.playlist[index])
+      index = index === state.play.playlist.length - 1 ? index : 0 // 删除的是最后一首音乐时
+      const detail = extractSongDetail(state.play.playlist[index])
       commit('UPDATE_NOW_PLAY', detail)
     }
   },

@@ -1,6 +1,6 @@
 <template>
   <div id="base-alphabet-cate">
-    <span v-for="(item, i) of list" :key="item" 
+    <span v-for="(item, i) of list" :key="item"
       :class="['item', { 'item-active': i === activeIndex }]"
       @click="handleClick(i, item)"
     >
@@ -26,7 +26,7 @@ export default {
   computed: {
     list() {
       let a = 65
-      const a2z = new Array(26).fill(null).map(v => String.fromCharCode(a++))
+      const a2z = new Array(26).fill(null).map(() => String.fromCharCode(a++))
       a2z.unshift('热门')
       a2z.push('其他')
       return a2z
@@ -47,14 +47,13 @@ export default {
   watch: {
     reset() {
       this.activeIndex = 0
-    }
-  }
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-
-@import '~css/variables.scss';
+@import '@/styles/variables.scss';
 
 #base-alphabet-cate {
   display: flex;

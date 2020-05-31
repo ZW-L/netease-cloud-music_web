@@ -9,7 +9,7 @@
       </div>
     </div>
     <div class="header">
-      <h2 class="header-title">热门新碟</h2>
+      <h2 class="header-title">全部新碟</h2>
       <ul class="header-cate">
         <li class="header-cate-item" v-for="(item, i) of allCates" :key="i">{{item}}</li>
       </ul>
@@ -26,38 +26,36 @@
 <script>
 import BasePagination from '@/components/base/pagination.vue'
 import NewDiscCard from '@/components/base/NewDiscCard.vue'
-import { addSeparator } from '~api/util'
-import { getNewest, getNewestAll } from '~api/get'
+import { addSeparator } from '@/utils/util'
+import { getNewest, getNewestAll } from '@/api/get'
 
 export default {
   name: 'album-view',
+
   components: {
     BasePagination,
     NewDiscCard,
   },
+
   data() {
     return {
       cates: ['全部', '华语', '欧美', '日本'],
-      album: {
-        picUrl: 'http://p4.music.126.net/HeGrAKPiZhKkONiFDxZvmw==/109951164384346866.jpg?param=130y130',
-        name: '我和我的祖国',
-        artist: {
-          name: '王菲',
-        },
-      },
       newest: [],
       newestAll: [],
       limit: 35,
     }
   },
+
   computed: {
     allCates() {
       return addSeparator(this.cates)
     },
   },
+
   mounted() {
     this.handleGetData()
   },
+
   methods: {
     // 提取 albums 的关键数据
     extractAlbums(albums) {
@@ -71,48 +69,34 @@ export default {
     handleGetData() {
       // 热门新碟
       getNewest().then(res => {
-        // console.log(res.data.albums);
-        this.newest = this.extractAlbums(res.data.albums.slice(0, 10))
-        // console.log(this.newest);
-      }).catch(err => {
-        console.log(err)
-      })
+        const { albums } = res.data
+        this.newest = this.extractAlbums(albums.slice(0, 10))
+      }).catch(console.log)
       // 全部热门新碟
       getNewestAll().then(res => {
-        // console.log(res.data.albums);
-        this.newestAll = this.extractAlbums(res.data.albums)
-        // console.log(this.newestAll);
-      }).catch(err => {
-        console.log(err)
-      })
+        const { albums } = res.data
+        this.newestAll = this.extractAlbums(albums)
+      }).catch(console.log)
     },
     handleChangePage(page) {
       // 将视图清空(会导致子组件全部销毁，应该显示其他信息，这样不用销毁组件？)
       this.newestAll = []
       const offset = (page - 1) * this.limit
       getNewestAll(offset).then(res => {
-        console.log(res.data.albums)
-        this.newestAll = this.extractAlbums(res.data.albums)
-        // console.log(this.newestAll);
-      }).catch(err => {
-        console.log(err)
-      })
+        const { albums } = res.data
+        this.newestAll = this.extractAlbums(albums)
+      }).catch(console.log)
     },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
+@import '@/styles/variables.scss';
 
 .album {
   box-sizing: border-box;
-  width: 982px;
-  margin: 0 auto;
   padding: 40px;
-  border-left: 1px solid $bdcDefault;
-  border-right: 1px solid $bdcDefault;
-  background-color: $bgDefault;
   .header {
     height: 42px;
     line-height: 42px;

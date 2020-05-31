@@ -28,14 +28,16 @@
           <td class="td-title">
             <div class="td-title-more">
               <span class="td-title-name">
-                <router-link :to="`/song?id=${item.id}`" class="td-title-name-main">{{item.name}}</router-link>
+                <router-link class="td-title-name-main"
+                  :to="`/song?id=${item.id}`"
+                >{{item.name}}</router-link>
                 <em class="td-title-name-sub" v-show="item.alia.length">- ({{item.alia[0]}})</em>
               </span>
               <span v-if="item.mv > 0" class="td-title-mv"  @click="handleShowAbout()">&nbsp;</span>
             </div>
           </td>
           <td class="td-duration">
-            <span class="td-duration-time">{{_getDuration(item.dt)}}</span>
+            <span class="td-duration-time">{{getDuration(item.dt)}}</span>
             <div class="td-duration-options">
               <span class="opt-add" @click="handleAddToPlaylist(item)"></span>
               <span class="opt-collect" @click="handleShowAbout()"></span>
@@ -59,7 +61,7 @@
 </template>
 
 <script>
-import { getDuration } from '~api/util.js';
+import { getDuration } from '@/utils/util'
 
 export default {
   name: 'song-list-table',
@@ -84,26 +86,26 @@ export default {
   },
 
   methods: {
-    _getDuration(d) {
-      return getDuration(d);
+    getDuration(d) {
+      return getDuration(d)
     },
     handlePlay(item) {
-      this.$store.dispatch('toPlay', item);
+      this.$store.dispatch('toPlay', item)
     },
     handleAddToPlaylist(item) {
-      this.$store.dispatch('addToPlaylist', item);
+      this.$store.dispatch('addToPlaylist', item)
     },
     handleShowAbout() {
-      this.$store.commit('SHOW_ABOUT_SITE');
+      this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
 
-};
+}
 </script>
 
 <style lang="scss" scoped>
-@import '~css/variables.scss';
-@import '~css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
 .list-title {
   height: 35px;

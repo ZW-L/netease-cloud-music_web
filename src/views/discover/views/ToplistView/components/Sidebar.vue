@@ -23,19 +23,19 @@ export default {
   components: {
     SidebarItem,
   },
-  data() {
-    return {
-      id: 19723756,
-    }
+
+  props: {
+    id: Number,
   },
+
   computed: {
     ...mapGetters(['featureRank', 'globalRank']),
   },
+
   methods: {
-    // 切换排行榜
     changeRank(id) {
-      // 响应为当前路由，传递 id 参数
-      this.id = id
+      this.$emit('updateId', id)
+      // 切换排行榜，响应为当前路由，传递 id 参数
       this.$router.push({ path: '/discover/toplist', query: { id } })
     },
   },
@@ -43,12 +43,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '~css/variables.scss';
+@import '@/styles/variables.scss';
 
 .cate {
   width: 240px;
   padding-top: 40px;
-  border-left: 1px solid $bdcDefault;
   border-right: 1px solid $bdcDefault;
   background-color: $bgContentLight;
 }

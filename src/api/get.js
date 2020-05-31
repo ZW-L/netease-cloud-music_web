@@ -51,8 +51,6 @@ export const getToplistDetail = function () {
   return axios.get(url)
 }
 
-// 排行榜
-
 // 专辑详情
 export const getAlbumDetail = function (albumId) {
   const url = `/api/album?id=${albumId}`

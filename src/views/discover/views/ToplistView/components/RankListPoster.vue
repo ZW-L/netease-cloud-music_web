@@ -1,20 +1,20 @@
 <template>
   <div class="poster">
     <div class="wrapper">
-      <img :src="info.coverImgUrl" alt="">
+      <img :src="listInfo.coverImgUrl" alt="">
     </div>
     <div class="desc">
-      <div class="title">{{info.name}}</div>
+      <div class="title">{{listInfo.name}}</div>
       <div class="info">
-        <i class="info-icon"></i>
+        <i class="poster__info-icon"></i>
         <span class="info-update">最近更新：{{time}}</span>
         <span class="info-frequency">（{{updateFrequency}}）</span>
       </div>
       <div class="btn">
-        <btn-bar>
-          <span slot="collect">({{info.subscribedCount}})</span>
-          <span slot="share">({{info.shareCount}})</span>
-          <span slot="comment">({{info.commentCount}})</span>
+        <btn-bar @playAll="handlePlayAll">
+          <span slot="collect">({{listInfo.subscribedCount}})</span>
+          <span slot="share">({{listInfo.shareCount}})</span>
+          <span slot="comment">({{listInfo.commentCount}})</span>
         </btn-bar>
       </div>
     </div>
@@ -22,38 +22,42 @@
 </template>
 
 <script>
-import BtnBar from '@/components/base/BtnBar.vue';
-import { getMonthAndDay } from '~api/util.js';
+import BtnBar from '@/components/base/BtnBar.vue'
+import { getMonthAndDay } from '@/utils/util'
 
 export default {
-  name: 'rank-list-poster',
-
   components: {
     BtnBar,
   },
 
   props: {
-    info: {
+    listInfo: {
       type: Object,
+      default: () => {},
     },
-    updateFrequency: {
-      type: String,
-      default: '每天更新',
+    songList: {
+      type: Array,
+      default: () => [],
     },
+    updateFrequency: String,
   },
 
   computed: {
     time() {
-      return getMonthAndDay(this.info.updateTime);
-    }
+      return getMonthAndDay(this.listInfo.updateTime)
+    },
+  },
+
+  methods: {
+    handlePlayAll() {
+      this.$store.dispatch('changePlaylist', this.songList)
+    },
   },
 }
 </script>
 
 <style lang="scss" scoped>
-
-@import '~css/variables.scss';
-@import '~css/mixins.scss';
+@import '@/styles/variables.scss';
 
 .poster {
   position: relative;
@@ -85,11 +89,10 @@ export default {
       height: 13px;
       line-height: 13px;
       font-size: $fontMin;
-      .info-icon {
+      .poster__info-icon {
         float: left;
         width: 13px;
         height: 13px;
-        background: url('../../../public/img/icons/icon.png') no-repeat -18px -682px;
       }
       .info-update {
         margin-left: 5px;

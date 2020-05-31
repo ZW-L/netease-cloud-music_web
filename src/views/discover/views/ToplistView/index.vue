@@ -1,26 +1,36 @@
 <template>
-  <div class="top">
-    <sidebar />
-    <rank-list />
+  <div class="toplist">
+    <sidebar :id="currentId" @updateId="updateId" />
+    <rank-list :id="currentId" @updateId="updateId" />
   </div>
 </template>
 
 <script>
-import Sidebar from './Sidebar.vue'
-import RankList from './RankList.vue'
+import Sidebar from './components/Sidebar.vue'
+import RankList from './components/RankList.vue'
 
 export default {
   components: {
     Sidebar,
     RankList,
   },
+
+  data() {
+    return {
+      currentId: 19723756,
+    }
+  },
+
+  methods: {
+    updateId(id) {
+      this.currentId = id
+    },
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-.top {
+.toplist {
   display: flex;
-  width: 983px;
-  margin: 0 auto;
 }
 </style>

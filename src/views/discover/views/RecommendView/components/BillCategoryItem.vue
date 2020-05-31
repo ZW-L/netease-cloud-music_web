@@ -1,17 +1,17 @@
 <template>
-  <div class="container">
+  <div class="bill-cate-item">
     <div class="header">
       <div class="header-left">
         <img class="left-pic" :src="coverImgUrl" alt="">
-        <router-link :to="`/discover/toplist?id=${id}`" class="left-link"></router-link>
+        <router-link :to="`/discover/toplist?id=${id}`" class="header-left__link"></router-link>
       </div>
       <div class="header-right">
         <div class="right-title">
           <router-link :to="`/discover/toplist?id=${id}`">{{name}}</router-link>
         </div>
         <div class="right-options">
-          <span class="option-play" @click="playAll()"></span>
-          <span href="#" class="option-addall" @click="handleShowAbout()"></span>
+          <span class="right-options__play" @click="playAll()"></span>
+          <span href="#" class="right-options__addall" @click="handleShowAbout()"></span>
         </div>
       </div>
     </div>
@@ -19,22 +19,23 @@
       <div class="item" v-for="(item, i) of list" :key="i">
         <span class="item-order">{{i+1}}</span>
         <router-link :to="`/song?id=${item.id}`" class="item-name">{{item.name}}</router-link>
-        <div class="item-opt">
-          <span class="opt opt-play" @click="handleToPlay(item)"></span>
-          <span class="opt opt-add" @click="handleAdd(item)"></span>
-          <span href="#" class="opt opt-collect" @click="handleShowAbout()"></span>
+        <div class="item-options">
+          <span class="icon item-options__icon-play" @click="handleToPlay(item)"></span>
+          <span class="icon item-options__icon-add" @click="handleAdd(item)"></span>
+          <span href="#" class="icon item-options__icon-collect" @click="handleShowAbout()"></span>
         </div>
       </div>
     </div>
     <div class="footer">
-      <router-link :to="`/discover/toplist?id=${id}`" class="show-all">查看全部&gt;</router-link>
+      <router-link :to="`/discover/toplist?id=${id}`"
+        class="show-all"
+      >查看全部&gt;</router-link>
     </div>
   </div>
 </template>
 
 <script>
 import { getBillboard } from '@/api/get'
-// import { toPlay } from '~api/control'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -95,10 +96,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/css/variables.scss';
-@import '@/assets/css/mixins.scss';
+@import '@/styles/variables.scss';
+@import '@/styles/mixins.scss';
 
-.container {
+.bill-cate-item {
   .header {
     position: relative;
     height: 100px;
@@ -113,12 +114,11 @@ export default {
       .left-pic {
         width: 100%;
       }
-      .left-link {
+      .header-left__link {
         position: absolute;
         width: 80px;
         height: 80px;
         left: 0;
-        background: url('../../../../../../public/img/icons/coverall.png') no-repeat -145px -57px;
       }
     }
     .header-right {
@@ -139,20 +139,6 @@ export default {
           width: 22px;
           height: 22px;
           margin-right: 10px;
-        }
-        .option-play {
-          background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -205px;
-          &:hover {
-            cursor: pointer;
-            background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -235px;
-          }
-        }
-        .option-addall {
-          background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -205px;
-          &:hover {
-            cursor: pointer;
-            background: url('../../../../../../public/img/icons/index.png') no-repeat -300px -235px;
-          }
         }
       }
     }
@@ -177,14 +163,14 @@ export default {
         width: 170px;
         font-size: $fontMin;
       }
-      .item-opt {
+      .item-options {
         display: none;
         position: absolute;
         width: 75px;
         right: 0;
         top: 0;
         bottom: 0;
-        .opt {
+        .icon {
           float: left;
           width: 17px;
           height: 17px;
@@ -192,29 +178,17 @@ export default {
             cursor: pointer;
           }
         }
-        .opt-play {
+        .item-options__icon-play {
           margin-top: 8px;
           margin-right: 8px;
-          background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -268px;
-          &:hover {
-            background: url('../../../../../../public/img/icons/index.png') no-repeat -267px -288px;
-          }
         }
-        .opt-add {
+        .item-options__icon-add {
           margin-top: 10px;
           margin-right: 6px;
-          background: url('../../../../../../public/img/icons/icon.png') no-repeat 0 -700px;
-          &:hover {
-            background: url('../../../../../../public/img/icons/icon.png') no-repeat -22px -700px;
-          }
         }
-        .opt-collect {
+        .item-options__icon-collect {
           margin-top: 8px;
           margin-right: 10px;
-          background: url('../../../../../../public/img/icons/index.png') no-repeat -297px -268px;
-          &:hover {
-            background: url('../../../../../../public/img/icons/index.png') no-repeat -297px -288px;
-          }
         }
       }
       &:nth-child(odd) {
@@ -237,7 +211,7 @@ export default {
           text-decoration: underline;
           @include ellipse();
         }
-        .item-opt {
+        .item-options {
           display: block;
         }
       }

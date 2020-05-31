@@ -1,0 +1,238 @@
+// playlist
+.playlist {
+  &__down-arrow-icon {
+    background: url('../../public/img/icons/icon.png') no-repeat -70px -543px;
+  }
+
+  &__header-hot {
+    background: url('../../public/img/icons/button.png') no-repeat 0 0;
+  }
+
+  .category {
+    &__up-icon {
+      background: url('../../public/img/icons/iconall.png') no-repeat -48px 0;
+    }
+    &__content-wrapper {
+      .cate-tag-icon {
+        background: url('../../public/img/icons/icon.png') no-repeat;
+      }
+      &:nth-child(1) .cate-tag-icon {
+        background-position: -20px -735px;
+      }
+      &:nth-child(2) .cate-tag-icon {
+        background-position: 0 -60px;
+      }
+      &:nth-child(3) .cate-tag-icon {
+        background-position: 0px -88px;
+      }
+      &:nth-child(4) .cate-tag-icon {
+        background-position: 0px -117px;
+      }
+      &:nth-child(5) .cate-tag-icon {
+        background-position: 0px -141px;
+      }
+    }
+  }
+}
+
+// toplist
+.toplist {
+  .poster {
+    &__info-icon {
+      background: url('../../public/img/icons/icon.png') no-repeat -18px -682px;
+    }
+  }
+
+  .table {
+    .td-indent {
+      &__icon-default,
+      &__icon-new,
+      &__icon-up,
+      &__icon-down {
+        background: url('../../public/img/icons/icon.png') no-repeat;
+      }
+
+      &__icon-default {
+        background-position: -74px -268px;
+      }
+      &__icon-new {
+        background-position: -67px -283px;
+      }
+      &__icon-up {
+        background-position: -74px -299px;
+      }
+      &__icon-down {
+        background-position: -74px -318px;
+      }
+    }
+
+    .td-title {
+      &__icon-play,
+      &__icon-mv {
+        background: url('../../public/img/icons/table.png') no-repeat;
+      }
+
+      &__icon-play {
+        background-position: 0 -103px;
+        &:hover {
+          cursor: pointer;
+          background-position: 0 -128px;
+        }
+      }
+
+      &__icon-mv {
+        background-position: 0 -151px;
+        &:hover {
+          cursor: pointer;
+          background-position: -30px -151px;
+        }
+      }
+    }
+
+    .td-duration {
+      &__options {
+        &__icon-collect,
+        &__icon-share,
+        &__icon-download {
+          background: url('../../public/img/icons/table.png') no-repeat;
+        }
+
+        &__icon-add {
+          background: url('../../public/img/icons/icon.png') no-repeat;
+          background-position: 0 -700px;
+          &:hover {
+            cursor: pointer;
+            background-position: -22px -700px;
+          }
+        }
+
+        &__icon-collect {
+          background-position: 0 -174px;
+          &:hover {
+            cursor: pointer;
+            background-position: -20px -174px;
+          }
+        }
+
+        &__icon-share {
+          background-position: 0 -195px;
+          &:hover {
+            cursor: pointer;
+            background-position: -20px -195px;
+          }
+        }
+
+        &__icon-download {
+          background-position: -81px -174px;
+          &:hover {
+            cursor: pointer;
+            background-position: -104px -174px;
+          }
+        }
+      }
+    }
+  }
+}
+
+// recommend
+.recommend {
+  .carousel {
+    .content {
+      &__prev,
+      &__next {
+        background: url('../../public/img/icons/banner.png') no-repeat;
+      }
+
+      &__prev {
+        background-position: 0 -360px;
+      }
+
+      &__next {
+        background-position: 0 -508px;
+      }
+
+      &__download {
+        background: url('../../public/img/icons/download.png') no-repeat 0 -27px;
+      }
+    }
+  }
+
+  .new-cate {
+    &__prev,
+    &__next {
+      background: url('../../public/img/icons/index.png') no-repeat;
+    }
+
+    &__prev {
+      background-position: -260px -75px;
+      &:hover {
+        background-position: -280px -75px;
+      }
+    }
+
+    &__next {
+      background-position: -300px -75px;
+      &:hover {
+        background-position: -320px -75px;
+      }
+    }
+  }
+
+  .bill-cate-item {
+    .header-left__link {
+      background: url('../../public/img/icons/coverall.png') no-repeat -145px -57px;
+    }
+
+    .right-options {
+      &__play,
+      &__addall {
+        background: url('../../public/img/icons/index.png') no-repeat;
+      }
+
+      &__play {
+        background-position: -267px -205px;
+        &:hover {
+          cursor: pointer;
+          background-position: -267px -235px;
+        }
+      }
+      &__addall {
+        background-position: -300px -205px;
+        &:hover {
+          cursor: pointer;
+          background-position: -300px -235px;
+        }
+      }
+    }
+
+    .list {
+      .item-options {
+        &__icon-play,
+        &__icon-collect {
+          background: url('../../public/img/icons/index.png') no-repeat;
+        }
+
+        &__icon-play {
+          background-position: -267px -268px;
+          &:hover {
+            background-position: -267px -288px;
+          }
+        }
+        &__icon-add {
+          background: url('../../public/img/icons/icon.png') no-repeat;
+          background-position: 0 -700px;
+          &:hover {
+            background-position: -22px -700px;
+          }
+        }
+        &__icon-collect {
+          background-position: -297px -268px;
+          &:hover {
+            background-position: -297px -288px;
+          }
+        }
+      }
+    }
+  }
+}
+
