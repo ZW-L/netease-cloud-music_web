@@ -41,8 +41,8 @@
 </template>
 
 <script>
+import { getSearchSuggest } from '@/api/get'
 import MusicSearch from './components/MusicSearch.vue'
-import { getSearchSuggest } from '~api/get'
 
 export default {
   name: 'music-header',

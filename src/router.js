@@ -20,28 +20,28 @@ export default new Router({
       children: [
         {
           path: 'album', // /discover/album
-          component: () => import('@discover/views/AlbumView.vue'),
+          component: () => import('@/views/discover/views/AlbumView.vue'),
         },
         {
           path: 'artist',
-          component: () => import('@discover/views/ArtistView.vue'),
+          component: () => import('@/views/discover/views/ArtistView.vue'),
         },
         {
           path: 'djradio',
-          component: () => import('@discover/views/DjradioView.vue'),
+          component: () => import('@/views/discover/views/DjradioView.vue'),
         },
         {
           path: 'playlist',
-          component: () => import('@discover/views/PlaylistView/index.vue'),
+          component: () => import('@/views/discover/views/PlaylistView/index.vue'),
         },
         {
           path: 'recommend',
           alias: '/discover',
-          component: () => import('@discover/views/RecommendView/index.vue'),
+          component: () => import('@/views/discover/views/RecommendView/index.vue'),
         },
         {
           path: 'toplist', // /discover/toplist?idx=:idx
-          component: () => import('@discover/views/ToplistView/index.vue'),
+          component: () => import('@/views/discover/views/ToplistView/index.vue'),
         },
       ],
     },

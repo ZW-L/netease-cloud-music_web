@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <div class="about-btn" @click="handleShowAbout()">关于网站</div> -->
+    <div class="about-btn" @click="handleShowAbout()">关于网站</div>
     <transition name="show">
       <about-site
         v-show="isShowAboutSite"
@@ -14,7 +14,7 @@
 
 <script>
 import PlayerBar from '@/views/player/index.vue'
-import AboutSite from '@discover/AboutSite.vue'
+import AboutSite from '@/views/discover/AboutSite.vue'
 import { mapGetters } from 'vuex'
 import { getToplistDetail } from '@/api/get'
 
