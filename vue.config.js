@@ -5,21 +5,14 @@ function resolve(dir) {
 }
 
 module.exports = {
-  publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  // publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+  publicPath: './',
+  assetsDir: 'static',
   devServer: {
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3000',
-        changeOrigin: true,
-        pathRewrite: {
-          '^/api': '/',
-        },
-      },
-    },
+    proxy: 'http://localhost:3000',
   },
   chainWebpack: config => {
     config.resolve.alias
-      // .set('~api', resolve('src/api'))
       .set('@', resolve('src'))
   },
 }
