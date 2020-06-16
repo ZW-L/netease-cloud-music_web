@@ -9,13 +9,10 @@ branch:
   - master
 before_install:
 - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out deploy_rsa -d
-- eval "$(ssh-agent -s)"
 - chmod 600 deploy_rsa
-- ssh-add deploy_rsa
 install:
 - npm install
 script:
 - npm run build
 after_success:
-- ssh-keyscan 106.53.65.214 >> ~/.ssh/known_hosts
 - rsync -az --delete ./dist root@106.53.65.214:/root/netease-music/test
