@@ -8,7 +8,7 @@ branch:
   only:
   - master
 before_install:
-- openssl aes-256-cbc -K $encrypted_d1647fea50de_key -iv $encrypted_d1647fea50de_iv -in deploy_rsa.pub.enc -out deploy_rsa.pub -d
+- openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out deploy_rsa -d
 - eval "$(ssh-agent -s)"
 - chmod 600 deploy_rsa.pub
 - ssh-add deploy_rsa.pub
