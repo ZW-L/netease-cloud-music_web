@@ -2,7 +2,7 @@ language: node_js
 node_js:
 - '12'
 addons:
-  ssh_known_hosts: 104.53.65.214
+  ssh_known_hosts: 106.53.65.214
 branch:
   only:
   - master
