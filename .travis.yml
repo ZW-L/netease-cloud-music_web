@@ -17,4 +17,4 @@ install:
 script:
 - npm run build
 after_success:
-- rsync -az --delete ./dist root@106.53.65.214:/root/netease-music/test
+- rsync -az --delete ./dist root@106.53.65.214:/root/test
