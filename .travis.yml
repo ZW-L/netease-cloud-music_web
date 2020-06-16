@@ -2,7 +2,8 @@ language: node_js
 node_js:
 - '12'
 addons:
-  ssh_known_hosts: 106.53.65.214
+  ssh_known_hosts: 
+  - 106.53.65.214
 branch:
   only:
   - master
@@ -16,4 +17,5 @@ install:
 script:
 - npm run build
 after_success:
+- ssh-keyscan 106.53.65.214 >> ~/.ssh/known_hosts
 - rsync -az --delete ./dist root@106.53.65.214:/root/netease-music/test
