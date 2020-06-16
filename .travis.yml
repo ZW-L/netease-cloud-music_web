@@ -10,8 +10,8 @@ branch:
 before_install:
 - openssl aes-256-cbc -K $encrypted_db2095f63ba3_key -iv $encrypted_db2095f63ba3_iv -in deploy_rsa.enc -out deploy_rsa -d
 - eval "$(ssh-agent -s)"
-- chmod 600 deploy_rsa.pub
-- ssh-add deploy_rsa.pub
+- chmod 600 deploy_rsa
+- ssh-add deploy_rsa
 install:
 - npm install
 script:
