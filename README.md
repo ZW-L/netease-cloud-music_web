@@ -43,8 +43,8 @@ npm run serve
 
 ### 效果
 
-![主页](/public/doc/gif_01.gif)
-![播放](/public/doc/gif_02.gif)
+![主页](/doc/gif_01.gif)
+![播放](/doc/gif_02.gif)
 
 
 ### 已实现功能
