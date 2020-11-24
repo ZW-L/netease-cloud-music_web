@@ -22,7 +22,6 @@ import { getPlaylistDetail } from '@/api/get'
 
 export default {
   name: 'play-list-card',
-
   props: {
     info: {
       type: Object,
@@ -36,7 +35,6 @@ export default {
       default: false,
     },
   },
-
   computed: {
     playCount() {
       const count = this.info.playCount
@@ -48,7 +46,6 @@ export default {
       return picUrlFormat(picUrl, 140, 140)
     },
   },
-
   methods: {
     playAll() {
       getPlaylistDetail(this.info.id).then(res => {
@@ -56,8 +53,7 @@ export default {
         this.$store.dispatch('changePlaylist', playlist)
       })
     },
-  },
-
+  }
 }
 </script>
 

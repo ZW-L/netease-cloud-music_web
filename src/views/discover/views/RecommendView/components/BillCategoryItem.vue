@@ -35,18 +35,15 @@
 </template>
 
 <script>
-import { getBillboard } from '@/api/get'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'bill-category-item',
-
   props: {
     id: {
       type: Number,
     },
   },
-
   data() {
     return {
       list: [],
@@ -54,19 +51,16 @@ export default {
       coverImgUrl: '',
     }
   },
-
   computed: {
     ...mapGetters(['toIdx']),
   },
-
   mounted() {
     this.initialData()
   },
-
   methods: {
     initialData() {
-      const idx = this.toIdx[`id_${this.id}`]
-      getBillboard(idx).then(res => {
+      this.$api.getRankList(this.id).then(res => {
+        console.log(res)
         const { playlist } = res.data
         this.name = playlist.name
         this.coverImgUrl = playlist.coverImgUrl
@@ -77,12 +71,10 @@ export default {
       this.$store.dispatch('toPlay', item)
     },
     handleAdd(item) {
-      console.log('click...')
       this.$store.dispatch('addToPlaylist', item)
     },
     playAll() {
-      const idx = this.toIdx[`id_${this.id}`]
-      getBillboard(idx).then(res => {
+      this.$api.getRankList(this.id).then(res => {
         const playlist = res.data.playlist.tracks
         this.$store.dispatch('changePlaylist', playlist)
       })
@@ -90,8 +82,7 @@ export default {
     handleShowAbout() {
       this.$store.commit('SHOW_ABOUT_SITE')
     },
-  },
-
+  }
 }
 </script>
 

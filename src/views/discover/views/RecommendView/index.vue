@@ -25,7 +25,6 @@ import HotCategory from './components/HotCategory.vue'
 import NewCategory from './components/NewCategory.vue'
 import BillCategory from './components/BillCategory.vue'
 
-
 export default {
   name: 'recommend-view',
   components: {

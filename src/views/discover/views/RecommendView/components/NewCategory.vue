@@ -27,7 +27,6 @@
 <script>
 import CategoryHeader from '@/components/base/CategoryHeader.vue'
 import NewDiscCard from '@/components/base/NewDiscCard.vue'
-import { getNewest } from '@/api/get'
 
 export default {
   name: 'new-category',
@@ -49,7 +48,7 @@ export default {
   },
   methods: {
     initialData() {
-      getNewest().then(res => {
+      this.$api.getNewest().then(res => {
         this.albums = this.albums.concat(res.data.albums).slice(0, 10)
       })
     },

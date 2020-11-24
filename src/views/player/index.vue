@@ -75,7 +75,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getSingers } from '@/utils/util'
-import { getSongUrl } from '@/api/get'
 import ProgressBar from './components/ProgressBar.vue'
 import PlayContent from './components/PlayContent.vue'
 
@@ -210,7 +209,7 @@ export default {
     },
     // 切换当前歌曲
     changeSong(id) {
-      getSongUrl(id).then(res => {
+      this.$api.getSongUrl(id).then(res => {
         // console.log(res.data);
         this.handleChangeSrc(res.data.data[0].url, true)
       }).catch(err => {

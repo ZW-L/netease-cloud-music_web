@@ -22,19 +22,16 @@
 <script>
 import AsideGroup from '@/components/group/AsideGroup.vue'
 import SongListTable from '@/components/base/SongListTable.vue'
-import { getPlaylistDetail, getCollectPlaylistUsers, getRelativePlaylist } from '@/api/get'
 import PlaylistPoster from './components/PlaylistPoster.vue'
 
 export default {
   name: 'playlist-detail',
-
   components: {
     PlaylistPoster,
     SongListTable,
     AsideGroup,
   },
-
-  data() {
+  data () {
     return {
       detail: { // 歌单详情
         coverImgUrl: '',
@@ -55,21 +52,19 @@ export default {
       download: true, // 边栏参数，app 选项
     }
   },
-
-  mounted() {
+  mounted () {
     this.initialData()
   },
-
   computed: {
-    playlistId() {
+    playlistId () {
       return this.$route.query.id
-    },
+    }
   },
-
   methods: {
-    initialData() {
+    initialData () {
       // 获取歌单信息
-      getPlaylistDetail(this.playlistId).then(res => {
+      this.$api.getPlaylistDetail(this.playlistId).then(res => {
+        // console.log(res)
         const data = res.data.playlist
         const obj = this.detail
         obj.coverImgUrl = data.coverImgUrl
@@ -86,25 +81,23 @@ export default {
         this.songList = data.tracks
       })
       // 获取喜欢歌单的人
-      getCollectPlaylistUsers(this.playlistId, 8).then(res => {
+      this.$api.getCollectPlaylistUsers({ id: this.playlistId, limit: 8 }).then(res => {
         // console.log(res.data.subscribers);
         this.playlistLikes = res.data.subscribers
       })
       // 获取相关歌单推荐
-      getRelativePlaylist(this.playlistId).then(res => {
+      this.$api.getRelatedPlaylist(this.playlistId).then(res => {
         // console.log(res.data);
         this.relativeRecommend = res.data.playlists
       })
     },
   },
-
   watch: {
     // eslint-disable-next-line
-    '$route'(to, from) {
+    '$route' (to, from) {
       this.initialData()
     },
-  },
-
+  }
 }
 </script>
 

@@ -6,7 +6,7 @@
     <div class="content">
       <div class="img-wrapper">
         <transition-group name="fade">
-          <div v-for="(item, i) of banner" :key="item.url"
+          <div v-for="(item, i) of banner" :key="i"
             v-show="i === active"
             class="img-item"
             @click="toView(item)"
@@ -32,8 +32,6 @@
 </template>
 
 <script>
-import { getBanner } from '@/api/get'
-
 export default {
   name: 'home-carousel',
 
@@ -55,7 +53,7 @@ export default {
 
   methods: {
     initialData() {
-      getBanner().then(res => {
+      this.$api.getBanner().then(res => {
         this.banner = this.banner.concat(res.data.banners)
       }).catch(err => {
         console.log(err)
@@ -65,13 +63,13 @@ export default {
     },
     handleControl(tag) {
       if (typeof tag === 'number') {
-        console.log(`jump to ${tag}.`)
+        // console.log(`jump to ${tag}.`)
         this.active = tag
       } else if (tag === 'prev') {
-        console.log('prev')
+        // console.log('prev')
         this.active = this.active === 0 ? this.banner.length - 1 : this.active - 1
       } else if (tag === 'next') {
-        console.log('next')
+        // console.log('next')
         this.active = this.active === this.banner.length - 1 ? 0 : this.active + 1
       }
     },
@@ -92,11 +90,11 @@ export default {
       this.timer = setInterval(() => {
         this.handleControl('next')
       }, 4000)
-      console.log(`start: ${this.timer}`)
+      // console.log(`start: ${this.timer}`)
     },
     stop() {
       clearInterval(this.timer)
-      console.log(`clear interval: ${this.timer}`)
+      // console.log(`clear interval: ${this.timer}`)
     },
   },
 

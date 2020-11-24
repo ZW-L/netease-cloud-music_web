@@ -74,7 +74,7 @@ export default {
       const id = this.$route.query.id || this.id
       this.$emit('updateId', id)
       // 获取排行榜的歌曲列表
-      getBillboard(this.idx).then(res => {
+      this.$api.getRankList(id).then(res => {
         const detail = res.data.playlist
         const info = this.listInfo
         info.name = detail.name

@@ -36,7 +36,7 @@ export default {
   },
 
   methods: {
-    changeCategory(cate) {
+    changeCategory (cate) {
       if (cate !== this.cate) {
         this.$router.push({ path: '/discover/playlist', query: { cate } })
       }

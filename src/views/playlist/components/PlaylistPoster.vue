@@ -16,8 +16,7 @@
         </span>
         <a href="#" class="create-item ctor-name">{{creatorName}}</a>
         <span class="create-item create-time">
-          <em>{{createTime}}</em>
-            创建
+          <em>{{createTime}}</em> 创建
         </span>
       </p>
       <div class="info-btn">
@@ -54,17 +53,14 @@ export default {
   components: {
     BtnBar,
   },
-
   props: {
     detail: Object,
   },
-
   data() {
     return {
       showAll: false, // 是否显示全部歌单介绍
     }
   },
-
   computed: {
     // todo: 优化数据处理方式
     creatorPic() {
@@ -89,7 +85,6 @@ export default {
       return this.showAll ? this.fullDesc : this.shortDesc
     },
   },
-
   methods: {
     handlePlayAll() {
       this.$store.dispatch('changePlaylist', this.songList)

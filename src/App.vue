@@ -42,8 +42,8 @@ export default {
         this.$store.dispatch('updateToplistDetail', { featureRank, globalRank })
       } else {
         // fetch new data and save to store, update storage
-        console.log('fetch data...')
-        getToplistDetail().then(res => {
+        this.$api.getToplistDetail().then(res => {
+          console.log('------app-----', res)
           const data = res.data.list
           featureRank = data.slice(0, 4)
           globalRank = data.slice(4)

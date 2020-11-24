@@ -1,9 +1,11 @@
 import Vue from 'vue'
-import * as storage from '@/utils/storage'
 import App from './App.vue'
 import router from './router'
 import store from './store/index'
 import './registerServiceWorker'
+
+import * as storage from '@/utils/storage'
+import api from '@/api'
 
 import '../public/img/iconfont/iconfont.css'
 import '@/styles/index.scss'
@@ -11,6 +13,7 @@ import '@/styles/index.scss'
 Vue.config.productionTip = false
 // 扩展 Vue
 Vue.prototype.$storage = storage
+Vue.prototype.$api = api
 
 new Vue({
   router,

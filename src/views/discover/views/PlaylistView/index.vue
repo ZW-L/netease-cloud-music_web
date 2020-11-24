@@ -2,64 +2,51 @@
   <div class="playlist">
     <div class="header">
       <h2 class="header-title">{{cate}}</h2>
-      <div class="header-category"
-        ref="select"
-        @click="toggleShowCategory"
-      >
+      <div class="header-category" ref="select"
+        @click="toggleShowCategory" >
         <span class="header-category-name">选择分类</span>
         <i class="playlist__down-arrow-icon"></i>
       </div>
       <div class="playlist__header-hot">热门</div>
     </div>
     <!-- 歌单分类组件 -->
-    <playlist-category
-      ref="category"
-      v-show="showCategory"
+    <playlist-category v-show="showCategory" ref="category"
       :categories="categories"
       :cate="cate"
-      @hideCategory="hideCategory"
-    />
+      @hideCategory="hideCategory" />
     <!-- 内容区域 -->
     <div class="content">
-      <playlist-card
-        class="item"
-        v-for="(item, i) of playlists"
-        :key="i"
+      <playlist-card class="item"
+        v-for="(item, i) of playlists" :key="i"
         :info="item"
-        :titleEllipsis="titleEllipsis"
-      >
+        :titleEllipsis="titleEllipsis" >
         <p class="slot-creator">
           <em class="creator-by">by</em>
-          <a class="creator-name"
-            @click="handleShowAbout()"
-          >{{item.creator.nickname}}</a>
+          <a class="creator-name" @click="handleShowAbout()">{{item.creator.nickname}}</a>
         </p>
       </playlist-card>
     </div>
+
     <base-pagination
       :pages="pages"
-      @changePage="handleChangePage"
-    />
+      @changePage="handleChangePage" />
   </div>
 </template>
 
 <script>
-import { boxOffsetLeft, boxOffsetTop, isChild } from '@/utils/dom'
 import PlaylistCard from '@/components/base/PlaylistCard.vue'
 import BasePagination from '@/components/base/pagination.vue'
-import { addSeparator } from '@/utils/util'
-import { getCategoryList, getCategoryBy } from '@/api/get'
 import PlaylistCategory from './components/PlaylistCategory.vue'
+import { boxOffsetLeft, boxOffsetTop, isChild } from '@/utils/dom'
+import { addSeparator } from '@/utils/util'
 
 export default {
   name: 'playlist-view',
-
   components: {
     PlaylistCard,
     PlaylistCategory,
     BasePagination,
   },
-
   data() {
     return {
       showCategory: false, // 显示分类
@@ -76,34 +63,33 @@ export default {
       },
     }
   },
-
   computed: {
-    cate() {
+    cate () {
       return this.$route.query.cate || '全部'
     },
   },
-
   mounted() {
     this.initialData()
     // 添加全局事件监听(事件捕获)，这样不会阻止歌单的点击
     window.addEventListener('click', this.handleClickOuter, true)
   },
-
   beforeDestroy() {
     // 删除全局事件监听
     window.removeEventListener('click', this.handleClickOuter, true)
   },
-
   methods: {
-    initialData() {
+    initialData () {
       // 获取歌单分类信息
-      getCategoryList().then(res => {
+      this.$api.getPlaylistCatlist().then(res => {
         const { data } = res
         this.categories = this.toClassify(data)
       })
       // 获取默认分类(全部风格)
-      getCategoryBy(this.cate).then(res => {
-        this.playlists = res.data.playlists
+      this.getPlaylists()
+    },
+    getPlaylists () {
+      this.$api.getTopPlaylist({ cat: this.cate }).then(res => {
+        this.playlists = [].concat(res.data.playlists)
       })
     },
     getOuterArea() {
@@ -152,8 +138,8 @@ export default {
     // 切换页码时
     handleChangePage(page) {
       const offset = (page - 1) * this.length
-      getCategoryBy(this.cate, offset, this.length).then(res => {
-        this.playlists = res.data.playlists
+      this.$api.getTopPlaylist({ cat: this.cate, offset, limit: this.length}).then(res => {
+        this.playlists = [].concat(res.data.playlists)
       })
     },
     // 将得到的分类信息格式化
@@ -170,14 +156,12 @@ export default {
       this.$store.commit('SHOW_ABOUT_SITE')
     },
   },
-
   watch: {
     // eslint-disable-next-line
     '$route' (to, from) {
-      this.initialData()
+      this.getPlaylists()
     },
-  },
-
+  }
 }
 </script>
 

@@ -12,7 +12,6 @@
 <script>
 import PlaylistCard from '@/components/base/PlaylistCard.vue'
 import CategoryHeader from '@/components/base/CategoryHeader.vue'
-import { getPersonalized } from '@/api/get'
 
 export default {
   name: 'hot-category',
@@ -29,7 +28,7 @@ export default {
     }
   },
   mounted() {
-    getPersonalized(8).then(res => {
+    this.$api.getPersonalized(8).then(res => {
       this.playlist = this.playlist.concat(res.data.result)
     })
   },

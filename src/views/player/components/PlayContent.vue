@@ -52,7 +52,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getSingers, getDuration } from '@/utils/util'
-import { getLyric } from '@/api/get'
 
 export default {
   name: 'play-content',
@@ -92,7 +91,7 @@ export default {
 
   methods: {
     initialData() {
-      getLyric(this.songId).then(res => {
+      this.$api.getLyric(this.songId).then(res => {
         this.lyric = res.data.lrc ? res.data.lrc.lyric : ''
       })
     },
