@@ -15,7 +15,7 @@
       <p class="info-about info-date">发行时间：{{publishDate}}</p>
       <p class="info-about info-company">发行公司：{{detail.company}}</p>
       <div class="info-btn">
-        <btn-bar @playAll="handlePalyAll">
+        <btn-bar v-on="$listeners">
           <span slot="share">({{detail.info.shareCount}})</span>
           <span slot="comment">({{detail.info.commentCount}})</span>
         </btn-bar>
@@ -44,13 +44,7 @@ export default {
     publishDate() {
       return dateFormat(this.detail.publishTime)
     },
-  },
-
-  methods: {
-    handlePalyAll() {
-      this.$store.dispatch('changePlaylist', this.songList)
-    },
-  },
+  }
 }
 </script>
 

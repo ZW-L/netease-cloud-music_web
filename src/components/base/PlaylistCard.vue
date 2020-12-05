@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     playAll() {
-      getPlaylistDetail(this.info.id).then(res => {
+      this.$api.getPlaylistDetail(this.info.id).then(res => {
         const playlist = res.data.playlist.tracks
         this.$store.dispatch('changePlaylist', playlist)
       })

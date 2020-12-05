@@ -4,7 +4,7 @@
       :class="['card-wrapper', `card-wrapper-${size}`]"
     >
       <img :class="['card-img', `card-img-${size}`]"
-        :src="album.picUrl"
+        :src="`${album.picUrl}?param=300y300`"
         alt="">
       <a :class="['card-link', `card-link-${size}`]" href="#"></a>
       <span :class="['play-icon', `play-icon-${size}`]" @click.stop="playAll()"></span>
@@ -65,7 +65,7 @@ export default {
 
   methods: {
     playAll() {
-      getAlbumDetail(this.album.id).then(res => {
+      this.$api.getAlbumDetail(this.album.id).then(res => {
         const playlist = res.data.songs
         this.$store.dispatch('changePlaylist', playlist)
       })

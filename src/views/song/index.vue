@@ -65,7 +65,7 @@ export default {
     initialDetail() {
       // 获取歌曲信息
       const songId = this.$route.query.id
-      getSongDetail(songId).then(res => {
+      this.$api.getSongDetail(songId).then(res => {
         // console.log(res.data.songs[0])
         const data = res.data.songs[0]
         this.detail.al = data.al
@@ -76,17 +76,17 @@ export default {
         this.detail.picUrl = data.al.picUrl
       })
       // 获取歌词
-      getLyric(songId).then(res => {
+      this.$api.getLyric(songId).then(res => {
         // console.log(res.data.lrc.lyric)
         this.lyric = res.data.lrc.lyric
       })
       // 获取相似歌单
-      getSimPlaylist(songId).then(res => {
+      this.$api.getSimPlaylist(songId).then(res => {
         // console.log(res.data.playlists)
         this.relativePlaylist = res.data.playlists
       })
       // 获取相似音乐
-      getSimSong(songId).then(res => {
+      this.$api.getSimSong(songId).then(res => {
         // console.log(res.data.songs)
         this.similarSong = res.data.songs
       })

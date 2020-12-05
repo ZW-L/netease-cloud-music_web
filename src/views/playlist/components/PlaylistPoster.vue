@@ -20,7 +20,7 @@
         </span>
       </p>
       <div class="info-btn">
-        <btn-bar @playAll="handlePlayAll">
+        <btn-bar v-on="$listeners">
           <span slot="collect">({{detail.subscribedCount}})</span>
           <span slot="share">({{detail.shareCount}})</span>
           <span slot="comment">({{detail.commentCount}})</span>
@@ -73,12 +73,14 @@ export default {
       return this.detail.createTime ? dateFormat(this.detail.createTime) : '1970-01-01'
     },
     shortDesc() {
+      if (!this.detail.desc) return ''
       if (this.detail.desc.length <= 100) {
         return this.fullDesc
       }
       return this.detail.desc.slice(0, 97).concat('...').split('\n')
     },
     fullDesc() {
+      if (!this.detail.desc) return ''
       return this.detail.desc.split('\n').concat('')
     },
     desc() {
@@ -86,9 +88,6 @@ export default {
     },
   },
   methods: {
-    handlePlayAll() {
-      this.$store.dispatch('changePlaylist', this.songList)
-    },
     handleShowAll() {
       this.showAll = !this.showAll
     },

@@ -2,7 +2,7 @@
   <div class="bill-cate-item">
     <div class="header">
       <div class="header-left">
-        <img class="left-pic" :src="coverImgUrl" alt="">
+        <img class="left-pic" :src="`${coverImgUrl}?param=200y200`" alt="">
         <router-link :to="`/discover/toplist?id=${id}`" class="header-left__link"></router-link>
       </div>
       <div class="header-right">

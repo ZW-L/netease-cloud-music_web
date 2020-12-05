@@ -29,7 +29,7 @@ export const getSearchSuggest = keywords => {
   return request({
     url: '/api/search/suggest',
     method: 'get',
-    params: { keywords, type }
+    params: { keywords }
   })
 }
 

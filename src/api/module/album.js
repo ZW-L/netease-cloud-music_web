@@ -4,19 +4,19 @@ import request from '@/utils/request'
  * 最新专辑
  */
 export const getAlbumNewest = () => {
-  return axios({
+  return request({
     url: '/api/album/newest',
     method: 'get'
   })
 }
 
 /**
- * 新碟上架 getNewestAll
+ * 新碟上架
  * @param {Number} limit
  * @param {Number} offset
  */
 export const getTopAlbum = ({ limit = 50, offset = 0 } = {}) => {
-  return axios({
+  return request({
     url: '/api/top/album',
     method: 'get',
     params: { limit, offset }
@@ -28,7 +28,7 @@ export const getTopAlbum = ({ limit = 50, offset = 0 } = {}) => {
  * @param {Number} id
  */
 export const getAlbumDetail = id => {
-  return axios({
+  return request({
     url: '/api/album',
     method: 'get',
     params: { id }

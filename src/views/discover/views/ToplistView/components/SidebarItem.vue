@@ -7,7 +7,7 @@
         @click="handleChangeRank(item.id)"
       >
         <div class="img">
-          <img :src="item.coverImgUrl" :alt="item.name">
+          <img :src="`${item.coverImgUrl}?param=100y100`" :alt="item.name">
         </div>
         <div class="desc">
           <p class="name">{{item.name}}</p>
@@ -29,7 +29,7 @@ export default {
       default: () => [],
     },
     id: {
-      type: Number,
+      require: true
     },
   },
   methods: {
