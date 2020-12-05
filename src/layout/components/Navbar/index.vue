@@ -41,7 +41,6 @@
 </template>
 
 <script>
-import { getSearchSuggest } from '@/api/get'
 import MusicSearch from './components/MusicSearch.vue'
 
 export default {
@@ -93,7 +92,7 @@ export default {
     searchText(text) {
       const search = text.replace(/\s/g, '')
       if (search !== '') {
-        getSearchSuggest(search).then(res => {
+        this.$api.getSearchSuggest(search).then(res => {
           const data = res.data.result
           this.searchResult.albums = data.albums || ''
           this.searchResult.songs = data.songs || ''

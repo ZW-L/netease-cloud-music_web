@@ -1,7 +1,7 @@
 <template>
   <div class="album">
     <div class="content">
-      <album-poster :detail="detail" />
+      <album-poster :detail="detail" @playAll="handlePalyAll"/>
       <album-recommend :desc="detail.desc" />
       <song-list-table :songList="songList" :showPlayCount="false"></song-list-table>
     </div>
@@ -61,7 +61,7 @@ export default {
     initialData() {
       // 获取专辑信息
       const albumId = this.$route.query.id
-      getAlbumDetail(albumId).then(res => {
+      this.$api.getAlbumDetail(albumId).then(res => {
         const { album } = res.data
         this.songList = res.data.songs
         this.detail.artists = album.artists
@@ -76,10 +76,13 @@ export default {
         console.log(err)
       }).finally(() => {
         // 获取歌手的相关专辑
-        getAllAlbum(this.detail.artists[0].id, 5).then(res => {
+        this.$api.getAllAlbum(this.detail.artists[0].id, 5).then(res => {
           this.ownAlbums = res.data.hotAlbums
         })
       })
+    },
+    handlePalyAll() {
+      this.$store.dispatch('changePlaylist', this.songList)
     },
   },
 

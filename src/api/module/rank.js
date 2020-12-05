@@ -14,6 +14,7 @@ export const getAllRankDetail = () => {
  * 所有排行榜详情
  */
 export const getToplistDetail = () => {
+  console.warn('get id:')
   return request({
     url: '/api/toplist/detail',
     method: 'get'

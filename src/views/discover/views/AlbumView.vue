@@ -27,16 +27,10 @@
 import BasePagination from '@/components/base/pagination.vue'
 import NewDiscCard from '@/components/base/NewDiscCard.vue'
 import { addSeparator } from '@/utils/util'
-import { getNewest, getNewestAll } from '@/api/get'
 
 export default {
   name: 'album-view',
-
-  components: {
-    BasePagination,
-    NewDiscCard,
-  },
-
+  components: { BasePagination, NewDiscCard, },
   data() {
     return {
       cates: ['全部', '华语', '欧美', '日本'],
@@ -45,17 +39,14 @@ export default {
       limit: 35,
     }
   },
-
   computed: {
     allCates() {
       return addSeparator(this.cates)
     },
   },
-
   mounted() {
     this.handleGetData()
   },
-
   methods: {
     // 提取 albums 的关键数据
     extractAlbums(albums) {
@@ -68,13 +59,14 @@ export default {
     },
     handleGetData() {
       // 热门新碟
-      getNewest().then(res => {
+      this.$api.getNewest().then(res => {
         const { albums } = res.data
         this.newest = this.extractAlbums(albums.slice(0, 10))
       }).catch(console.log)
       // 全部热门新碟
-      getNewestAll().then(res => {
+      this.$api.getTopAlbum().then(res => {
         const { albums } = res.data
+        console.log(res)
         this.newestAll = this.extractAlbums(albums)
       }).catch(console.log)
     },
@@ -82,7 +74,7 @@ export default {
       // 将视图清空(会导致子组件全部销毁，应该显示其他信息，这样不用销毁组件？)
       this.newestAll = []
       const offset = (page - 1) * this.limit
-      getNewestAll(offset).then(res => {
+      this.$api.getTopAlbum(offset).then(res => {
         const { albums } = res.data
         this.newestAll = this.extractAlbums(albums)
       }).catch(console.log)

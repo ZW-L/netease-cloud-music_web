@@ -1,7 +1,7 @@
 <template>
   <div class="poster">
     <div class="wrapper">
-      <img :src="listInfo.coverImgUrl" alt="">
+      <img :src="`${listInfo.coverImgUrl}?param=400y400`" alt="">
     </div>
     <div class="desc">
       <div class="title">{{listInfo.name}}</div>

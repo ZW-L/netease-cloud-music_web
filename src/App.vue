@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-    <div class="about-btn" @click="handleShowAbout()">关于网站</div>
+    <!-- <div class="about-btn" @click="handleShowAbout()">关于网站</div> -->
     <transition name="show">
-      <about-site
+      <!-- <about-site
         v-show="isShowAboutSite"
         class="about-site"
-        @show="handleShowAbout()" />
+        @show="handleShowAbout()" /> -->
     </transition>
     <router-view />
     <player-bar />
@@ -14,7 +14,7 @@
 
 <script>
 import PlayerBar from '@/views/player/index.vue'
-import AboutSite from '@/views/discover/AboutSite.vue'
+// import AboutSite from '@/views/discover/AboutSite.vue'
 import { mapGetters } from 'vuex'
 import { getToplistDetail } from '@/api/get'
 
@@ -22,7 +22,7 @@ export default {
   name: 'app',
   components: {
     PlayerBar,
-    AboutSite,
+    // AboutSite,
   },
   computed: {
     ...mapGetters(['isShowAboutSite']),

@@ -10,6 +10,7 @@ import Sidebar from './components/Sidebar.vue'
 import RankList from './components/RankList.vue'
 
 export default {
+  name: 'toplist',
   components: {
     Sidebar,
     RankList,

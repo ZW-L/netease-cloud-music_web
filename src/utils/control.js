@@ -1,4 +1,4 @@
-import * as get from '@/api/get'
+import api from '@/api'
 
 /**
  * 知道歌曲的详情时，提取信息直接提交到 store
@@ -21,7 +21,8 @@ export const toPlay = function (store, item) {
  */
 export const toPlayById = function (store, songId) {
   const payload = { id: songId }
-  get.getSongDetail(songId).then(res => {
+  console.log(api)
+  api.getSongDetail(songId).then(res => {
     const data = res.data.songs[0]
     payload.name = data.name
     payload.singer = data.ar

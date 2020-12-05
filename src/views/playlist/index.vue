@@ -1,7 +1,7 @@
 <template>
   <div class="playlist">
     <div class="content">
-      <playlist-poster :detail="detail" />
+      <playlist-poster :detail="detail" @playAll="handlePlayAll" />
       <song-list-table
         :songList="songList"
         :showAlbum="true"
@@ -90,6 +90,9 @@ export default {
         // console.log(res.data);
         this.relativeRecommend = res.data.playlists
       })
+    },
+    handlePlayAll() {
+      this.$store.dispatch('changePlaylist', this.songList)
     },
   },
   watch: {

@@ -6,7 +6,7 @@ function resolve (dir) {
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
-  assetsDir: 'static',
+  // assetsDir: 'static',
   devServer: {
     watchOptions: {
       ignore: '/node_modules/',
@@ -16,9 +16,7 @@ module.exports = {
       '/api': {
         target: 'http://localhost:3000',
         changeOrigin: true,
-        pathRewrite: {
-          '^/api': '',
-        },
+        pathRewrite: { '^/api': '', },
       },
     },
   },
