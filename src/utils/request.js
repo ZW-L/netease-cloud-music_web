@@ -1,7 +1,12 @@
 import axios from 'axios'
 
+let baseURL = ''
+if (process.env.NODE_ENV === 'production') {
+  baseURL = 'https://api.music.lizhiwen.online'
+}
+
 const service = axios.create({
-  // baseURL: process.env.VUE_APP_BASE_API,
+  baseURL,
   timeout: 5000
 })
 
