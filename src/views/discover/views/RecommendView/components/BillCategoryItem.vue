@@ -60,7 +60,7 @@ export default {
   methods: {
     initialData() {
       this.$api.getRankList(this.id).then(res => {
-        console.log(res)
+        // console.log(res)
         const { playlist } = res.data
         this.name = playlist.name
         this.coverImgUrl = playlist.coverImgUrl

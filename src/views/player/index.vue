@@ -227,7 +227,7 @@ export default {
         this.isPaused = false
       }
     },
-    andomrIndex() {
+    randomIndex() {
       return Math.floor(Math.random() * this.playlist.length)
     },
     handleShowPlayContent() {
