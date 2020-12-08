@@ -3,7 +3,7 @@
     <h1 class="cate-title">{{title}}</h1>
     <div class="cate-list">
       <div v-for="(item, i) of rank" :key="i"
-        :class="['card', { 'cate-item-active': item.id === id }]"
+        :class="['card', { 'cate-item-active': item.id == id }]"
         @click="handleChangeRank(item.id)"
       >
         <div class="img">
@@ -21,16 +21,9 @@
 <script>
 export default {
   props: {
-    title: {
-      type: String,
-    },
-    rank: {
-      type: Array,
-      default: () => [],
-    },
-    id: {
-      require: true
-    },
+    title: { type: String, },
+    rank: { type: Array, default: () => [], },
+    id: { require: true },
   },
   methods: {
     handleChangeRank(id) {
